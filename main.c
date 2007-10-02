@@ -1,77 +1,71 @@
-/* This file is part of OpenSint
- * Copyright (C) 2005-2007 Enrico Rossi
- * 
- * OpenSint is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * OpenSint is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
+#include <stdint.h>
+#include <stdlib.h>
 
-#include <inttypes.h>
-#include <stdio.h>
+/* #include <avr/interrupt.h> */
 #include <avr/io.h>
-#include <avr/interrupt.h>
 #include "default.h"
-#include "anemometer.h"
-#include "init.h"
-#include "synth.h"
-#include "cell.h"
-/* put this after default because we have to set F_CPU */
+#include "sensor.h"
+#include "uart.h"
+
+/* #include "adc.h" */
 #include <util/delay.h>
 
-/* address bus MUST per global, since we never read it 
-to discover where it is set. */
-volatile wind_array wind;
-enum address_bus addr_bus;
+uint8_t *adc_area;
+uint16_t adc_index;
+uint8_t adc_runover;
 
-void _delay_1s (uint8_t delay)
+int
+main(void)
 {
-  uint8_t i;
+/*   uint16_t i = 0; */
+/*   uint16_t adc_size = 1 << ADC_CUTOFF; */
+  int result;
+  char *string;
 
-  while (delay--)
-    for (i=0; i<20; i++)
-      _delay_ms (50);
-}
+  DDRB = 255;
+  PORTB = 0xff;
+  DDRA = 0;
+  string = malloc (10);
 
-int main (void)
-{
-  init_port ();
-  reset_synth ();
-  clear_wind_array ();
-  init_counter ();
+  sensor_init ();
+  uart_init();
 
-  /* enable interrupts */
-  sei ();
+/*   adc_init (); */
+
+/*   adc_area = malloc (adc_size); */
+/*   adc_index = 0; */
+/*   adc_runover = 0; */
+/*   sei (); */
+
+/*   adc_start (); */
 
   for (;;)
     {
-      if (wind.flag)
+      loop_until_bit_is_clear (PINA, 0);
+      PORTB = 0;
+      _delay_ms (10);
+      PORTB = 0xff;
+
+      result = (int)sensor_read_temperature ();
+      if (result != -999)
 	{
-	do_media ();
-	wind.flag = 0;
+	  itoa (result, string, 10);
+	  uart_printstr (string);
+	  uart_putchar ('\n');
 	}
 
-      if (ring())
-	{
-	  _delay_1s (3);
-	  if (ring())
-	    {
-	      answer_phone ();
-	      cli (); /* disable interrupts */
-	      play_message ();
-	      sei ();
-	      hangup_phone ();
-	    }
-	}
-    };
+      _delay_ms (10);
 
-  return (0);
+      result = (int)sensor_read_humidity ();
+      if (result != -999)
+	{
+	  itoa (result, string, 10);
+	  uart_printstr (string);
+	  uart_putchar ('\n');
+	}
+
+      _delay_ms (10);
+    }
+
+  free (adc_area);
 }
