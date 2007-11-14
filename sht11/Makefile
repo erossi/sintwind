@@ -11,26 +11,21 @@ OBJDUMP = avr-objdump
 SIZE = avr-size
 DUDE = avrdude -c stk500v1 -p m8515 -P /dev/ttyUSB0 -e -U flash:w:sint2.hex -F
 REMOVE = rm -f
-objects = uart.o adc.o sht11.o sensor.o
-SUBDIRS = sht11
+objects = uart.o sht11.o
 
-.PHONY: clean indent $(SUBDIRS)
+.PHONY: clean indent
 .SILENT: help
 .SUFFIXES: .c, .o
 
 all: $(objects)
-	$(CC) $(CFLAGS) -o sint2.elf main.c $(objects) $(LFLAGS)
-	$(OBJCOPY) sint2.elf sint2.hex
+	$(CC) $(CFLAGS) -o test_sht11.elf test_sht11.c $(objects) $(LFLAGS)
+	$(OBJCOPY) test_sht11.elf test_sht11.hex
 
 program:
-	avrdude -c stk500v1 -p $(MCU) -P /dev/ttyUSB0 -e -U flash:w:sint2.hex
+	avrdude -c stk500v1 -p $(MCU) -P /dev/ttyUSB0 -e -U flash:w:test_sht11.hex
 
-$(SUBDIRS):
-	@echo $(MAKECMDGOALS)
-	$(MAKE) -C $@ $(MAKECMDGOALS)
-
-clean: $(SUBDIRS)
+clean :
 	rm $(objects) *.elf *.hex
 
-indent:
+indent :
 	indent *.c *.h

@@ -1,5 +1,5 @@
 #include <stdint.h>
-
+#include <math.h>
 #include <avr/io.h>
 #include "default.h"
 #include "sht11.h"
@@ -32,7 +32,8 @@ set_data_in (void)
 void
 set_data_high (void)
 {
-  /*   SHT11_PORT |= _BV(SHT11_DATA); */
+/* release the data pin, pullup do the rest */
+/*   SHT11_PORT |= _BV(SHT11_DATA); */
   set_data_in ();
 }
 
@@ -122,6 +123,12 @@ read_ack (void)
 void
 send_start_command (void)
 {
+/*      _____           ________
+DATA:         |_______|
+            ___       ___
+SCK :  ___|     |___|     |______
+*/
+
   set_data_high ();
   /*   set_data_out (); */
   _delay_ms(SHT11_SCK_DELAY);
@@ -195,6 +202,7 @@ sht11_send_command (uint8_t command)
   if (ack)
     return (0);
 
+/* And if nothing came back this code hangs here */
   loop_until_bit_is_set (SHT11_PIN, SHT11_DATA);
   loop_until_bit_is_clear (SHT11_PIN, SHT11_DATA);
 
@@ -207,7 +215,6 @@ sht11_send_command (uint8_t command)
   /* inizio la lettura dal MSB del secondo byte */
   result |= read_byte ();
 
-  /* Send ack */
   send_ack ();
 
   /* inizio la lettura del CRC-8 */
@@ -222,4 +229,48 @@ sht11_send_command (uint8_t command)
   set_data_in ();
 
   return (result);
+}
+
+void
+sht11_dewpoint (struct sht11_t *dataset)
+{
+   float k;
+   k = (log10(dataset->humidity_compensated) - 2)/0.4343 + \
+     (17.62 * dataset->temperature)/(243.12 + dataset->temperature);
+   dataset->dewpoint = 243.12 * k / (17.62 - k);
+}
+
+void
+sht11_read_temperature (struct sht11_t *dataset)
+{
+  dataset->raw_temperature = sht11_send_command (SHT11_CMD_MEASURE_TEMP);
+  dataset->temperature = SHT11_T1 * dataset->raw_temperature - 40;
+}
+
+void
+sht11_read_humidity (struct sht11_t *dataset)
+{
+  dataset->raw_humidity = sht11_send_command (SHT11_CMD_MEASURE_HUMI);
+  dataset->humidity_linear = SHT11_C1 + \
+    (SHT11_C2 * dataset->raw_humidity) + \
+    (SHT11_C3 * dataset->raw_humidity * dataset->raw_humidity);
+
+/* Compensate humidity result with temperature */
+  dataset->humidity_compensated = (dataset->temperature - 25) * \
+    (SHT11_T1 + SHT11_T2 * dataset->raw_humidity) + \
+    dataset->humidity_linear;
+
+/* Range adjustment */
+  if (dataset->humidity_compensated > 100)
+    dataset->humidity_compensated = 100;
+  if (dataset->humidity_compensated < 0.1)
+    dataset->humidity_compensated = 0.1;
+}
+
+void
+sht11_read_all (struct sht11_t *dataset)
+{
+  sht11_read_temperature (dataset);
+  sht11_read_humidity (dataset);
+  sht11_dewpoint (dataset);
 }
