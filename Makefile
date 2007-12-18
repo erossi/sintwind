@@ -1,5 +1,4 @@
-#MCU = atmega8515
-MCU = atmega16
+MCU = atmega8
 INC = -I/usr/avr/include/
 LIBS = m
 OPTLEV = 0
@@ -11,14 +10,14 @@ OBJDUMP = avr-objdump
 SIZE = avr-size
 DUDE = avrdude -c stk500v1 -p m8515 -P /dev/ttyUSB0 -e -U flash:w:sint2.hex -F
 REMOVE = rm -f
-objects = uart.o adc.o sht11.o sensor.o
-SUBDIRS = sht11
+objects = uart.o adc.o
+SUBDIRS = sht11 synth
 
 .PHONY: clean indent $(SUBDIRS)
 .SILENT: help
 .SUFFIXES: .c, .o
 
-all: $(objects)
+all: $(SUBDIRS) $(objects)
 	$(CC) $(CFLAGS) -o sint2.elf main.c $(objects) $(LFLAGS)
 	$(OBJCOPY) sint2.elf sint2.hex
 

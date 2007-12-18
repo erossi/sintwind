@@ -1,0 +1,12 @@
+contatore: uguale all'altro / 2, xche' ha una sola chiusura.
+
+- controlla con la demo board la tenuta o meno delle porte i/o, ovvero setta a zeo un BV e poi setta dopo altri BV e verifica che il primo non sia cambiato.
+
+- reset synth con PD CE a 1
+
+- frase finale:
+
+"club... vento prov. da x con una intensita' da 15 a 21 km/h [PAUSA] temperatura meno x virgola y gradi centigradi [PAUSA] umidita' relativa x percento"
+
+"dati non disponibili" primo ciclo.
+

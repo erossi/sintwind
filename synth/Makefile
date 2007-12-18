@@ -1,5 +1,4 @@
-#MCU = atmega8515
-MCU = atmega16
+MCU = atmega8
 INC = -I/usr/avr/include/
 LIBS = m
 OPTLEV = 2
@@ -21,8 +20,12 @@ all: $(objects)
 	$(CC) $(CFLAGS) -o test_sht11.elf test_sht11.c $(objects) $(LFLAGS)
 	$(OBJCOPY) test_sht11.elf test_sht11.hex
 
+test:
+	$(CC) $(CFLAGS) -o test_synth.elf test_synth.c
+	$(OBJCOPY) test_synth.elf test_synth.hex
+
 program:
-	avrdude -c stk500v1 -p $(MCU) -P /dev/ttyUSB0 -e -U flash:w:test_sht11.hex
+	avrdude -c stk500v1 -p $(MCU) -P /dev/ttyUSB0 -e -U flash:w:test_synth.hex
 
 clean :
 	rm $(objects) *.elf *.hex

@@ -18,22 +18,19 @@
 #ifndef _SYNTH_H_
 #define _SYNTH_H_
 
-#define A0 0
-#define A1 1
-#define A2 2
-#define A3 3
-#define A4 4
-#define A5 5
-#define A6 6
-#define A7 7
+#define SYNTH_ADDR PORTD
+#define SYNTH_ADDR_DDR DDRD
 
-#define PD 4
-#define CE 5
-#define A8 6
+#define SYNTH_CTRL_OUT PORTB
+#define SYNTH_CTRL_IN  PINB
+#define SYNTH_CTRL_DDR DDRB
 
-#define EOM 2
+#define EOM 1
+#define PD 2
+#define CE 3
 
-void play_message (void);
-void reset_synth (void);
+void synth_init (void);
+void synth_say_it (uint8_t position);
+void synth_play_message (void);
 
 #endif

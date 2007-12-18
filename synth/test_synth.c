@@ -16,47 +16,23 @@
  */
 
 #include <inttypes.h>
-#include <stdio.h>
-#include <avr/io.h>
-#include <avr/interrupt.h>
-#include "default.h"
-#include "anemometer.h"
-#include "init.h"
 #include "synth.h"
-#include "cell.h"
 
-/* address bus MUST per global, since we never read it 
-to discover where it is set. */
-volatile wind_array wind;
-enum address_bus addr_bus;
-
-int
-main (void)
+int main (void)
 {
-  reset_synth ();
-  init_port ();
-  clear_wind_array ();
+  uint8_t i;
 
-  /* enable interrupts */
-  sei ();
+  synth_init ();
 
   for (;;)
     {
-      if (wind.flag)
-	{
-	do_media ();
-	wind.flag = 0;
-	}
+      for (i=0; i<97; i+=2)
+	synth_say_it (i);
 
-      if (ring())
-	{
-	  cli (); /* disable interrupts */
-	  play_message ();
-	  sei ();
-	}
-
-      _delay_1s (1);
-    };
-
-  return (0);
+      say_it (99);
+      say_it (102);
+      say_it (105);
+      say_it (108);
+      say_it (112);
+    }
 }

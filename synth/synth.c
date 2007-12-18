@@ -17,77 +17,21 @@
 
 #include <inttypes.h>
 #include <avr/io.h>
-#include <avr/pgmspace.h>
-#include "default.h"
-#include "bus.h"
-#include "synth.h"
+#include "../default.h"
 /* put this after default because we have to set F_CPU */
 #include <util/delay.h>
+#include "synth.h"
 
 extern volatile wind_array wind; /* has to be cleared */
 
-/* La frase stazione anemom. e' = 0 */
+void init_synth (void)
+{
+/* Address bus only output */
+  SYNTH_ADDR_DDR = 0xFF;
 
-static const prog_uint8_t synth[] = {
-  32, /* 0 */
-  36, /* 2 */
-  40, /* 4 */
-  45, /* 6 */
-  49, /* 8 */
-  54, /* 10 */
-  59, /* 12 */
-  64, /* 14 */
-  71, /* 16 */
-  76, /* 18 */
-  82, /* 20 */
-  87, /* 22 */
-  93, /* 24 */
-  100, /* 26 */
-  106,
-  112,
-  116,
-  122,
-  130,
-  136,
-  142,
-  147,
-  153,
-  161,
-  168,
-  177,
-  183,
-  190,
-  199,
-  207,
-  215,
-  221,
-  228,
-  237,
-  244,
-  251, /* 70 */
-  /* and for now on A8 = 1 */
-  1, /* 72 */
-  8, /* 74 */
-  16, /* 76 */
-  23, /* 78 */
-  30, /* 80 */
-  36, /* 41 a */
-  39, /* 42 Dati non disponibili */
-  49, /* 43 Est */
-  54, /* 44 In aumento */
-  61, /* 45 In calo */
-  66, /* 46 Invariata */
-  73, /* 47 Km/h */
-  80, /* 48 Massima */
-  85, /* 49 Minima */
-  90, /* 50 Nord */
-  95, /* 51 Oltre gli 80 */
-  106, /* 52 Ovest */
-  110, /* 53 Provenienza */
-  117, /* 54 Sud */
-  121, /* 55 Tendenza intensità vento */
-  0 /* 56 Stazione anemomentrica del club... */
-};
+/* PD and CE out, EOM in */
+  SYNTH_CTRL_DDR = _BV (PD) | _BV (CE);
+}
 
 void pause_sentence (void)
 {
@@ -101,7 +45,8 @@ void pause_sentence (void)
 void reset_synth (void)
 {
   /* RESET SYNTH */
-  switch_bus (SYNTH_CTRL, (_BV (PD) | _BV (CE)));
+/* errore devono essere up tutte e 2 alti */
+  SYNTH_CTRL_OUT = _BV (PD) | _BV (CE);
   _delay_ms (50);
 }
 
@@ -109,10 +54,8 @@ void wait_for_eom (void)
 {
   int i;
 
-  switch_bus (SYNTH_EOM, 0);
-
   for (i=0;i<20000;i++)
-    if (!(DATABUS_PIN & _BV(EOM)))
+    if (!(SYNTH_CTRL_IN & _BV(EOM)))
       i=21000;
     else
       _delay_ms (1);
@@ -122,35 +65,20 @@ void wait_for_eom (void)
 
 void say_it (uint8_t position)
 {
-  uint8_t out;
-
   /* set PD to 0 */
-  if ((position > 35) && (position < 56)) /* set a8 to 1 */
-    out = _BV (CE) | _BV (A8);
-  else
-    out = _BV (CE); /* PD = 0, /CE = 1, A8 = 0 */
-  switch_bus (SYNTH_CTRL, out);
+  SYNTH_CTRL_OUT = _BV (CE); /* PD = 0, /CE = 1 */
   _delay_ms (50);
 
   /* set a0-a8 to address the text */
-  out = pgm_read_byte (&(synth[position]));
-  switch_bus (SYNTH_ADDR, out);
+  SYNTH_ADDR = position;
   _delay_ms (50); /* Only for PD -> CE > 100msec */
 
   /* set /CE to 0 */
-  if ((position > 35) && (position < 56))
-    out = _BV (A8); /* PD = 0, /CE = 0, A8 = 1 */
-  else
-    out = 0; /* PD = 0, /CE = 0, A8 = 0 */
-  switch_bus (SYNTH_CTRL, out);
+  SYNTH_CTRL_OUT = 0; /* PD = 0, /CE = 0 */
   _delay_ms (5);
 
   /* set /CE to 1 */
-  if ((position > 35) && (position < 56))
-    DATABUS_PORT = _BV(CE) | _BV (A8); /* PD = 0, /CE = 1, A8 = 1 */
-  else
-    DATABUS_PORT = _BV(CE); /* PD = 0, /CE = 1, A8 = 0 */
-  /* DATABUS_PORT |= _BV(CE); */
+  SYNTH_CTRL_OUT = _BV(CE); /* PD = 0, /CE = 1 */
   _delay_ms (1);
 
   wait_for_eom ();
@@ -158,7 +86,7 @@ void say_it (uint8_t position)
   pause_sentence ();
 }
 
-void play_message (void)
+void synth_play_message (void)
 {
   uint8_t i;
 
