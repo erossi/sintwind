@@ -24,29 +24,29 @@
 
 extern volatile wind_array wind; /* has to be cleared */
 
-void init_synth (void)
+void synth_init (void)
 {
-/* Address bus only output */
-  SYNTH_ADDR_DDR = 0xFF;
+  /* Address bus only output */
+  _SYNTH_ADDR_DDR = 0xFF;
 
-/* PD and CE out, EOM in */
-  SYNTH_CTRL_DDR = _BV (PD) | _BV (CE);
+  /* PD and CE out, EOM in */
+  _SYNTH_CTRL_DDR = _BV (_SYNTH_PD) | _BV (_SYNTH_CE);
 }
 
-void pause_sentence (void)
+void pause (void)
 {
   uint8_t i;
 
-/* 200ms */
+  /* 200ms */
   for (i=0; i<4; i++)
     _delay_ms (50);
 }
 
-void reset_synth (void)
+void reset (void)
 {
   /* RESET SYNTH */
-/* errore devono essere up tutte e 2 alti */
-  SYNTH_CTRL_OUT = _BV (PD) | _BV (CE);
+  /* errore devono essere up tutte e 2 alti */
+  _SYNTH_CTRL_OUT = _BV (_SYNTH_PD) | _BV (_SYNTH_CE);
   _delay_ms (50);
 }
 
@@ -55,7 +55,7 @@ void wait_for_eom (void)
   int i;
 
   for (i=0;i<20000;i++)
-    if (!(SYNTH_CTRL_IN & _BV(EOM)))
+    if (!(_SYNTH_CTRL_IN & _BV(_SYNTH_EOM)))
       i=21000;
     else
       _delay_ms (1);
@@ -66,33 +66,153 @@ void wait_for_eom (void)
 void say_it (uint8_t position)
 {
   /* set PD to 0 */
-  SYNTH_CTRL_OUT = _BV (CE); /* PD = 0, /CE = 1 */
+  _SYNTH_CTRL_OUT = _BV (_SYNTH_CE); /* PD = 0, /CE = 1 */
   _delay_ms (50);
 
   /* set a0-a8 to address the text */
-  SYNTH_ADDR = position;
+  _SYNTH_ADDR = position;
   _delay_ms (50); /* Only for PD -> CE > 100msec */
 
   /* set /CE to 0 */
-  SYNTH_CTRL_OUT = 0; /* PD = 0, /CE = 0 */
+  _SYNTH_CTRL_OUT = 0; /* PD = 0, /CE = 0 */
   _delay_ms (5);
 
   /* set /CE to 1 */
-  SYNTH_CTRL_OUT = _BV(CE); /* PD = 0, /CE = 1 */
+  _SYNTH_CTRL_OUT = _BV(_SYNTH_CE); /* PD = 0, /CE = 1 */
   _delay_ms (1);
 
   wait_for_eom ();
-/*   reset_synth (); */
-  pause_sentence ();
+  /*   reset_synth (); */
+  pause ();
+}
+
+void say_int_0th (uint8_t value)
+{
+  say_it (value*2);
+}
+
+void say_int_10th (uint8_t value)
+{
+  uint8_t dec,rest;
+  uint8_t base_addr = 40;
+
+  dec=value/10;
+  rest=value%10;
+
+  if (rest == 1)
+    base_addr += 2;
+
+  switch (dec)
+    {
+    case 2:
+      say_it (base_addr);
+      break;
+    case 3:
+      say_it (base_addr + 4);
+      break;
+    case 4:
+      say_it (base_addr + 8);
+      break;
+    case 5:
+      say_it (base_addr + 12);
+      break;
+    case 6:
+      say_it (base_addr + 16);
+      break;
+    case 7:
+      say_it (base_addr + 20);
+      break;
+    case 8:
+      say_it (base_addr + 24);
+      break;
+    case 9:
+      say_it (base_addr + 28);
+      break;
+    }
+
+  if (rest > 1)
+    say_int_0th (rest);
+}
+
+void say_int_100th (int value)
+{
+  /* Say oneundred */
+  say_it (72);
+
+  /* Say the rest */
+  say_int_10th (value%100);
+}
+
+void say_int (int value)
+{
+  /*
+    if value is negative
+    say minus, make the number positive and go on.
+  */
+
+  if (value < 0)
+    {
+      say_it (_SYNTH_S_MINUS);
+      value *= -1;
+    }
+
+  if (value < 20)
+    say_int_0th (value);
+  else
+    if (value < 100)
+      say_int_10th (value);
+    else
+      say_int_100th (value);
 }
 
 void synth_play_message (void)
 {
   uint8_t i;
 
-  say_it (56); /* Time to fly... intensita' vento da */
+  say_it (_SYNTH_S_CLUB);
+  say_it (_SYNTH_S_WIND);
 
-/*   vmin */
+  switch (wind.direction)
+    {
+    case NORTH:
+      say_it (_SYNTH_S_NORTH);
+      break;
+
+    case NORTH_EAST:
+      say_it (_SYNTH_S_NORTH);
+      say_it (_SYNTH_S_EAST);
+      break;
+
+    case EAST:
+      say_it (_SYNTH_S_EAST);
+      break;
+
+    case SOUTH_EAST:
+      say_it (_SYNTH_S_SOUTH);
+      say_it (_SYNTH_S_EAST);
+      break;
+
+    case SOUTH:
+      say_it (_SYNTH_S_SOUTH);
+      break;
+
+    case SOUTH_WEST:
+      say_it (_SYNTH_S_SOUTH);
+      say_it (_SYNTH_S_WEST);
+      break;
+
+    case WEST:
+      say_it (_SYNTH_S_WEST);
+      break;
+
+    case NORTH_WEST:
+      say_it (_SYNTH_S_NORTH);
+      say_it (_SYNTH_S_WEST);
+      break;
+    }
+
+
+  /*   vmin */
   i=wind.vmin/2;
   if (i > 40)
     i=51;
@@ -101,7 +221,7 @@ void synth_play_message (void)
 
   say_it (41); /* a */
 
-/*   vmax */
+  /*   vmax */
   i=wind.vmax/2;
   if (i > 40)
     i=51;
@@ -112,46 +232,7 @@ void synth_play_message (void)
 
   say_it (53); /* Provenienza */
 
-  switch (wind.direction)
-    {
-    case NORTH:
-      say_it (50);
-      break;
+  /*   say_it (55); /\* Tendenza *\/ */
 
-    case NORTH_EAST:
-      say_it (50);
-      say_it (43);
-      break;
-
-    case EAST:
-      say_it (43);
-      break;
-
-    case SOUTH_EAST:
-      say_it (54);
-      say_it (43);
-      break;
-
-    case SOUTH:
-      say_it (54);
-      break;
-
-    case SOUTH_WEST:
-      say_it (54);
-      say_it (52);
-      break;
-
-    case WEST:
-      say_it (52);
-      break;
-
-    case NORTH_WEST:
-      say_it (50);
-      say_it (52);
-      break;
-    }
-
-/*   say_it (55); /\* Tendenza *\/ */
-
-  reset_synth ();
+  reset ();
 }

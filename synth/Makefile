@@ -10,18 +10,16 @@ OBJDUMP = avr-objdump
 SIZE = avr-size
 DUDE = avrdude -c stk500v1 -p m8515 -P /dev/ttyUSB0 -e -U flash:w:sint2.hex -F
 REMOVE = rm -f
-objects = uart.o sht11.o
+objects = synth.o
 
 .PHONY: clean indent
 .SILENT: help
 .SUFFIXES: .c, .o
 
 all: $(objects)
-	$(CC) $(CFLAGS) -o test_sht11.elf test_sht11.c $(objects) $(LFLAGS)
-	$(OBJCOPY) test_sht11.elf test_sht11.hex
 
-test:
-	$(CC) $(CFLAGS) -o test_synth.elf test_synth.c
+test: $(objects)
+	$(CC) $(CFLAGS) -o test_synth.elf test_synth.c $(objects) $(LFLAGS)
 	$(OBJCOPY) test_synth.elf test_synth.hex
 
 program:
