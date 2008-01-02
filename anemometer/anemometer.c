@@ -23,12 +23,45 @@
 #include <avr/io.h>
 #include <avr/interrupt.h>
 #include <math.h>
-#include "default.h"
-#include "ace128.h"
+#include "../default.h"
+#include "adc.h"
 #include "anemometer.h"
 
 int loop = 0;
 extern volatile wind_array wind; /* has to be cleared */
+
+/*
+  return standard direction
+  from encoder 0-359
+*/
+enum wind_dir
+get_wind_direction (int direction)
+{
+  enum wind_dir wind;
+
+  wind = NORTH;
+
+  /* Default case */
+/*   if ((direction < 23) || (direction >= 338)) */
+/*     wind = NORTH; */
+
+  if ((direction >= 23) && (direction < 68))
+    wind = NORTH_EAST;
+  if ((direction >= 68) && (direction < 113))
+    wind = EAST;
+  if ((direction >= 113) && (direction < 158))
+    wind = SOUTH_EAST;
+  if ((direction >= 158) && (direction < 203))
+    wind = SOUTH;
+  if ((direction >= 203) && (direction < 248))
+    wind = SOUTH_WEST;
+  if ((direction >= 248) && (direction < 293))
+    wind = WEST;
+  if ((direction >= 293) && (direction < 338))
+    wind = NORTH_WEST;
+
+  return (wind);
+}
 
 /*
 Test version:
@@ -229,7 +262,7 @@ ISR (SIG_INPUT_CAPTURE1)
     is less than 10 count prescaled, we have a spike,
     ignoring it.
   */
-  if (diff > 10)
+  if (diff > _ANEMOMETER_CUTOFF)
     ++loop;
 }
 
@@ -246,7 +279,10 @@ ISR (SIG_OVERFLOW1)
 
   if (!wind.flag)
     {
-      wind.speed_rt = loop; /* for now 1 to 1 conversion */
+      /* for now 1 to 1 conversion */
+      wind.speed_rt = loop;
+
+      /* 0-359 degrees */
       wind.angle_rt = get_wind_position ();
       wind.flag = 1;
     }

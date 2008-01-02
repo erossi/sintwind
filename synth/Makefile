@@ -2,7 +2,7 @@ MCU = atmega8
 INC = -I/usr/avr/include/
 LIBS = m
 OPTLEV = 2
-CFLAGS = $(INC) -g -Wall -Wstrict-prototypes -pedantic -mmcu=$(MCU) -O$(OPTLEV)
+CFLAGS = $(INC) -Wall -Wstrict-prototypes -pedantic -mmcu=$(MCU) -O$(OPTLEV)
 LFLAGS = -l$(LIBS)
 CC = avr-gcc
 OBJCOPY = avr-objcopy -j .text -j .data -O ihex

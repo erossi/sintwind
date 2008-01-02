@@ -44,3 +44,9 @@ adc_read (void)
 /* Return 8-bit conversion's value */
   return (ADCH);
 }
+
+int
+get_wind_position (void)
+{
+  return (adc_read () * _ADC_RATIO);
+}

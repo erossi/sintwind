@@ -17,32 +17,52 @@
 
 #include <inttypes.h>
 #include "../default.h"
+#include <util/delay.h>
 #include "synth.h"
 
 /* This maybe change in the future to non-global */
 volatile wind_array wind;
+
+void p (void)
+{
+  uint8_t i;
+
+  /* pause 200ms */
+  for (i=0; i<4; i++)
+    _delay_ms (50);
+}
 
 int main (void)
 {
   uint8_t i;
   
   synth_init ();
+  p ();
 
   for (;;)
     {
       say_int (-1);
+      p();
 
       for (i=0; i<20; i++)
+	{
 	say_int (i);
+	p ();
+	}
 
-      for (i=20; i<100; i+= 10)
+      for (i=20; i<110; i+= 10)
 	{
 	  say_int (i);
+	  p ();
 	  say_int (i+1);
+	  p ();
 	}
 
       for (i=0; i<200; i += 11)
-	say_int (i);
+	{
+	  say_int (i);
+	  p ();
+	}
 
       say_it (_SYNTH_S_ABSENT);
       say_it (_SYNTH_S_EAST);
@@ -61,6 +81,10 @@ int main (void)
       say_it (_SYNTH_S_DNA);
       say_it (_SYNTH_S_INTENSITY);
       say_it (_SYNTH_S_CLUB);
+
+      p();
+      p();
+      p();
     }
 
 /* Play the whole synth memory */

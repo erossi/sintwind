@@ -18,7 +18,10 @@
 #ifndef _ADC_H_
 #define _ADC_H_
 
+/* Ratio to convert 0-255 to 0-360 degrees (mostly) */
+#define _ADC_RATIO 1.4
+
 void adc_init (void);
-uint8_t adc_read (void);
+int get_wind_position (void);
 
 #endif

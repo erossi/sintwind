@@ -18,6 +18,9 @@
 #ifndef _ANEMOMETER_H_
 #define _ANEMOMETER_H_
 
+/* Filter cutoff to eliminate spike */
+#define _ANEMOMETER_CUTOFF 5
+
 void do_media (void);
 
 #endif

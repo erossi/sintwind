@@ -52,15 +52,17 @@ void reset (void)
 
 void wait_for_eom (void)
 {
-  int i;
+/*   int i; */
 
-  for (i=0;i<20000;i++)
-    if (!(_SYNTH_CTRL_IN & _BV(_SYNTH_EOM)))
-      i=21000;
-    else
-      _delay_ms (1);
+/*   for (i=0;i<20000;i++) */
+/*     if (!(_SYNTH_CTRL_IN & _BV(_SYNTH_EOM))) */
+/*       i=21000; */
+/*     else */
+/*       _delay_ms (1); */
 
-  _delay_ms (25);
+/*   _delay_ms (25); */
+
+  loop_until_bit_is_set (_SYNTH_CTRL_IN, _SYNTH_EOM);
 }
 
 void say_it (uint8_t position)
@@ -134,13 +136,14 @@ void say_int_10th (uint8_t value)
     say_int_0th (rest);
 }
 
-void say_int_100th (int value)
+void say_int_100th (uint8_t value)
 {
-  /* Say oneundred */
+  /* Say 100 */
   say_it (72);
 
   /* Say the rest */
-  say_int_10th (value%100);
+  if (value>100)
+    say_int_10th (value%100);
 }
 
 void say_int (int value)
