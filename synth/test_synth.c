@@ -41,6 +41,8 @@ int main (void)
 
   for (;;)
     {
+      say_it (_SYNTH_S_CLUB);
+      p();
       say_int (-1);
       p();
 

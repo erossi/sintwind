@@ -60,9 +60,8 @@ void wait_for_eom (void)
 /*     else */
 /*       _delay_ms (1); */
 
-/*   _delay_ms (25); */
-
   loop_until_bit_is_set (_SYNTH_CTRL_IN, _SYNTH_EOM);
+  _delay_ms (25);
 }
 
 void say_it (uint8_t position)
@@ -85,7 +84,7 @@ void say_it (uint8_t position)
 
   wait_for_eom ();
   /*   reset_synth (); */
-  pause ();
+/*   pause (); */
 }
 
 void say_int_0th (uint8_t value)
