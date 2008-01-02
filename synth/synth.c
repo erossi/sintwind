@@ -60,7 +60,7 @@ void wait_for_eom (void)
 /*     else */
 /*       _delay_ms (1); */
 
-  loop_until_bit_is_set (_SYNTH_CTRL_IN, _SYNTH_EOM);
+  loop_until_bit_is_clear (_SYNTH_CTRL_IN, _SYNTH_EOM);
   _delay_ms (25);
 }
 
@@ -87,11 +87,13 @@ void say_it (uint8_t position)
 /*   pause (); */
 }
 
+/* This is capable of say number from 0 to 21 */
 void say_int_0th (uint8_t value)
 {
   say_it (value*2);
 }
 
+/* This is capable of say numbers from 20 to 99 */
 void say_int_10th (uint8_t value)
 {
   uint8_t dec,rest;
@@ -135,14 +137,18 @@ void say_int_10th (uint8_t value)
     say_int_0th (rest);
 }
 
+/* This is capable of say numbers from 100 to 199 */
 void say_int_100th (uint8_t value)
 {
-  /* Say 100 */
+  /* Say 100 in any case*/
   say_it (72);
 
   /* Say the rest */
-  if (value>100)
+  if (value>120)
     say_int_10th (value%100);
+  else
+    if (value>100)
+      say_int_0th (value%100);
 }
 
 void say_int (int value)
