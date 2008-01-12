@@ -39,55 +39,70 @@ int main (void)
   synth_init ();
   p ();
 
-  for (;;)
-    {
-      say_it (_SYNTH_S_CLUB);
-      p();
-      say_int (-1);
-      p();
+/*   for (;;) */
+/*     { */
+/*       say_it (_SYNTH_S_CLUB); */
+/*       p(); */
+/*       say_int (-1); */
+/*       p(); */
 
-      for (i=0; i<20; i++)
-	{
-	say_int (i);
-	p ();
-	}
+/*       for (i=98; i<130; i++) */
+/* 	{ */
+/* 	say_int (i); */
+/* 	p (); */
+/* 	} */
 
-      for (i=20; i<110; i+= 10)
-	{
-	  say_int (i);
-	  p ();
-	  say_int (i+1);
-	  p ();
-	}
+/*     } */
 
-      for (i=0; i<200; i += 11)
-	{
-	  say_int (i);
-	  p ();
-	}
+/*   for (;;) */
+/*     { */
+/*       say_it (_SYNTH_S_CLUB); */
+/*       p(); */
+/*       say_int (-1); */
+/*       p(); */
 
-      say_it (_SYNTH_S_ABSENT);
-      say_it (_SYNTH_S_EAST);
-      say_it (_SYNTH_S_SOUTH);
-      say_it (_SYNTH_S_WEST);
-      say_it (_SYNTH_S_NORTH);
-      say_it (_SYNTH_S_KMH);
-      say_it (_SYNTH_S_TO);
-      say_it (_SYNTH_S_TEMP);
-      say_it (_SYNTH_S_MINUS);
-      say_it (_SYNTH_S_COMMA);
-      say_it (_SYNTH_S_PERC);
-      say_it (_SYNTH_S_WIND);
-      say_it (_SYNTH_S_CELSIUS);
-      say_it (_SYNTH_S_UMIDITY);
-      say_it (_SYNTH_S_DNA);
-      say_it (_SYNTH_S_INTENSITY);
-      say_it (_SYNTH_S_CLUB);
+/*       for (i=0; i<20; i++) */
+/* 	{ */
+/* 	say_int (i); */
+/* 	p (); */
+/* 	} */
 
-      p();
-      p();
-      p();
-    }
+/*       for (i=20; i<110; i+= 10) */
+/* 	{ */
+/* 	  say_int (i); */
+/* 	  p (); */
+/* 	  say_int (i+1); */
+/* 	  p (); */
+/* 	} */
+
+/*       for (i=0; i<200; i += 11) */
+/* 	{ */
+/* 	  say_int (i); */
+/* 	  p (); */
+/* 	} */
+
+/*       say_it (_SYNTH_S_ABSENT); */
+/*       say_it (_SYNTH_S_EAST); */
+/*       say_it (_SYNTH_S_SOUTH); */
+/*       say_it (_SYNTH_S_WEST); */
+/*       say_it (_SYNTH_S_NORTH); */
+/*       say_it (_SYNTH_S_KMH); */
+/*       say_it (_SYNTH_S_TO); */
+/*       say_it (_SYNTH_S_TEMP); */
+/*       say_it (_SYNTH_S_MINUS); */
+/*       say_it (_SYNTH_S_COMMA); */
+/*       say_it (_SYNTH_S_PERC); */
+/*       say_it (_SYNTH_S_WIND); */
+/*       say_it (_SYNTH_S_CELSIUS); */
+/*       say_it (_SYNTH_S_UMIDITY); */
+/*       say_it (_SYNTH_S_DNA); */
+/*       say_it (_SYNTH_S_INTENSITY); */
+/*       say_it (_SYNTH_S_CLUB); */
+
+/*       p(); */
+/*       p(); */
+/*       p(); */
+/*     } */
 
 /* Play the whole synth memory */
   for (;;)

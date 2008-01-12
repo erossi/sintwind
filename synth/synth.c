@@ -29,6 +29,9 @@ void synth_init (void)
   /* Address bus only output */
   _SYNTH_ADDR_DDR = 0xFF;
 
+  /* PD = 0, /CE = 1 */
+  _SYNTH_CTRL_OUT = _BV (_SYNTH_CE);
+
   /* PD and CE out, EOM in */
   _SYNTH_CTRL_DDR = _BV (_SYNTH_PD) | _BV (_SYNTH_CE);
 }

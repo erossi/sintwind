@@ -10,3 +10,7 @@ contatore: uguale all'altro / 2, xche' ha una sola chiusura.
 
 "dati non disponibili" primo ciclo.
 
+BUG:
+----
+- La pronincia dello 0 allo start, problemi di inizializzazione o solo di tempo da quando fa' il boot???
+
