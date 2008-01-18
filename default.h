@@ -45,73 +45,10 @@
 /* #define TIMER_PRESCALER_64 */
 
 /*
-  Minutes to use to calculate media
-  It depends on cpu speed and prescaled timer
-  4.19 sec/cycle, 1 min= 15 cycle, 5 min= 75 cycle
-*/
-#define MEDIA_MINUTES 75
-/* #define MEDIA_MINUTES 15 */
-
-/*
   define the next variable if we want to use the media value
   into the next cycle as the first element.
  */
 #define MEDIA_NEXT_CYCLE 1
-
-enum address_bus
-  {
-    WIND_DIR,
-    READ_PHONE,
-    WRITE_PHONE,
-    SYNTH_CTRL,
-    SYNTH_ADDR,
-    SYNTH_EOM,
-    NULL_BUS
-  };
-
-enum wind_dir
-  {
-    NORTH,
-    NORTH_EAST,
-    EAST,
-    SOUTH_EAST,
-    SOUTH,
-    SOUTH_WEST,
-    WEST,
-    NORTH_WEST
-  };
-
-enum wind_tendency
-  {
-    INCREASE,
-    DECREASE,
-    STABLE
-  };
-
-typedef struct
-{
-  float x;
-  float y;
-} complex;
-
-typedef struct
-{
-  /* spare */
-  uint8_t flag;
-
-  /* wind elements */
-  uint8_t speed, vmin, vmax; /* speed */
-  int angle; /* 0-359 degrees */
-  enum wind_dir direction;
-  enum wind_tendency tendency;
-
-  /* real time elements */
-  uint8_t speed_rt, vmin_rt, vmax_rt; /* speed */
-  int angle_rt; /* 0-359 degrees */
-  complex vector_rt, media_rt;
-  uint8_t counter_rt;
-
-} wind_array;
 
 /* sample size 2^10 bit */
 #define ADC_CUTOFF 9

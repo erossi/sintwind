@@ -10,7 +10,7 @@ OBJDUMP = avr-objdump
 SIZE = avr-size
 DUDE = avrdude -c stk500v1 -p m8515 -P /dev/ttyUSB0 -e -U flash:w:sint2.hex -F
 REMOVE = rm -f
-objects = anemometer.o adc.o
+objects = anemometer.o adc.o isr.o
 
 .PHONY: clean indent
 .SILENT: help

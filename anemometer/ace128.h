@@ -18,7 +18,7 @@
 #ifndef _ACE128_H_
 #define _ACE128_H_
 
-enum wind_dir get_wind_direction (int direction); /* NORTH, EAST... */
-int get_wind_position (void); /* 0-359 degrees */
+enum wind_dir get_wind_direction (int direction);	/* NORTH, EAST... */
+int get_wind_position (void);	/* 0-359 degrees */
 
 #endif

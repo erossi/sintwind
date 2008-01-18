@@ -18,9 +18,67 @@
 #ifndef _ANEMOMETER_H_
 #define _ANEMOMETER_H_
 
-/* Filter cutoff to eliminate spike */
-#define _ANEMOMETER_CUTOFF 5
+/*
+  Minutes to use to calculate media
+  It depends on cpu speed and prescaled timer
+  4.19 sec/cycle, 1 min= 15 cycle, 5 min= 75 cycle
+*/
+#define MEDIA_MINUTES 75
 
-void do_media (void);
+enum wind_dir
+{
+  NORTH,
+  NORTH_EAST,
+  EAST,
+  SOUTH_EAST,
+  SOUTH,
+  SOUTH_WEST,
+  WEST,
+  NORTH_WEST
+};
+
+enum wind_tendency
+{
+  INCREASE,
+  DECREASE,
+  STABLE
+};
+
+struct complex
+{
+  float x;
+  float y;
+};
+
+struct wind_array
+{
+  /* spare */
+  uint8_t flag;
+
+  /* wind elements */
+
+  /* speed */
+  uint8_t speed, vmin, vmax;
+
+  /* 0-359 degrees */
+  int angle;
+
+  enum wind_dir direction;
+  enum wind_tendency tendency;
+
+  /* real time elements */
+
+  /* speed */
+  uint8_t speed_rt, vmin_rt, vmax_rt;
+
+  /* 0-359 degrees */
+  int angle_rt;
+
+  struct complex vector_rt, media_rt;
+  uint8_t counter_rt;
+};
+
+enum wind_dir get_wind_direction (int direction);
+void do_media (struct wind_array *wind);
 
 #endif

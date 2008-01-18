@@ -4,7 +4,7 @@
 #include "adc.h"
 
 int
-main(void)
+main (void)
 {
 /* Out */
   DDRD = 0xff;
@@ -24,6 +24,6 @@ main(void)
 
       PORTD = adc_read ();
       loop_until_bit_is_clear (PINB, 0);
-      
+
     }
 }

@@ -40,14 +40,14 @@ init_port_here (void)
   TCCR1B = _BV (ICNC1) | _BV (CS12);
 
   /*
-    counter prescaler/64
-    TCCR1B = _BV (ICNC1) | _BV (CS11) | _BV (CS10);
-  
-    PORTB output
-    DDRB = 0xFF;
+     counter prescaler/64
+     TCCR1B = _BV (ICNC1) | _BV (CS11) | _BV (CS10);
 
-    PORTD input
-  */
+     PORTB output
+     DDRB = 0xFF;
+
+     PORTD input
+   */
   ACE128_DDR = 0;
 
   /* enable interrupt on timer 0 interrupt */
@@ -66,7 +66,7 @@ main (void)
   USART_Init (25);
 
   fdevopen (uart_putchar, NULL, 0);
-  
+
   /* printf ("Hello world! \n"); */
 
   /* enable interrupts */
@@ -76,87 +76,89 @@ main (void)
     {
       if (wind.flag)
 	{
-	do_media ();
-	wind.flag = 0;
+	  do_media ();
+	  wind.flag = 0;
 
-        printf ("RT: s[%3u] m[%3u] M[%3u] ",wind.speed, wind.vmin, wind.vmax);
-        printf ("a[%3u] c[%2u] * ", wind.angle, wind.counter);
-        printf ("MT: s[%3u] m[%3u] M[%3u] ",wind.speed1, wind.vmin1, wind.vmax1);
-        printf ("a[%3u] c[%2u]\n", wind.angle1, wind.counter1);
+	  printf ("RT: s[%3u] m[%3u] M[%3u] ", wind.speed, wind.vmin,
+		  wind.vmax);
+	  printf ("a[%3u] c[%2u] * ", wind.angle, wind.counter);
+	  printf ("MT: s[%3u] m[%3u] M[%3u] ", wind.speed1, wind.vmin1,
+		  wind.vmax1);
+	  printf ("a[%3u] c[%2u]\n", wind.angle1, wind.counter1);
 
 	}
 
       /*
-      PORTB = ~(wind.speed1);
-      _delay_ms (5000);
-      PORTB = ~(wind.vmin1 | 32);
-      _delay_ms (5000);
-      PORTB = ~(wind.vmax1 | 64);
-      _delay_ms (5000);
+         PORTB = ~(wind.speed1);
+         _delay_ms (5000);
+         PORTB = ~(wind.vmin1 | 32);
+         _delay_ms (5000);
+         PORTB = ~(wind.vmax1 | 64);
+         _delay_ms (5000);
 
-      switch (wind.direction1)
-	{
-	case NORTH:
-	  value = _BV (0);
-	  break;
-	case NORTH_EAST:
-	  value = _BV (0) | _BV (1);
-	  break;
-	case EAST:
-	  value = _BV (1);
-	  break;
-	case SOUTH_EAST:
-	  value = _BV (1) | _BV (2);
-	  break;
-	case SOUTH:
-	  value = _BV (2);
-	  break;
-	case SOUTH_WEST:
-	  value = _BV (2) | _BV (3);
-	  break;
-	case WEST:
-	  value = _BV (3);
-	  break;
-	case NORTH_WEST:
-	  value = _BV (3) | _BV (0);
-	  break;
-	default:
-	  value = 15;
-	}
+         switch (wind.direction1)
+         {
+         case NORTH:
+         value = _BV (0);
+         break;
+         case NORTH_EAST:
+         value = _BV (0) | _BV (1);
+         break;
+         case EAST:
+         value = _BV (1);
+         break;
+         case SOUTH_EAST:
+         value = _BV (1) | _BV (2);
+         break;
+         case SOUTH:
+         value = _BV (2);
+         break;
+         case SOUTH_WEST:
+         value = _BV (2) | _BV (3);
+         break;
+         case WEST:
+         value = _BV (3);
+         break;
+         case NORTH_WEST:
+         value = _BV (3) | _BV (0);
+         break;
+         default:
+         value = 15;
+         }
 
-      switch (wind.direction1)
-	{
-	case NORTH:
-	  value = _BV (4);
-	  break;
-	case NORTH_EAST:
-	  value = _BV (4) | _BV (5);
-	  break;
-	case EAST:
-	  value = _BV (5);
-	  break;
-	case SOUTH_EAST:
-	  value = _BV (5) | _BV (6);
-	  break;
-	case SOUTH:
-	  value = _BV (6);
-	  break;
-	case SOUTH_WEST:
-	  value = _BV (6) | _BV (7);
-	  break;
-	case WEST:
-	  value = _BV (7);
-	  break;
-	case NORTH_WEST:
-	  value = _BV (7) | _BV (4);
-	  break;
-	default:
-	  value = 240;
-	}
+         switch (wind.direction1)
+         {
+         case NORTH:
+         value = _BV (4);
+         break;
+         case NORTH_EAST:
+         value = _BV (4) | _BV (5);
+         break;
+         case EAST:
+         value = _BV (5);
+         break;
+         case SOUTH_EAST:
+         value = _BV (5) | _BV (6);
+         break;
+         case SOUTH:
+         value = _BV (6);
+         break;
+         case SOUTH_WEST:
+         value = _BV (6) | _BV (7);
+         break;
+         case WEST:
+         value = _BV (7);
+         break;
+         case NORTH_WEST:
+         value = _BV (7) | _BV (4);
+         break;
+         default:
+         value = 240;
+         }
 
-      //      PORTB = ~(value | wind.speed1);
-      PORTB = ~((wind.vmin1 << 4) | wind.speed);
-      */
+         //      PORTB = ~(value | wind.speed1);
+         PORTB = ~((wind.vmin1 << 4) | wind.speed);
+       */
 
     };
 

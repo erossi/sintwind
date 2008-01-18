@@ -15,38 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdint.h>
-#include <avr/io.h>
-#include "adc.h"
+#ifndef _ISRSINT_H_
+#define _ISRSINT_H_
 
-void
-adc_init (void)
-{
-  /*
-     enable ADC, select ADC clock = F_CPU / 128
-     manual sample.
-   */
-  ADCSRA = _BV (ADEN) | _BV (ADPS2) | _BV (ADPS1) | _BV (ADPS0);
+/* Filter cutoff to eliminate spike */
+#define _ANEMOMETER_CUTOFF 5
 
-  /* Set left adjusted result, adc1 */
-  ADMUX = _BV (ADLAR) | _BV (MUX0);
-}
-
-uint8_t
-adc_read (void)
-{
-/* Start the conversion */
-  ADCSRA |= _BV (ADSC);
-
-/* Wait until the conversion is ended */
-  loop_until_bit_is_clear (ADCSRA, ADSC);
-
-/* Return 8-bit conversion's value */
-  return (ADCH);
-}
-
-int
-get_wind_position (void)
-{
-  return (adc_read () * _ADC_RATIO);
-}
+#endif
