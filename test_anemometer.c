@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2007 Enrico Rossi
+ * Copyright (C) 2005-2008 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,11 +21,8 @@
 #include <avr/interrupt.h>
 #include <avr/signal.h>
 #include "default.h"
-#include "anemometer.h"
+#include "anemometer/anemometer.h"
 #include <avr/delay.h>
-#include "usart.h"
-
-volatile wind_array wind;
 
 void
 init_port_here (void)
@@ -57,19 +54,11 @@ init_port_here (void)
 int
 main (void)
 {
-  uint8_t value;
+  struct wind_array wind;
 
   init_port_here ();
   clear_wind_array ();
 
-  /* Set the baudrate to 9,600 bps using a 4MHz crystal */
-  USART_Init (25);
-
-  fdevopen (uart_putchar, NULL, 0);
-
-  /* printf ("Hello world! \n"); */
-
-  /* enable interrupts */
   sei ();
 
   for (;;)
@@ -88,73 +77,6 @@ main (void)
 
 	}
 
-      /*
-         PORTB = ~(wind.speed1);
-         _delay_ms (5000);
-         PORTB = ~(wind.vmin1 | 32);
-         _delay_ms (5000);
-         PORTB = ~(wind.vmax1 | 64);
-         _delay_ms (5000);
-
-         switch (wind.direction1)
-         {
-         case NORTH:
-         value = _BV (0);
-         break;
-         case NORTH_EAST:
-         value = _BV (0) | _BV (1);
-         break;
-         case EAST:
-         value = _BV (1);
-         break;
-         case SOUTH_EAST:
-         value = _BV (1) | _BV (2);
-         break;
-         case SOUTH:
-         value = _BV (2);
-         break;
-         case SOUTH_WEST:
-         value = _BV (2) | _BV (3);
-         break;
-         case WEST:
-         value = _BV (3);
-         break;
-         case NORTH_WEST:
-         value = _BV (3) | _BV (0);
-         break;
-         default:
-         value = 15;
-         }
-
-         switch (wind.direction1)
-         {
-         case NORTH:
-         value = _BV (4);
-         break;
-         case NORTH_EAST:
-         value = _BV (4) | _BV (5);
-         break;
-         case EAST:
-         value = _BV (5);
-         break;
-         case SOUTH_EAST:
-         value = _BV (5) | _BV (6);
-         break;
-         case SOUTH:
-         value = _BV (6);
-         break;
-         case SOUTH_WEST:
-         value = _BV (6) | _BV (7);
-         break;
-         case WEST:
-         value = _BV (7);
-         break;
-         case NORTH_WEST:
-         value = _BV (7) | _BV (4);
-         break;
-         default:
-         value = 240;
-         }
 
          //      PORTB = ~(value | wind.speed1);
          PORTB = ~((wind.vmin1 << 4) | wind.speed);
