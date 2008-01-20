@@ -40,6 +40,11 @@ test_anemometer: $(objects)
 	$(CC) $(CFLAGS) -o test.elf test_anemometer.c $(objects) $(LFLAGS)
 	$(OBJCOPY) test.elf test.hex
 
+test_synth:
+	$(MAKE) -C synth
+	$(CC) $(CFLAGS) -o test.elf test_synth.c synth/synth.o 
+	$(OBJCOPY) test.elf test.hex
+
 clean: $(SUBDIRS)
 	rm $(objects) *.elf *.hex
 
