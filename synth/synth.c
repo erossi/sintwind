@@ -36,7 +36,7 @@ void synth_init (void)
   _SYNTH_CTRL_DDR = _BV (_SYNTH_PD) | _BV (_SYNTH_CE);
 }
 
-void pause (void)
+void synth_pause (void)
 {
   uint8_t i;
 
@@ -45,7 +45,7 @@ void pause (void)
     _delay_ms (50);
 }
 
-void reset (void)
+void synth_reset (void)
 {
   /* RESET SYNTH */
   /* errore devono essere up tutte e 2 alti */

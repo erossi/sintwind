@@ -23,33 +23,24 @@
 /* This maybe change in the future to non-global */
 volatile wind_array wind;
 
-void p (void)
-{
-  uint8_t i;
-
-  /* pause 200ms */
-  for (i=0; i<4; i++)
-    _delay_ms (50);
-}
-
 int main (void)
 {
   uint8_t i;
   
   synth_init ();
-  p ();
+  synth_pause ();
 
 /*   for (;;) */
 /*     { */
 /*       say_it (_SYNTH_S_CLUB); */
-/*       p(); */
+/*       synth_pause(); */
 /*       say_int (-1); */
-/*       p(); */
+/*       synth_pause(); */
 
 /*       for (i=98; i<130; i++) */
 /* 	{ */
 /* 	say_int (i); */
-/* 	p (); */
+/* 	synth_pause (); */
 /* 	} */
 
 /*     } */
@@ -57,28 +48,28 @@ int main (void)
 /*   for (;;) */
 /*     { */
 /*       say_it (_SYNTH_S_CLUB); */
-/*       p(); */
+/*       synth_pause (); */
 /*       say_int (-1); */
-/*       p(); */
+/*       synth_pause (); */
 
 /*       for (i=0; i<20; i++) */
 /* 	{ */
 /* 	say_int (i); */
-/* 	p (); */
+/* 	synth_pause (); */
 /* 	} */
 
 /*       for (i=20; i<110; i+= 10) */
 /* 	{ */
 /* 	  say_int (i); */
-/* 	  p (); */
+/* 	  synth_pause (); */
 /* 	  say_int (i+1); */
-/* 	  p (); */
+/* 	  synth_pause (); */
 /* 	} */
 
 /*       for (i=0; i<200; i += 11) */
 /* 	{ */
 /* 	  say_int (i); */
-/* 	  p (); */
+/* 	  synth_pause (); */
 /* 	} */
 
 /*       say_it (_SYNTH_S_ABSENT); */
@@ -99,9 +90,9 @@ int main (void)
 /*       say_it (_SYNTH_S_INTENSITY); */
 /*       say_it (_SYNTH_S_CLUB); */
 
-/*       p(); */
-/*       p(); */
-/*       p(); */
+/*       synth_pause (); */
+/*       synth_pause (); */
+/*       synth_pause (); */
 /*     } */
 
 /* Play the whole synth memory */

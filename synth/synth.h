@@ -86,6 +86,7 @@
 
 void synth_init (void);
 void synth_play_message (void);
+void synth_pause (void);
 
 /* Use under test only */
 void say_it (uint8_t position);
