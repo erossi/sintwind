@@ -22,8 +22,6 @@
 #include <util/delay.h>
 #include "synth.h"
 
-extern volatile wind_array wind; /* has to be cleared */
-
 void synth_init (void)
 {
   /* Address bus only output */
@@ -176,14 +174,14 @@ void say_int (int value)
       say_int_100th (value);
 }
 
-void synth_play_message (void)
+void synth_play_message (struct wind_array *wind)
 {
   uint8_t i;
 
   say_it (_SYNTH_S_CLUB);
   say_it (_SYNTH_S_WIND);
 
-  switch (wind.direction)
+  switch (wind->direction)
     {
     case NORTH:
       say_it (_SYNTH_S_NORTH);
@@ -224,7 +222,7 @@ void synth_play_message (void)
 
 
   /*   vmin */
-  i=wind.vmin/2;
+  i = wind->vmin/2;
   if (i > 40)
     i=51;
 
@@ -233,7 +231,7 @@ void synth_play_message (void)
   say_it (41); /* a */
 
   /*   vmax */
-  i=wind.vmax/2;
+  i = wind->vmax/2;
   if (i > 40)
     i=51;
 
@@ -245,5 +243,5 @@ void synth_play_message (void)
 
   /*   say_it (55); /\* Tendenza *\/ */
 
-  reset ();
+  synth_reset ();
 }

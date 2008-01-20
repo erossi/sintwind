@@ -22,6 +22,7 @@
 #include <inttypes.h>
 #include <avr/io.h>
 #include <math.h>
+#include "../default.h"
 #include "adc.h"
 #include "anemometer.h"
 

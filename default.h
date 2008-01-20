@@ -18,11 +18,11 @@
 #ifndef _DEFAULT_WIND_H_
 #define _DEFAULT_WIND_H_
 
-#define DATABUS_PIN PIND /* input data */
+#define DATABUS_PIN  PIND /* input data */
 #define DATABUS_PORT PORTD /* output data */
-#define DATABUS_DDR DDRD /* Data direction */
+#define DATABUS_DDR  DDRD /* Data direction */
 #define ADDRBUS_PORT PORTC /* address bus only set, no read */
-#define ADDRBUS_DDR DDRC /* address bus setting */
+#define ADDRBUS_DDR  DDRC /* address bus setting */
 #define ACE128_RATIO 2.82
 
 /* CPU Speed 4 MHz */
@@ -52,5 +52,58 @@
 
 /* sample size 2^10 bit */
 #define ADC_CUTOFF 9
+
+enum wind_dir
+{
+  NORTH,
+  NORTH_EAST,
+  EAST,
+  SOUTH_EAST,
+  SOUTH,
+  SOUTH_WEST,
+  WEST,
+  NORTH_WEST
+};
+
+enum wind_tendency
+{
+  INCREASE,
+  DECREASE,
+  STABLE
+};
+
+struct complex
+{
+  float x;
+  float y;
+};
+
+struct wind_array
+{
+  /* spare */
+  uint8_t flag;
+
+  /* wind elements */
+
+  /* speed */
+  uint8_t speed, vmin, vmax;
+
+  /* 0-359 degrees */
+  int angle;
+
+  enum wind_dir direction;
+  enum wind_tendency tendency;
+
+  /* real time elements */
+
+  /* speed */
+  uint8_t speed_rt, vmin_rt, vmax_rt;
+
+  /* 0-359 degrees */
+  int angle_rt;
+
+  struct complex vector_rt, media_rt;
+  uint8_t counter_rt;
+};
 
 #endif

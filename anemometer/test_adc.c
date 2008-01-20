@@ -15,9 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdint.h>
-#include <stdlib.h>
+#include <inttypes.h>
 #include <avr/io.h>
+#include "../synth.h"
 #include "adc.h"
 
 int

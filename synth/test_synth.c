@@ -15,13 +15,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <inttypes.h>
-#include "../default.h"
-#include <util/delay.h>
-#include "synth.h"
+/* synth.h:88: warning: 'struct wind_array' declared inside parameter list */
+/* synth.h:88: warning: its scope is only this definition or declaration, which is probably not what you want */
 
-/* This maybe change in the future to non-global */
-volatile wind_array wind;
+/* is because nowhere in this test program we create those struct. */
+
+#include <inttypes.h>
+#include "synth.h"
 
 int main (void)
 {
