@@ -17,10 +17,10 @@
 
 #include <inttypes.h>
 #include <avr/io.h>
-#include "../default.h"
-#include "../synth/synth.h"
-#include "anemometer.h"
-#include "adc.h"
+#include "default.h"
+#include "synth/synth.h"
+#include "anemometer/anemometer.h"
+#include "anemometer/adc.h"
 
 int
 main (void)

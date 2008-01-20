@@ -21,6 +21,7 @@
 
 #include <inttypes.h>
 #include <avr/interrupt.h>
+#include "../default.h"
 #include "adc.h"
 #include "anemometer.h"
 #include "isr.h"
