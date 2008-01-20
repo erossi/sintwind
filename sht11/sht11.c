@@ -1,3 +1,20 @@
+/* This file is part of OpenSint
+ * Copyright (C) 2005-2008 Enrico Rossi
+ * 
+ * OpenSint is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * OpenSint is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include <stdint.h>
 #include <math.h>
 #include <avr/io.h>
@@ -32,8 +49,8 @@ set_data_in (void)
 void
 set_data_high (void)
 {
-/* release the data pin, pullup do the rest */
-/*   SHT11_PORT |= _BV(SHT11_DATA); */
+  /* release the data pin, pullup do the rest */
+  /*   SHT11_PORT |= _BV(SHT11_DATA); */
   set_data_in ();
 }
 
@@ -123,11 +140,11 @@ read_ack (void)
 void
 send_start_command (void)
 {
-/*      _____           ________
-DATA:         |_______|
-            ___       ___
-SCK :  ___|     |___|     |______
-*/
+  /*      _____           ________
+	  DATA:         |_______|
+	  ___       ___
+	  SCK :  ___|     |___|     |______
+  */
 
   set_data_high ();
   /*   set_data_out (); */
@@ -202,7 +219,7 @@ sht11_send_command (uint8_t command)
   if (ack)
     return (0);
 
-/* And if nothing came back this code hangs here */
+  /* And if nothing came back this code hangs here */
   loop_until_bit_is_set (SHT11_PIN, SHT11_DATA);
   loop_until_bit_is_clear (SHT11_PIN, SHT11_DATA);
 
@@ -234,10 +251,10 @@ sht11_send_command (uint8_t command)
 void
 sht11_dewpoint (struct sht11_t *dataset)
 {
-   float k;
-   k = (log10(dataset->humidity_compensated) - 2)/0.4343 + \
-     (17.62 * dataset->temperature)/(243.12 + dataset->temperature);
-   dataset->dewpoint = 243.12 * k / (17.62 - k);
+  float k;
+  k = (log10(dataset->humidity_compensated) - 2)/0.4343 + \
+    (17.62 * dataset->temperature)/(243.12 + dataset->temperature);
+  dataset->dewpoint = 243.12 * k / (17.62 - k);
 }
 
 void
@@ -255,12 +272,12 @@ sht11_read_humidity (struct sht11_t *dataset)
     (SHT11_C2 * dataset->raw_humidity) + \
     (SHT11_C3 * dataset->raw_humidity * dataset->raw_humidity);
 
-/* Compensate humidity result with temperature */
+  /* Compensate humidity result with temperature */
   dataset->humidity_compensated = (dataset->temperature - 25) * \
     (SHT11_T1 + SHT11_T2 * dataset->raw_humidity) + \
     dataset->humidity_linear;
 
-/* Range adjustment */
+  /* Range adjustment */
   if (dataset->humidity_compensated > 100)
     dataset->humidity_compensated = 100;
   if (dataset->humidity_compensated < 0.1)
