@@ -91,5 +91,6 @@ void synth_play_message (struct wind_array *wind);
 void say_it (uint8_t position);
 void say_int (int value);
 void synth_pause (void);
+void synth_say_wind_direction (enum wind_dir direction);
 
 #endif

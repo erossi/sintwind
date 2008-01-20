@@ -174,14 +174,9 @@ void say_int (int value)
       say_int_100th (value);
 }
 
-void synth_play_message (struct wind_array *wind)
+void synth_say_wind_direction (enum wind_dir direction)
 {
-  uint8_t i;
-
-  say_it (_SYNTH_S_CLUB);
-  say_it (_SYNTH_S_WIND);
-
-  switch (wind->direction)
+  switch (direction)
     {
     case NORTH:
       say_it (_SYNTH_S_NORTH);
@@ -219,7 +214,15 @@ void synth_play_message (struct wind_array *wind)
       say_it (_SYNTH_S_WEST);
       break;
     }
+}
 
+void synth_play_message (struct wind_array *wind)
+{
+  uint8_t i;
+
+  say_it (_SYNTH_S_CLUB);
+  say_it (_SYNTH_S_WIND);
+  synth_say_wind_direction (wind->direction);
 
   /*   vmin */
   i = wind->vmin/2;

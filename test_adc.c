@@ -17,30 +17,25 @@
 
 #include <inttypes.h>
 #include <avr/io.h>
-#include "../synth.h"
+#include "../default.h"
+#include "../synth/synth.h"
+#include "anemometer.h"
 #include "adc.h"
 
 int
 main (void)
 {
-/* Out */
-  DDRD = 0xff;
-
-/* In */
-  DDRB = 0;
+  struct wind_array wind;
 
   adc_init ();
+  synth_init ();
+  synth_pause ();
 
   for (;;)
     {
-      PORTD = 0xff;
-      loop_until_bit_is_clear (PINB, 0);
-
-      PORTD = 0;
-      loop_until_bit_is_clear (PINB, 1);
-
-      PORTD = adc_read ();
-      loop_until_bit_is_clear (PINB, 0);
-
+      wind.angle = get_wind_position ();
+      wind.direction = get_wind_direction (wind.angle);
+      synth_say_wind_direction (wind.direction);
+      synth_pause ();
     }
 }

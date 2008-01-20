@@ -45,6 +45,11 @@ adc_read (void)
   return (ADCH);
 }
 
+/*
+  Return the value converted
+  between 0-255 to 0-360 degrees
+*/
+
 int
 get_wind_position (void)
 {
