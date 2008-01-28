@@ -19,11 +19,11 @@ SUBDIRS = sht11 synth anemometer
 .SUFFIXES: .c, .o
 
 all: $(SUBDIRS) $(objects)
-	$(CC) $(CFLAGS) -o sint2.elf main.c $(objects) $(LFLAGS)
-	$(OBJCOPY) sint2.elf sint2.hex
+	$(CC) $(CFLAGS) -o sint.elf main.c $(objects) $(LFLAGS)
+	$(OBJCOPY) sint.elf sint.hex
 
 program:
-	avrdude -c stk500v1 -p $(MCU) -P /dev/ttyUSB0 -e -U flash:w:sint2.hex
+	avrdude -c stk500v1 -p $(MCU) -P /dev/ttyUSB0 -e -U flash:w:sint.hex
 
 $(SUBDIRS):
 	@echo $(MAKECMDGOALS)
@@ -32,18 +32,18 @@ $(SUBDIRS):
 test_adc:
 	$(MAKE) -C anemometer
 	$(MAKE) -C synth
-	$(CC) $(CFLAGS) -o test.elf test_adc.c anemometer/adc.o \
+	$(CC) $(CFLAGS) -o sint.elf test_adc.c anemometer/adc.o \
 		anemometer/anemometer.o synth/synth.o 
-	$(OBJCOPY) test.elf test.hex
+	$(OBJCOPY) sint.elf sint.hex
 
 test_anemometer: $(objects)
 	$(CC) $(CFLAGS) -o test.elf test_anemometer.c $(objects) $(LFLAGS)
-	$(OBJCOPY) test.elf test.hex
+	$(OBJCOPY) sint.elf sint.hex
 
 test_synth:
 	$(MAKE) -C synth
 	$(CC) $(CFLAGS) -o test.elf test_synth.c synth/synth.o 
-	$(OBJCOPY) test.elf test.hex
+	$(OBJCOPY) sint.elf sint.hex
 
 clean: $(SUBDIRS)
 	rm $(objects) *.elf *.hex
