@@ -80,28 +80,32 @@ struct complex
 
 struct wind_array
 {
-  /* spare */
-  uint8_t flag;
+  /*
+    Volatile stuff, used into ISR
+    flag: boolean used by ISR to tell to main there is a new
+          data (speed and direction) to be elaborated.
+    speed_rt: number of pulse x round detected.
+    angle_rt: 0-359 degrees detected
+  */
+  volatile uint8_t flag;
+  volatile uint8_t speed_rt;
+  volatile int angle_rt;
 
-  /* wind elements */
 
-  /* speed */
+  /*
+    wind elements
+    speed
+    0-359 degrees
+  */
   uint8_t speed, vmin, vmax;
-
-  /* 0-359 degrees */
   int angle;
-
   enum wind_dir direction;
   enum wind_tendency tendency;
 
-  /* real time elements */
-
-  /* speed */
-  uint8_t speed_rt, vmin_rt, vmax_rt;
-
-  /* 0-359 degrees */
-  int angle_rt;
-
+  /*
+    real time elements
+  */
+  uint8_t vmin_rt, vmax_rt;
   struct complex vector_rt, media_rt;
   uint8_t counter_rt;
 };

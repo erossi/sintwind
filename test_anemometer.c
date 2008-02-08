@@ -26,7 +26,7 @@
 
 /* Globals */
 struct wind_array *wind;
-int loop;
+volatile int loop;
 
 int
 main (void)

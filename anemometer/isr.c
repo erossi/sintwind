@@ -29,8 +29,8 @@
 /* Global variable and pointer to be used */
 /* inside the ISR routine */
 
-extern int loop;
-extern volatile struct wind_array *wind;
+extern volatile int loop;
+extern struct wind_array *wind;
 
 ISR (SIG_INPUT_CAPTURE1)
 {

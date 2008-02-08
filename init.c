@@ -15,56 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* #include <avr/io.h> */
-/* #include <avr/interrupt.h> */
 #include <inttypes.h>
 #include "default.h"
 #include "init.h"
-
-/* extern volatile wind_array wind; */
-
-/* void */
-/* init_port (void) */
-/* { */
-/*   /\* */
-/*     Address bus bit 0..4 output */
-/*     This is the address bus. */
-/*   *\/ */
-/*   ADDRBUS_DDR = 31; /\* msb 00011111 lsb *\/ */
-
-/*   /\* */
-/*     Data bus can be input/output */
-/*     Set it to input for now */
-/*   *\/ */
-/*   DATABUS_DDR = 0; */
-/* } */
-
-
-/* void */
-/* init_counter (void) */
-/* { */
-/*   TCCR1A = 0; */
-/*   /\* ICES1 = 0 trigger edge on negative *\/ */
-
-/*   /\* counter prescaler/1024 *\/ */
-/* #ifdef TIMER_PRESCALER_1024 */
-/*    TCCR1B = _BV (ICNC1) | _BV (CS12) | _BV (CS10); */
-/* #endif */
-
-/*   /\* counter prescaler/256 *\/ */
-/* #ifdef TIMER_PRESCALER_256 */
-/*   TCCR1B = _BV (ICNC1) | _BV (CS12); */
-/* #endif */
-
-/*   /\* counter prescaler/64 *\/ */
-/* #ifdef TIMER_PRESCALER_64 */
-/*   TCCR1B = _BV (ICNC1) | _BV (CS11) | _BV (CS10); */
-/* #endif */
-  
-/*   /\* enable interrupt on timer 0 interrupt */
-/*    use include deprecated.h to use the function *\/ */
-/*   TIMSK = _BV (TICIE1) | _BV (TOIE1); */
-/* } */
 
 void
 array_init (struct wind_array *wind)
