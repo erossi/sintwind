@@ -47,8 +47,11 @@ main (void)
   for (;;)
     if (wind->flag)
 	{
+/* 	  cli (); */
 	  synth_say_wind_direction (wind->direction);
+	  say_int (wind->speed_rt);
 	  synth_pause ();
 	  wind->flag = 0;
+/* 	  sei (); */
 	}
 }
