@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2007 Enrico Rossi
+ * Copyright (C) 2005-2008 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -29,7 +29,7 @@ adc_init (void)
   ADCSRA = _BV (ADEN) | _BV (ADPS2) | _BV (ADPS1) | _BV (ADPS0);
 
   /* Set left adjusted result, adc1 */
-  ADMUX = _BV (ADLAR) | _BV (MUX0);
+  ADMUX = _BV (REFS0) | _BV (ADLAR) | _BV (MUX0);
 }
 
 uint8_t
