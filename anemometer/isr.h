@@ -21,4 +21,6 @@
 /* Filter cutoff to eliminate spike */
 #define _ANEMOMETER_CUTOFF 5
 
+void isr_init (void);
+
 #endif

@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2007 Enrico Rossi
+ * Copyright (C) 2005-2008 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -96,4 +96,30 @@ ISR (SIG_OVERFLOW1)
     }
 
   loop = 0;
+}
+
+void
+isr_init (void)
+{
+  TCCR1A = 0;
+  /* ICES1 = 0 trigger edge on negative */
+
+  /* counter prescaler/1024 */
+#ifdef TIMER_PRESCALER_1024
+   TCCR1B = _BV (ICNC1) | _BV (CS12) | _BV (CS10);
+#endif
+
+  /* counter prescaler/256 */
+#ifdef TIMER_PRESCALER_256
+  TCCR1B = _BV (ICNC1) | _BV (CS12);
+#endif
+
+  /* counter prescaler/64 */
+#ifdef TIMER_PRESCALER_64
+  TCCR1B = _BV (ICNC1) | _BV (CS11) | _BV (CS10);
+#endif
+  
+  /* enable interrupt on timer 0 interrupt
+   use include deprecated.h to use the function */
+  TIMSK = _BV (TICIE1) | _BV (TOIE1);
 }

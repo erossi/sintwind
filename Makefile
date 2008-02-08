@@ -11,8 +11,9 @@ OBJDUMP = avr-objdump
 SIZE = avr-size
 # DUDE = avrdude -c stk500v1 -p m8515 -P /dev/ttyUSB0 -e -U flash:w:sint2.hex -F
 REMOVE = rm -f
-objects = uart.o adc.o
-SUBDIRS = sht11 synth anemometer
+
+objects = init.o
+SUBDIRS = synth anemometer
 
 .PHONY: clean indent $(SUBDIRS)
 .SILENT: help
@@ -37,7 +38,11 @@ test_adc:
 	$(OBJCOPY) sint.elf sint.hex
 
 test_anemometer: $(objects)
-	$(CC) $(CFLAGS) -o test.elf test_anemometer.c $(objects) $(LFLAGS)
+	$(MAKE) -C anemometer
+	$(MAKE) -C synth
+	$(CC) $(CFLAGS) -o sint.elf test_anemometer.c $(objects) \
+		anemometer/adc.o anemometer/isr.o \
+		anemometer/anemometer.o synth/synth.o 
 	$(OBJCOPY) sint.elf sint.hex
 
 test_synth:
@@ -46,7 +51,7 @@ test_synth:
 	$(OBJCOPY) sint.elf sint.hex
 
 clean: $(SUBDIRS)
-	rm $(objects) *.elf *.hex
+	rm $(objects) sint.elf sint.hex
 
 indent:
 	indent *.c *.h

@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2007 Enrico Rossi
+ * Copyright (C) 2005-2008 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,11 @@
 #ifndef _DEFAULT_WIND_H_
 #define _DEFAULT_WIND_H_
 
-#define DATABUS_PIN  PIND /* input data */
+#define DATABUS_PIN  PIND  /* input data */
 #define DATABUS_PORT PORTD /* output data */
-#define DATABUS_DDR  DDRD /* Data direction */
+#define DATABUS_DDR  DDRD  /* Data direction */
 #define ADDRBUS_PORT PORTC /* address bus only set, no read */
-#define ADDRBUS_DDR  DDRC /* address bus setting */
+#define ADDRBUS_DDR  DDRC  /* address bus setting */
 #define ACE128_RATIO 2.82
 
 /* CPU Speed 4 MHz */

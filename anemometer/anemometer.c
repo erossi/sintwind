@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2007 Enrico Rossi
+ * Copyright (C) 2005-2008 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -23,8 +23,17 @@
 #include <avr/io.h>
 #include <math.h>
 #include "../default.h"
+#include "isr.h"
 #include "adc.h"
 #include "anemometer.h"
+
+void anemometer_init (void)
+{
+  adc_init ();
+  isr_init ();
+
+/* Do We need a port Setup for the Pulse counter??? Maybe */
+}
 
 /*
   return standard direction
