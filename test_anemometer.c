@@ -49,7 +49,6 @@ main (void)
   for (;;)
     if (wind->flag)
 	{
-/* 	  cli (); */
 
 /* This must be used into general media stuff */
 	  wind->direction = get_wind_direction (wind->angle);
@@ -58,6 +57,6 @@ main (void)
 	  say_int (wind->speed_rt);
 	  synth_pause ();
 	  wind->flag = 0;
-/* 	  sei (); */
+	  sei ();
 	}
 }

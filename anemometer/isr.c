@@ -85,15 +85,20 @@ ISR (SIG_OVERFLOW1)
      so we simply do nothing.
    */
 
-  if (!(wind->flag))
-    {
+/* Stop the ISR */
+  cli ();
+
+/*   if (!(wind->flag)) */
+/*     { */
+
       /* for now 1 to 1 conversion */
       wind->speed_rt = loop;
 
       /* 0-359 degrees */
       wind->angle_rt = get_wind_position ();
       wind->flag = 1;
-    }
+
+/*     } */
 
   loop = 0;
 }
