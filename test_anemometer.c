@@ -43,20 +43,19 @@ main (void)
   synth_init ();
   synth_pause ();
 
-/* Enable interrupt */
+  /* Enable interrupt */
   sei ();
 
   for (;;)
     if (wind->flag)
-	{
+      {
 
-/* This must be used into general media stuff */
-	  wind->direction = get_wind_direction (wind->angle);
+	/* This must be used into general media stuff */
+	wind->direction = get_wind_direction (wind->angle_rt);
 
-	  synth_say_wind_direction (wind->direction);
-	  say_int (wind->speed_rt);
-	  synth_pause ();
-	  wind->flag = 0;
-	  sei ();
-	}
+	synth_say_wind_direction (wind->direction);
+	say_int (wind->speed_rt);
+	wind->flag = 0;
+	sei ();
+      }
 }
