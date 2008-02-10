@@ -22,7 +22,9 @@
 #include "init.h"
 #include "synth/synth.h"
 #include "anemometer/anemometer.h"
-/* #include "anemometer/adc.h" */
+
+/* This must not be used */
+#include "anemometer/adc.h"
 
 /* Globals */
 struct wind_array *wind;
@@ -48,6 +50,10 @@ main (void)
     if (wind->flag)
 	{
 /* 	  cli (); */
+
+/* This must be used into general media stuff */
+	  wind->direction = get_wind_direction (wind->angle);
+
 	  synth_say_wind_direction (wind->direction);
 	  say_int (wind->speed_rt);
 	  synth_pause ();
