@@ -62,7 +62,6 @@ ISR (SIG_INPUT_CAPTURE1)
 
   /* How much time is passed? */
   diff = ICR1 - timer;
-  timer = ICR1;
 
   /*
     if the difference between this front and the previous
@@ -70,7 +69,10 @@ ISR (SIG_INPUT_CAPTURE1)
     ignoring it.
   */
   if (diff > _ANEMOMETER_CUTOFF)
-    ++loop;
+    {
+      ++loop;
+      timer = ICR1;
+    }
 }
 
 ISR (SIG_OVERFLOW1)
