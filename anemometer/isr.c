@@ -107,6 +107,14 @@ isr_init (void)
   TCCR1A = 0;
   /* ICES1 = 0 trigger edge on negative */
 
+  /*
+    Time ellapsed every cycle is 4.19424 sec.
+    4Mhz / 256 = 15625 Hz (clock pre-scaled of 256)
+    1/15625 Hz = 0.000064 sec (every counter's step)
+    Number of step per cycle is 65535 (16bit)
+    0.000064 sec * 65535 = 4.19424 sec every cycle
+  */
+
   /* counter prescaler/1024 */
 #ifdef TIMER_PRESCALER_1024
   TCCR1B = _BV (ICNC1) | _BV (CS12) | _BV (CS10);
