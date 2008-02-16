@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _ANEMOMETER_H_
-#define _ANEMOMETER_H_
+#ifndef _MEDIA_H_
+#define _MEDIA_H_
 
 /*
   Minutes to use to calculate media
@@ -25,7 +25,6 @@
 */
 #define MEDIA_MINUTES 75
 
-void anemometer_init (void);
-enum wind_dir get_wind_direction (int direction);
+void do_media (struct wind_array *wind);
 
 #endif
