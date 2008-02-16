@@ -45,8 +45,8 @@
 /* #define TIMER_PRESCALER_64 */
 
 /*
-  define the next variable if we want to use the media value
-  into the next cycle as the first element.
+  If We want to use the media value calculated on 5 min. as
+  the first element into the next cycle.
  */
 #define MEDIA_NEXT_CYCLE 1
 

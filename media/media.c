@@ -66,8 +66,7 @@ store_media (struct wind_array *wind)
      r = sqrt(x*x + y*y)
      theta = arc tangent (y/x)
    */
-  wind->speed =
-    sqrt ((wind->media_rt.x * wind->media_rt.x) +
+  wind->speed = sqrt ((wind->media_rt.x * wind->media_rt.x) +
 	  (wind->media_rt.y * wind->media_rt.y));
 
   /* securing from division by zero error in the atan div! */
@@ -94,7 +93,7 @@ store_media (struct wind_array *wind)
 
   /* clear the real time media
      if you want to start from 0,0 you have to clean the media
-     and reset mix and max. If you want the first element of the next
+     and reset min and max. If you want the first element of the next
      cycle is the media of this cycle then keep the value.
    */
 #ifndef MEDIA_NEXT_CYCLE
@@ -173,15 +172,20 @@ do_media (struct wind_array *wind)
   if (wind->speed_rt > wind->vmax_rt)
     wind->vmax_rt = wind->speed_rt;
 
-  /* Read the default.h to know how many minutes we use */
+  /*
+    Read the media.h to know how many ticks we use.
+    If we use the last calculated media as the first
+    element into the next sequence, than we must start counting
+    from 1.
+  */
 
 #ifndef MEDIA_NEXT_CYCLE
-  /* case a) see top comment we start counter from 0 */
+  /* We don't have an 0 element from the media */
   if (++wind->counter_rt == MEDIA_MINUTES)
     store_media (wind);
 
 #else
-  /* case b) see top comment we start counter from 1 */
+  /* the 1st element was a media calculated before */
   if (++wind->counter_rt > MEDIA_MINUTES)
     store_media (wind);
 
