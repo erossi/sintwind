@@ -22,6 +22,7 @@
 #include <inttypes.h>
 #include <math.h>
 #include "../default.h"
+#include "media.h"
 
 /*
 Test version:

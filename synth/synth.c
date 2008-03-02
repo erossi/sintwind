@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2007 Enrico Rossi
+ * Copyright (C) 2005-2008 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -85,7 +85,6 @@ void say_it (uint8_t position)
 
   wait_for_eom ();
   /*   reset_synth (); */
-/*   pause (); */
 }
 
 /* This is capable of say number from 0 to 21 */
@@ -218,33 +217,32 @@ void synth_say_wind_direction (enum wind_dir direction)
 
 void synth_play_message (struct wind_array *wind)
 {
-  uint8_t i;
+
+/*       say_it (_SYNTH_S_ABSENT); */
+/*       say_it (_SYNTH_S_EAST); */
+/*       say_it (_SYNTH_S_SOUTH); */
+/*       say_it (_SYNTH_S_WEST); */
+/*       say_it (_SYNTH_S_NORTH); */
+/*       say_it (_SYNTH_S_KMH); */
+/*       say_it (_SYNTH_S_TO); */
+/*       say_it (_SYNTH_S_TEMP); */
+/*       say_it (_SYNTH_S_MINUS); */
+/*       say_it (_SYNTH_S_COMMA); */
+/*       say_it (_SYNTH_S_PERC); */
+/*       say_it (_SYNTH_S_WIND); */
+/*       say_it (_SYNTH_S_CELSIUS); */
+/*       say_it (_SYNTH_S_UMIDITY); */
+/*       say_it (_SYNTH_S_DNA); */
+/*       say_it (_SYNTH_S_INTENSITY); */
+/*       say_it (_SYNTH_S_CLUB); */
 
   say_it (_SYNTH_S_CLUB);
   say_it (_SYNTH_S_WIND);
   synth_say_wind_direction (wind->direction);
-
-  /*   vmin */
-  i = wind->vmin/2;
-  if (i > 40)
-    i=51;
-
-  say_it (i);
-
-  say_it (41); /* a */
-
-  /*   vmax */
-  i = wind->vmax/2;
-  if (i > 40)
-    i=51;
-
-  say_it (i);
-
-  say_it (47); /* Km/h */
-
-  say_it (53); /* Provenienza */
-
-  /*   say_it (55); /\* Tendenza *\/ */
-
-  synth_reset ();
+  say_it (_SYNTH_S_INTENSITY);
+  say_int (wind->vmin);
+  say_it (_SYNTH_S_TO);
+  say_int (wind->vmax);
+  say_it (_SYNTH_S_KMH); /* Km/h */
+/*   synth_reset (); */
 }

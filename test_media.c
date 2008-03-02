@@ -16,20 +16,43 @@
  */
 
 #include <inttypes.h>
+#include <avr/interrupt.h>
 #include "default.h"
-#include "init.h"
+#include "init/init.h"
+#include "synth/synth.h"
+#include "anemometer/anemometer.h"
+#include "media/media.h"
 
-void
-array_init (struct wind_array *wind)
+/* Globals */
+struct wind_array *wind;
+volatile int loop;
+
+int
+main (void)
 {
-  wind->flag = 0; /* 0=ok take value 1=value taken */
-  wind->speed = 0;
-  wind->vmin = 255;
-  wind->vmax = 0;
-  wind->angle = 0;
-  wind->direction = NORTH;
-  wind->tendency = STABLE;
-  wind->media_rt.x = 0;
-  wind->media_rt.y = 0;
-  wind->counter_rt = 0;
+  /* Global VARS */
+  struct wind_array why_not_use_malloc;
+
+  wind = &why_not_use_malloc;
+  loop = 0;
+  array_init (wind);
+  anemometer_init ();
+  synth_init ();
+  synth_pause ();
+
+  /* Enable interrupt */
+  sei ();
+
+  for (;;)
+    {
+      if (wind->flag)
+	{
+	  do_media (wind);
+	  wind->flag = 0;
+	  sei ();
+	}
+
+      if (wind->counter_rt == 1)
+	synth_play_message (wind);
+    }
 }
