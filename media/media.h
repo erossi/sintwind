@@ -23,7 +23,8 @@
   It depends on cpu speed and prescaled timer
   4.19 sec/cycle, 1 min= 15 cycle, 5 min= 75 cycle
 */
-#define MEDIA_MINUTES 75
+//#define MEDIA_MINUTES 75
+#define MEDIA_MINUTES 15
 
 void do_media (struct wind_array *wind);
 
