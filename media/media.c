@@ -128,6 +128,12 @@ do_media (struct wind_array *wind)
    */
 
   /*
+   * Davis anemometer correction, 1 pulse per cycle instead of 2
+   */
+
+  wind->speed_rt /= 2;
+
+  /*
      Adjust wind speed, these value are hardware dependant.
      See spreadsheet.
    */

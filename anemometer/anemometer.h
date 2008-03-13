@@ -18,13 +18,6 @@
 #ifndef _ANEMOMETER_H_
 #define _ANEMOMETER_H_
 
-/*
-  Minutes to use to calculate media
-  It depends on cpu speed and prescaled timer
-  4.19 sec/cycle, 1 min= 15 cycle, 5 min= 75 cycle
-*/
-#define MEDIA_MINUTES 75
-
 void anemometer_init (void);
 enum wind_dir get_wind_direction (int direction);
 
