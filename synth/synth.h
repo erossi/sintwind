@@ -18,12 +18,18 @@
 #ifndef _SYNTH_H_
 #define _SYNTH_H_
 
+/*
+ * I/O ports are shared with others, definition and
+ * initialization are in main program
+ *
 #define _SYNTH_ADDR PORTD
 #define _SYNTH_ADDR_DDR DDRD
 
 #define _SYNTH_CTRL_OUT PORTB
 #define _SYNTH_CTRL_IN  PINB
+
 #define _SYNTH_CTRL_DDR DDRB
+*/
 
 #define _SYNTH_EOM 1
 #define _SYNTH_PD 2

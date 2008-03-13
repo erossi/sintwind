@@ -25,6 +25,19 @@
 #define ADDRBUS_DDR  DDRC  /* address bus setting */
 #define ACE128_RATIO 2.82
 
+/*
+ * Synth PORT
+ */
+
+#define _SYNTH_ADDR PORTD
+#define _SYNTH_ADDR_DDR DDRD
+
+#define _SYNTH_CTRL_OUT PORTB
+#define _SYNTH_CTRL_IN  PINB
+
+/* Port shared with others */
+#define _SYNTH_CTRL_DDR DDRB
+
 /* CPU Speed 4 MHz */
 #define F_CPU 4E6
 /*
