@@ -19,7 +19,28 @@
 #include "../default.h"
 #include "init.h"
 
-void
+void port_init (void)
+{
+  /*
+   * Synth Pre-port init.
+   * Setting these before enable port to avoid
+   * playing message at startup.
+   * PD = 0, /CE = 1
+   */
+  _SYNTH_CTRL_OUT = _BV (_SYNTH_CE);
+
+  /*
+   * DDRB synth, phone
+   */
+  DDRB = _BV (_SYNTH_PD) | _BV (_SYNTH_CE);
+
+  /*
+   * DDRD Synth address bus to OUT
+   */
+  DDRD = 0xFF;
+}
+
+  void
 array_init (struct wind_array *wind)
 {
   wind->flag = 0; /* 0=ok take value 1=value taken */
