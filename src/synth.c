@@ -17,7 +17,7 @@
 
 #include <inttypes.h>
 #include <avr/io.h>
-#include "../default.h"
+#include "default.h"
 /* put this after default because we have to set F_CPU */
 #include <util/delay.h>
 #include "synth.h"

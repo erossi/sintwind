@@ -18,10 +18,10 @@
 #include <inttypes.h>
 #include <avr/interrupt.h>
 #include "default.h"
-#include "init/init.h"
-#include "synth/synth.h"
-#include "anemometer/anemometer.h"
-#include "media/media.h"
+#include "init.h"
+#include "synth.h"
+#include "anemometer.h"
+#include "media.h"
 
 /* Globals */
 struct wind_array *wind;

@@ -20,8 +20,8 @@
 #include <avr/interrupt.h>
 #include "default.h"
 #include "init.h"
-#include "synth/synth.h"
-#include "anemometer/anemometer.h"
+#include "synth.h"
+#include "anemometer.h"
 
 /* This must not be used */
 #include "anemometer/adc.h"

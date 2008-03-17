@@ -29,11 +29,11 @@
 #define _SYNTH_CTRL_IN  PINB
 
 #define _SYNTH_CTRL_DDR DDRB
-*/
 
 #define _SYNTH_EOM 1
 #define _SYNTH_PD 2
 #define _SYNTH_CE 3
+*/
 
 /* club di volo */
 #define _SYNTH_S_CLUB 112

@@ -20,6 +20,7 @@
 
 /* void init_port (void); */
 /* void init_counter (void); */
+void port_init (void);
 void array_init (struct wind_array *wind);
 
 #endif

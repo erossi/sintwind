@@ -20,7 +20,7 @@
 #include <avr/io.h>
 #include "default.h"
 #include <util/delay.h>
-#include "shut11/sht11.h"
+#include "sht11.h"
 
 int
 main(void)

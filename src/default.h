@@ -32,6 +32,9 @@
 #define _SYNTH_ADDR PORTD
 #define _SYNTH_CTRL_OUT PORTB
 #define _SYNTH_CTRL_IN  PINB
+#define _SYNTH_EOM 1
+#define _SYNTH_PD 2
+#define _SYNTH_CE 3
 /*
  * Hardcoded into init procedure
  *

@@ -21,7 +21,7 @@
 
 #include <inttypes.h>
 #include <avr/interrupt.h>
-#include "../default.h"
+#include "default.h"
 #include "adc.h"
 #include "anemometer.h"
 #include "isr.h"
@@ -101,8 +101,7 @@ ISR (SIG_OVERFLOW1)
   loop = 0;
 }
 
-void
-isr_init (void)
+void isr_init (void)
 {
   TCCR1A = 0;
   /* ICES1 = 0 trigger edge on negative */

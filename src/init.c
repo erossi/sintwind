@@ -16,7 +16,8 @@
  */
 
 #include <inttypes.h>
-#include "../default.h"
+#include <avr/io.h>
+#include "default.h"
 #include "init.h"
 
 void port_init (void)
@@ -40,8 +41,7 @@ void port_init (void)
   DDRD = 0xFF;
 }
 
-  void
-array_init (struct wind_array *wind)
+void array_init (struct wind_array *wind)
 {
   wind->flag = 0; /* 0=ok take value 1=value taken */
   wind->speed = 0;

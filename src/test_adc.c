@@ -18,17 +18,17 @@
 #include <inttypes.h>
 #include <avr/io.h>
 #include "default.h"
-#include "synth/synth.h"
-#include "anemometer/anemometer.h"
-#include "anemometer/adc.h"
+#include "init.h"
+#include "synth.h"
+#include "anemometer.h"
+#include "adc.h"
 
-int
-main (void)
+int main (void)
 {
   struct wind_array wind;
 
+  port_init ();
   adc_init ();
-  synth_init ();
   synth_pause ();
 
   for (;;)

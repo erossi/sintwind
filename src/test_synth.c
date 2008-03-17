@@ -17,13 +17,14 @@
 
 #include <inttypes.h>
 #include "default.h"
-#include "synth/synth.h"
+#include "init.h"
+#include "synth.h"
 
 int main (void)
 {
   uint8_t i;
   
-  synth_init ();
+  port_init ();
   synth_pause ();
 
 /*   for (;;) */

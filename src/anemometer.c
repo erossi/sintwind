@@ -20,7 +20,7 @@
 */
 
 #include <inttypes.h>
-#include "../default.h"
+#include "default.h"
 #include "isr.h"
 #include "adc.h"
 #include "anemometer.h"
