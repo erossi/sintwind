@@ -26,6 +26,7 @@
 #define CELL_HANGUP 2
 #define CELL_KEY1 3
 
+void phone_init (void);
 uint8_t ring (void);
 void answer_phone (void);
 void hangup_phone (void);

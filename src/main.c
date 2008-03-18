@@ -46,6 +46,7 @@ int main (void)
   array_init (wind);
   anemometer_init ();
   synth_init ();
+  phone_init ();
 
   synth_pause ();
 
