@@ -18,12 +18,18 @@
 #ifndef _DEFAULT_WIND_H_
 #define _DEFAULT_WIND_H_
 
-#define DATABUS_PIN  PIND  /* input data */
-#define DATABUS_PORT PORTD /* output data */
-#define DATABUS_DDR  DDRD  /* Data direction */
-#define ADDRBUS_PORT PORTC /* address bus only set, no read */
-#define ADDRBUS_DDR  DDRC  /* address bus setting */
-#define ACE128_RATIO 2.82
+/*
+ * Phone
+ * On portB pin 4 and 5 must be out in DDR, there control
+ * on and off key on the phone.
+ * On portC pin 0 must be IN in DDRC, there check the RINGing.
+ */
+
+#define _PHONE_PORT PORTB
+#define _PHONE_IN PINC
+#define _PHONE_ON 4
+#define _PHONE_OFF 5
+#define _PHONE_RING 0
 
 /*
  * Synth PORT
@@ -36,11 +42,15 @@
 #define _SYNTH_PD 2
 #define _SYNTH_CE 3
 /*
- * Hardcoded into init procedure
+ * Hardcoded into init.c procedure
  *
 #define _SYNTH_ADDR_DDR DDRD
 #define _SYNTH_CTRL_DDR DDRB
 */
+
+/*
+ * Delay.h CPU speed definition
+ */
 
 /* CPU Speed 4 MHz */
 #define F_CPU 4E6
@@ -54,7 +64,7 @@
 */
 
 /*
-  Set the prescaler used for the timer.
+ *  Set the prescaler used for the timer.
  */
 
 /* #define TIMER_PRESCALER_1024 */

@@ -31,14 +31,22 @@ void port_init (void)
   _SYNTH_CTRL_OUT = _BV (_SYNTH_CE);
 
   /*
-   * DDRB synth, phone
+   * DDRB
+   * Synth PD and CE to out,
+   * phone ON and OFF to out.
    */
-  DDRB = _BV (_SYNTH_PD) | _BV (_SYNTH_CE);
+  DDRB = _BV (_SYNTH_PD) | _BV (_SYNTH_CE) | _BV (_PHONE_ON) | _BV (_PHONE_OFF);
 
   /*
    * DDRD Synth address bus to OUT
    */
   DDRD = 0xFF;
+
+  /*
+   * Phone RING in
+   * should be so by default!
+   * DDRC = .... keep the default
+   */
 }
 
 void array_init (struct wind_array *wind)
