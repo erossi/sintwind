@@ -15,23 +15,66 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdint.h>
-#include <stdlib.h>
-#include <avr/io.h>
+#include <inttypes.h>
+#include <avr/interrupt.h>
 #include "default.h"
-#include <util/delay.h>
+#include "init.h"
+#include "synth.h"
+#include "anemometer.h"
+#include "media.h"
+#include "cell.h"
 #include "sht11.h"
 
-int
-main(void)
-{
-  struct sht11_t dataset;
 
+/* Globals */
+struct wind_array *wind;
+volatile int loop;
+
+int main (void)
+{
+  /* Global VARS */
+  struct wind_array why_not_use_malloc;
+  struct sht11_t why_not_use_malloc2;
+
+  /*
+   * allocating variables
+   */
+
+  wind = &why_not_use_malloc;
+  loop = 0;
+  temperature = &why_not_use_malloc2;
+
+  /*
+   * initializing parts
+   */
+
+  port_init ();
+  array_init (wind);
+  anemometer_init ();
+  phone_init ();
   sht11_init ();
 
+  synth_pause ();
+
+  /* Enable interrupt */
+  sei ();
+
   for (;;)
+  {
+    if (wind->flag)
     {
-      sht11_read_all (&dataset);
-      _delay_ms (10);
+      do_media (wind);
+      wind->flag = 0;
+      sei ();
     }
+
+    if (ring ())
+    {
+      answer_phone ();
+      sht11_read_all (temperature);
+      synth_play_message (wind, temperature);
+      hangup_phone ();
+    }
+  }
 }
+
