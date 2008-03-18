@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2007 Enrico Rossi
+ * Copyright (C) 2005-2008 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,14 +17,6 @@
 
 #ifndef _CELL_H_
 #define _CELL_H_
-
-#define CELL_RX 1
-#define CELL_ACTIVE 0
-
-#define CELL_POWER 0
-#define CELL_TX 1
-#define CELL_HANGUP 2
-#define CELL_KEY1 3
 
 void phone_init (void);
 uint8_t ring (void);

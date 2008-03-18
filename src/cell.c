@@ -24,14 +24,25 @@
 
 void phone_init (void)
 {
+  uint8_t i;
+
+/*
+ * Press the red button for 1 sec
+ * then release it and wait another second.
+ */
+
+  _PHONE_PORT |= _BV (_PHONE_OFF);
+  for (i=0; i<100; i++)
+    _delay_ms (10);
+
+  _PHONE_PORT &= ~(_BV (_PHONE_OFF));
+  for (i=0; i<100; i++)
+    _delay_ms (10);
 }
 
 uint8_t ring (void)
 {
-  uint8_t i;
-
-  i = _PHONE_IN & _BV(_PHONE_RING);
-  return (i);
+  return (bit_is_set (_PHONE_IN, _PHONE_RING));
 }
 
 void answer_phone (void)
@@ -40,26 +51,19 @@ void answer_phone (void)
 
 /*
  * Press the green button for 1 sec
+ * then release it and wait another second.
  */
 
-  _PHONE_PORT = _BV (_PHONE_ON);
-  for (i=0; i<20; i++)
-    _delay_ms (50);
+  _PHONE_PORT |= _BV (_PHONE_ON);
+  for (i=0; i<100; i++)
+    _delay_ms (10);
 
-  /*   Wait 1sec */
-  switch_bus (WRITE_PHONE, 0);
+  _PHONE_PORT &= ~(_BV (_PHONE_ON));
   for (i=0; i<100; i++)
     _delay_ms (10);
 }
 
 void hangup_phone (void)
 {
-  uint8_t i;
-
-  switch_bus (WRITE_PHONE, _BV(CELL_HANGUP));
-/*   Delay 1sec */
-  for (i=0; i<20; i++)
-    _delay_ms (50);
-
-  switch_bus (WRITE_PHONE, 0);
+  phone_init ();
 }

@@ -22,6 +22,7 @@
 #include "synth.h"
 #include "anemometer.h"
 #include "media.h"
+#include "cell.h"
 
 /* Globals */
 struct wind_array *wind;
@@ -45,7 +46,6 @@ int main (void)
   port_init ();
   array_init (wind);
   anemometer_init ();
-  synth_init ();
   phone_init ();
 
   synth_pause ();
@@ -62,7 +62,7 @@ int main (void)
       sei ();
     }
 
-    if phone_is_ringing ()
+    if (ring ())
     {
       answer_phone ();
       synth_play_message (wind);

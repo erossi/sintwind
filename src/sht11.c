@@ -284,8 +284,7 @@ sht11_read_humidity (struct sht11_t *dataset)
     dataset->humidity_compensated = 0.1;
 }
 
-void
-sht11_read_all (struct sht11_t *dataset)
+void sht11_read_all (struct sht11_t *dataset)
 {
   sht11_read_temperature (dataset);
   sht11_read_humidity (dataset);
