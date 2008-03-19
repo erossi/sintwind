@@ -50,18 +50,24 @@ void answer_phone (void)
   uint8_t i;
 
 /*
- * Press the green button for 1 sec
+ * Press the green button for 1/2 sec
  * then release it and wait another second.
  */
 
   _PHONE_PORT |= _BV (_PHONE_ON);
-  for (i=0; i<100; i++)
+  for (i=0; i<50; i++)
     _delay_ms (10);
 
   _PHONE_PORT &= ~(_BV (_PHONE_ON));
-  for (i=0; i<100; i++)
+  for (i=0; i<50; i++)
     _delay_ms (10);
 }
+
+/*
+ * Keep in mind do not press red button
+ * more than 1/2 sec. to avoid to turn off the phone in
+ * case the communication is hangup before.
+ */
 
 void hangup_phone (void)
 {
