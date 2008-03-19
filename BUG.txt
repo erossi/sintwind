@@ -1,0 +1,9 @@
+OLD
+---
+- RESET del synth in fase di boot
+- sistemare la routine di EOM per l'attesa e l'antiskpike
+- PD a zero per tutta la durata della frase per non sentire i klick!
+- LFUSE w lfuse 0 0xff
+  avrdude -c stk500 -p m8 -P /dev/ttyUSB0 -t -u
+- DELAY reset synth a 50ms da sistemare.
+- reset synth da mettere nell'init del prog. principale

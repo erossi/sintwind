@@ -72,13 +72,13 @@
 /* #define TIMER_PRESCALER_64 */
 
 /*
-  If We want to use the media value calculated on 5 min. as
-  the first element into the next cycle.
- */
-#define MEDIA_NEXT_CYCLE 1
+  If We want to use the media value at run (x) as 
+  the first element of run (x+1).
+  This lead to a wrong value into the 2 first run from the 
+  power up.
 
-/* sample size 2^10 bit */
-#define ADC_CUTOFF 9
+#define MEDIA_NEXT_CYCLE 1
+ */
 
 enum wind_dir
 {

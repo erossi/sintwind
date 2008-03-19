@@ -226,11 +226,17 @@ void synth_play_message (struct wind_array *wind)
 
   say_it (_SYNTH_S_CLUB);
   say_it (_SYNTH_S_WIND);
-  synth_say_wind_direction (wind->direction);
-  say_it (_SYNTH_S_INTENSITY);
-  say_int (wind->vmin);
-  say_it (_SYNTH_S_TO);
-  say_int (wind->vmax);
-  say_it (_SYNTH_S_KMH); /* Km/h */
+  if (wind->vmax)
+  {
+    synth_say_wind_direction (wind->direction);
+    say_it (_SYNTH_S_INTENSITY);
+    say_int (wind->vmin);
+    say_it (_SYNTH_S_TO);
+    say_int (wind->vmax);
+    say_it (_SYNTH_S_KMH); /* Km/h */
+  }
+  else
+    say_it (_SYNTH_S_DNA);
+
 /*   synth_reset (); */
 }
