@@ -19,12 +19,15 @@
 #include <avr/interrupt.h>
 #include "default.h"
 #include "init.h"
+/* sht11.h defined before synth.h to avoid
+ * invalid pointer type in the struct sht11_t
+ * used in synth_play_message.
+ */
+#include "sht11.h"
 #include "synth.h"
 #include "anemometer.h"
 #include "media.h"
 #include "cell.h"
-#include "sht11.h"
-
 
 /* Globals */
 struct wind_array *wind;
