@@ -71,5 +71,12 @@ void answer_phone (void)
 
 void hangup_phone (void)
 {
-  answer_phone ();
+  _PHONE_PORT |= _BV (_PHONE_OFF);
+  for (i=0; i<50; i++)
+    _delay_ms (10);
+
+  _PHONE_PORT &= ~(_BV (_PHONE_OFF));
+  for (i=0; i<100; i++)
+    _delay_ms (10);
 }
+
