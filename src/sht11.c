@@ -22,40 +22,34 @@
 #include "sht11.h"
 #include <util/delay.h>
 
-void
-set_sck_high (void)
+void set_sck_high (void)
 {
   SHT11_PORT |= _BV(SHT11_SCK);
 }
 
-void
-set_sck_low (void)
+void set_sck_low (void)
 {
   SHT11_PORT &= ~_BV(SHT11_SCK);
 }
 
-void
-set_data_out (void)
+void set_data_out (void)
 {
   SHT11_DDR |= _BV(SHT11_SCK) | _BV(SHT11_DATA);
 }
 
-void
-set_data_in (void)
+void set_data_in (void)
 {
   SHT11_DDR &= _BV(SHT11_SCK) | ~_BV(SHT11_DATA);
 }
 
-void
-set_data_high (void)
+void set_data_high (void)
 {
   /* release the data pin, pullup do the rest */
   /*   SHT11_PORT |= _BV(SHT11_DATA); */
   set_data_in ();
 }
 
-void
-set_data_low (void)
+void set_data_low (void)
 {
   SHT11_PORT &= ~_BV(SHT11_DATA);
   set_data_out ();
@@ -84,8 +78,7 @@ void send_byte (uint8_t byte)
     }
 }
 
-uint8_t
-read_byte (void)
+uint8_t read_byte (void)
 {
   uint8_t i, bit, result ;
 
@@ -109,8 +102,7 @@ read_byte (void)
   return (result);
 }
 
-void
-send_ack (void)
+void send_ack (void)
 {
   /* Send ack */
   set_data_low ();
@@ -121,8 +113,7 @@ send_ack (void)
   set_data_in ();
 }
 
-uint8_t
-read_ack (void)
+uint8_t read_ack (void)
 {
   uint8_t ack;
 
@@ -137,8 +128,7 @@ read_ack (void)
   return (ack);
 }
 
-void
-send_start_command (void)
+void send_start_command (void)
 {
   /*      _____           ________
 	  DATA:         |_______|
@@ -163,16 +153,14 @@ send_start_command (void)
   _delay_ms (SHT11_SCK_DELAY);
 }
 
-void
-sht11_init (void)
+void sht11_init (void)
 {
   /* sht11 clk pin to output and set high */
   SHT11_DDR |= _BV(SHT11_SCK);
   set_sck_high();
 }
 
-uint8_t
-sht11_read_status_reg (void)
+uint8_t sht11_read_status_reg (void)
 {
   uint8_t result, crc8, ack;
 
@@ -201,8 +189,7 @@ sht11_read_status_reg (void)
   return (result);
 }
 
-uint16_t
-sht11_send_command (uint8_t command)
+uint16_t sht11_send_command (uint8_t command)
 {
   uint16_t result;
   uint8_t crc8, ack;
@@ -248,8 +235,7 @@ sht11_send_command (uint8_t command)
   return (result);
 }
 
-void
-sht11_dewpoint (struct sht11_t *dataset)
+void sht11_dewpoint (struct sht11_t *dataset)
 {
   float k;
   k = (log10(dataset->humidity_compensated) - 2)/0.4343 + \
@@ -257,15 +243,13 @@ sht11_dewpoint (struct sht11_t *dataset)
   dataset->dewpoint = 243.12 * k / (17.62 - k);
 }
 
-void
-sht11_read_temperature (struct sht11_t *dataset)
+void sht11_read_temperature (struct sht11_t *dataset)
 {
   dataset->raw_temperature = sht11_send_command (SHT11_CMD_MEASURE_TEMP);
   dataset->temperature = SHT11_T1 * dataset->raw_temperature - 40;
 }
 
-void
-sht11_read_humidity (struct sht11_t *dataset)
+void sht11_read_humidity (struct sht11_t *dataset)
 {
   dataset->raw_humidity = sht11_send_command (SHT11_CMD_MEASURE_HUMI);
   dataset->humidity_linear = SHT11_C1 + \

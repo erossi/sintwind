@@ -21,8 +21,8 @@
 #define SHT11_DDR	DDRC
 #define SHT11_PORT	PORTC
 #define SHT11_PIN	PINC
-#define SHT11_SCK	PC0
-#define SHT11_DATA	PC1
+#define SHT11_SCK	PC5
+#define SHT11_DATA	PC4
 
 #define SHT11_CMD_STATUS_REG_W 6
 #define SHT11_CMD_STATUS_REG_R 7
