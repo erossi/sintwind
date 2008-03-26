@@ -19,6 +19,11 @@
 #include <avr/interrupt.h>
 #include "default.h"
 #include "init.h"
+/* sht11.h defined before synth.h to avoid
+ * invalid pointer type in the struct sht11_t
+ * used in synth_play_message.
+ */
+#include "sht11.h"
 #include "synth.h"
 #include "anemometer.h"
 #include "media.h"
@@ -32,12 +37,16 @@ int main (void)
 {
   /* Global VARS */
   struct wind_array why_not_use_malloc;
+  struct sht11_t why_not_use_malloc2;
+  struct sht11_t *temperature;
+
   /*
    * allocating variables
    */
 
   wind = &why_not_use_malloc;
   loop = 0;
+  temperature = &why_not_use_malloc2;
 
   /*
    * initializing parts
@@ -47,6 +56,7 @@ int main (void)
   array_init (wind);
   anemometer_init ();
   phone_init ();
+  sht11_init ();
 
   synth_pause ();
 
@@ -65,7 +75,8 @@ int main (void)
     if (ring ())
     {
       answer_phone ();
-      synth_play_message (wind);
+      sht11_read_all (temperature);
+      synth_play_message (wind, temperature);
       hangup_phone ();
     }
   }

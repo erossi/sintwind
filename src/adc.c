@@ -50,8 +50,13 @@ adc_read (void)
   between 0-255 to 0-360 degrees
 */
 
-int
-get_wind_position (void)
+int get_wind_position (void)
 {
-  return (adc_read () * _ADC_RATIO);
+  int i;
+
+  i = adc_read () * _ADC_RATIO;
+  if (i>359)
+    i = 359;
+
+  return (i);
 }
