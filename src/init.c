@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2008 Enrico Rossi
+ * Copyright (C) 2005-2009 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,33 +20,58 @@
 #include "default.h"
 #include "init.h"
 
-void port_init (void)
+void port_b_init (void)
 {
   /*
-   * Synth Pre-port init.
+   * pb0: IN - Davis wind speed pulse
+   * pb1: IN - /EOM from synth
+   * pb2: OUT - PD to synth
+   * pb3: OUT - /CE to synth
+   * pb4: OUT - A2 addr bus synth
+   * pb5: OUT - A3 addr bus synth
+   * pb6-7: UnUsed
+   */
+
+  /*
+   * Synth Pre init.
    * Setting these before enable port to avoid
    * playing message at startup.
    * PD = 0, /CE = 1
    */
-  _SYNTH_CTRL_OUT = _BV (_SYNTH_CE);
+  PORTB = _BV (3);
+  DDRB = _BV (2) | _BV (3) | _BV (4) | _BV (5);
+}
 
+void port_c_init (void)
+{
   /*
-   * DDRB
-   * Synth PD and CE to out,
-   * phone ON and OFF to out.
-   */
-  DDRB = _BV (_SYNTH_PD) | _BV (_SYNTH_CE) | _BV (_PHONE_ON) | _BV (_PHONE_OFF);
+  * pc0: IN - ?
+  * pc1: IN - ADC1 Wind direction
+  * pc2: OUT - mc35i IGT_IN
+  * pc3: OUT - Led LD1
+  * pc4: xx - sht11 SDA used in/out on needed
+  * pc5: xx - sht11 SCL used in/out on needed
+  * pc6-7: UnUsed
+  */
 
-  /*
-   * DDRD Synth address bus to OUT
-   */
-  DDRD = 0xFF;
+  PORTC = 0;
+  DDRC = _BV (2) | _BV (3);
+}
 
+void port_d_init (void)
+{
   /*
-   * Phone RING in
-   * should be so by default!
-   * DDRC = .... keep the default
+   * pd0-1: xx RS232 rx/tx
+   * ps2-7: OUT - sht11 A4-A9
    */
+  DDRD = 0xFC;
+}
+
+void port_init (void)
+{
+  port_b_init ();
+  port_c_init ();
+  port_d_init ();
 }
 
 void array_init (struct wind_array *wind)

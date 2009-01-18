@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2008 Enrico Rossi
+ * Copyright (C) 2005-2009 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,21 +19,15 @@
 #define _SYNTH_H_
 
 /*
- * I/O ports are shared with others, definition and
- * initialization are in main program
- *
-#define _SYNTH_ADDR PORTD
-#define _SYNTH_ADDR_DDR DDRD
+ * Synth PORT
+ */
 
+#define _SYNTH_ADDR PORTD
 #define _SYNTH_CTRL_OUT PORTB
 #define _SYNTH_CTRL_IN  PINB
-
-#define _SYNTH_CTRL_DDR DDRB
-
 #define _SYNTH_EOM 1
 #define _SYNTH_PD 2
 #define _SYNTH_CE 3
-*/
 
 /* club di volo */
 #define _SYNTH_S_CLUB 112

@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2008 Enrico Rossi
+ * Copyright (C) 2005-2009 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,36 +17,6 @@
 
 #ifndef _DEFAULT_WIND_H_
 #define _DEFAULT_WIND_H_
-
-/*
- * Phone
- * On portB pin 4 and 5 must be out in DDR, there control
- * on and off key on the phone.
- * On portC pin 0 must be IN in DDRC, there check the RINGing.
- */
-
-#define _PHONE_PORT PORTB
-#define _PHONE_IN PINC
-#define _PHONE_ON 4
-#define _PHONE_OFF 5
-#define _PHONE_RING 0
-
-/*
- * Synth PORT
- */
-
-#define _SYNTH_ADDR PORTD
-#define _SYNTH_CTRL_OUT PORTB
-#define _SYNTH_CTRL_IN  PINB
-#define _SYNTH_EOM 1
-#define _SYNTH_PD 2
-#define _SYNTH_CE 3
-/*
- * Hardcoded into init.c procedure
- *
-#define _SYNTH_ADDR_DDR DDRD
-#define _SYNTH_CTRL_DDR DDRB
-*/
 
 /*
  * Delay.h CPU speed definition
@@ -117,7 +87,6 @@ struct wind_array
   volatile uint8_t flag;
   volatile uint8_t speed_rt;
   volatile int angle_rt;
-
 
   /*
     wind elements
