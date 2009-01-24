@@ -23,7 +23,7 @@
  */
 
 /* CPU Speed 4 MHz */
-#define F_CPU 4E6
+#define F_CPU 4000000UL
 /*
  #define F_CPU 4000000UL 4Mhz
  #define F_CPU 14.7456E6
@@ -104,6 +104,25 @@ struct wind_array
   uint8_t vmin_rt, vmax_rt;
   struct complex vector_rt, media_rt;
   uint8_t counter_rt;
+};
+
+#define UART_BAUD 9600
+#define UART_RXBUF_SIZE 128
+#define UART_TXBUF_SIZE 128
+#define UART_RXBUF_MASK ( UART_RXBUF_SIZE - 1 )
+#define UART_TXBUF_MASK ( UART_TXBUF_SIZE - 1 )
+#if ( UART_RXBUF_SIZE & UART_RXBUF_MASK )
+#error RX buffer size is not a power of 2
+#endif
+#if ( UART_TXBUF_SIZE & UART_TXBUF_MASK )
+#error TX buffer size is not a power of 2
+#endif
+
+struct uartStruct
+{
+  char *rx_buffer;
+  char *tx_buffer;
+  volatile uint8_t rx_flag, tx_flag, rxIdx, txIdx;
 };
 
 #endif

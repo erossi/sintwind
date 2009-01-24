@@ -1,14 +1,14 @@
 MCU = atmega8
 INC = -I/usr/avr/include/
 LIBS = m
-OPTLEV = 2
+OPTLEV = s
 export CFLAGS = $(INC) -Wall -Wstrict-prototypes -pedantic -mmcu=$(MCU) -O$(OPTLEV)
 export LFLAGS = -l$(LIBS)
 export CC = avr-gcc
 
 REMOVE = rm -f
 
-objects = sht11.o cell.o init.o adc.o anemometer.o synth.o media.o isr.o
+objects = sht11.o cell.o init.o adc.o anemometer.o synth.o media.o isr.o uart_isr.o uart.o
 SUBDIRS =
 
 .PHONY: clean indent $(SUBDIRS)
@@ -16,6 +16,7 @@ SUBDIRS =
 .SUFFIXES: .c, .o
 
 all: $(objects)
+	$(CC) $(CFLAGS) -D TXRXI -c uart.c
 	$(CC) $(CFLAGS) -o ../sint.elf main.c $(objects) $(LFLAGS)
 
 test_sht11: $(objects)

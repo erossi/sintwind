@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2008 Enrico Rossi
+ * Copyright (C) 2005-2009 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -28,10 +28,12 @@
 #include "anemometer.h"
 #include "media.h"
 #include "cell.h"
+#include "uart.h"
 
 /* Globals */
 struct wind_array *wind;
 volatile int loop;
+struct uartStruct *uartPtr;
 
 int main (void)
 {
@@ -56,6 +58,7 @@ int main (void)
   array_init (wind);
   anemometer_init ();
   phone_init ();
+  uartPtr = uart_init();
   sht11_init ();
 
   synth_pause ();
@@ -72,7 +75,7 @@ int main (void)
       sei ();
     }
 
-    if (ring ())
+    if (ring())
     {
       answer_phone ();
       sht11_read_all (temperature);

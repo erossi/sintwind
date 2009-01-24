@@ -1,7 +1,7 @@
 MCU = atmega8
 INC = -I/usr/avr/include/
 LIBS = m
-OPTLEV = 2
+OPTLEV = s
 export CFLAGS = $(INC) -Wall -Wstrict-prototypes -pedantic -mmcu=$(MCU) -O$(OPTLEV)
 export LFLAGS = -l$(LIBS)
 export CC = avr-gcc
