@@ -16,6 +16,7 @@
  */
 
 #include <inttypes.h>
+#include <stdlib.h>
 #include <avr/interrupt.h>
 #include "default.h"
 #include "init.h"
@@ -37,18 +38,13 @@ struct uartStruct *uartPtr;
 
 int main (void)
 {
-  /* Global VARS */
-  struct wind_array why_not_use_malloc;
-  struct sht11_t why_not_use_malloc2;
   struct sht11_t *temperature;
+  char *message;
 
-  /*
-   * allocating variables
-   */
-
-  wind = &why_not_use_malloc;
   loop = 0;
-  temperature = &why_not_use_malloc2;
+  wind = malloc(sizeof(struct wind_array));
+  temperature = malloc(sizeof(struct sht11_t));
+  message = malloc(UART_RXBUF_SIZE);
 
   /*
    * initializing parts
@@ -74,13 +70,16 @@ int main (void)
       wind->flag = 0;
       sei ();
     }
+    
+    if (phone_message()) {
 
-    if (ring())
-    {
-      answer_phone ();
-      sht11_read_all (temperature);
-      synth_play_message (wind, temperature);
-      hangup_phone ();
+	    if (ring())
+	    {
+		    answer_phone ();
+		    sht11_read_all (temperature);
+		    synth_play_message (wind, temperature);
+		    hangup_phone ();
+	    }
     }
   }
 }
