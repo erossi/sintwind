@@ -25,29 +25,25 @@
 
 extern struct uartStruct *uartPtr;
 
-ISR (USART_RXC_vect)
+ISR(USART_RXC_vect)
 {
-  char tmp;
+	char tmp;
 
-  tmp = UDR;
+	tmp = UDR;
 
-  if ((uartPtr->rxIdx+1) & UART_RXBUF_MASK)
-  {
-    uartPtr->rx_buffer[uartPtr->rxIdx] = tmp;
-    uartPtr->rxIdx++;
-    uartPtr->rx_buffer[uartPtr->rxIdx] = 0;
+	if ((uartPtr->rxIdx + 1) & UART_RXBUF_MASK) {
+		uartPtr->rx_buffer[uartPtr->rxIdx] = tmp;
+		uartPtr->rxIdx++;
+		uartPtr->rx_buffer[uartPtr->rxIdx] = 0;
 
-    if (tmp == '\r')
-      uartPtr->rx_flag++;
-  }
-  else
-  {
-    uartPtr->rxIdx = 0;
-    uartPtr->rx_buffer[0] = 0;
-  }
+		if (tmp == '\r')
+			uartPtr->rx_flag++;
+	} else {
+		uartPtr->rxIdx = 0;
+		uartPtr->rx_buffer[0] = 0;
+	}
 }
 
-ISR (USART_TXC_vect)
+ISR(USART_TXC_vect)
 {
 }
-

@@ -15,7 +15,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdlib.h> 
+#include <stdlib.h>
 #include <avr/io.h>
 #include "default.h"
 #include "uart_isr.h"
@@ -26,55 +26,63 @@
  */
 struct uartStruct *uart_init(void)
 {
-  struct uartStruct *tmp;
+	struct uartStruct *tmp;
 
 #if F_CPU < 2000000UL && defined(U2X)
-  /* improve baud rate error by using 2x clk */
-  UCSRA = _BV (U2X);
-  UBRRL = (F_CPU / (8UL * UART_BAUD)) - 1;
+	/* improve baud rate error by using 2x clk */
+	UCSRA = _BV(U2X);
+	UBRRL = (F_CPU / (8UL * UART_BAUD)) - 1;
 #else
-  UBRRL = (F_CPU / (16UL * UART_BAUD)) - 1;
+	UBRRL = (F_CPU / (16UL * UART_BAUD)) - 1;
 #endif
 
 #if defined TXONLY
-  /* Tx only without Rx */
-  UCSRB = _BV (TXEN);
+	/* Tx only without Rx */
+	UCSRB = _BV(TXEN);
 #endif
 
 #if defined TXRX
-  /* Tx and Rx only without interrupt */
-  UCSRB = _BV (TXEN) | _BV (RXEN);
+	/* Tx and Rx only without interrupt */
+	UCSRB = _BV(TXEN) | _BV(RXEN);
 #endif
 
 #if defined RXIONLY
-  /* Rx only with interrupt */
-  UCSRB = _BV (RXCIE) | _BV (RXEN);
+	/* Rx only with interrupt */
+	UCSRB = _BV(RXCIE) | _BV(RXEN);
 #endif
 
 #if defined TXRXI
-  /* Rx with interrupt and Tx normal */
-  UCSRB = _BV (RXCIE) | _BV (RXEN) | _BV (TXEN);
+	/* Rx with interrupt and Tx normal */
+	UCSRB = _BV(RXCIE) | _BV(RXEN) | _BV(TXEN);
 #endif
 
 #if defined TXIRXI
-  /* Rx and Tx with interrupt */
-  UCSRB = _BV (RXCIE) | _BV (RXEN) | _BV (TXCIE) | _BV (TXEN);
+	/* Rx and Tx with interrupt */
+	UCSRB = _BV(RXCIE) | _BV(RXEN) | _BV(TXCIE) | _BV(TXEN);
 #endif
 
-  /* 8n2 */
-  UCSRC = _BV (URSEL) | _BV (USBS) | _BV (UCSZ0) | _BV (UCSZ1);
+	/* 8n2 */
+	UCSRC = _BV(URSEL) | _BV(USBS) | _BV(UCSZ0) | _BV(UCSZ1);
 
-  tmp = malloc(sizeof(struct uartStruct));
-  tmp->rx_buffer = malloc(UART_RXBUF_SIZE);
-  tmp->tx_buffer = malloc(UART_TXBUF_SIZE);
-  tmp->rx_flag = 0;
-  tmp->tx_flag = 0;
-  tmp->rxIdx = 0;
-  tmp->txIdx = 0;
-  tmp->rx_buffer[0] = 0;
-  tmp->tx_buffer[0] = 0;
+	tmp = malloc(sizeof(struct uartStruct));
+	tmp->rx_buffer = malloc(UART_RXBUF_SIZE);
+	tmp->tx_buffer = malloc(UART_TXBUF_SIZE);
+	tmp->rx_flag = 0;
+	tmp->tx_flag = 0;
+	tmp->rxIdx = 0;
+	tmp->txIdx = 0;
+	tmp->rx_buffer[0] = 0;
+	tmp->tx_buffer[0] = 0;
 
-  return(tmp);
+	return (tmp);
+}
+
+void uart_get_msg(char *s)
+{
+	strcpy(s, uartPtr->rx_buffer);
+	uartPtr->rx_flag = 0;
+	uartPtr->rxIdx = 0;
+	uartPtr->rx_buffer[0] = 0;
 }
 
 /*
@@ -82,25 +90,24 @@ struct uartStruct *uart_init(void)
  * is empty.
  */
 
-void uart_putchar (const char c)
+void uart_putchar(const char c)
 {
-  if (c == '\n')
-    uart_putchar ('\r');
-  loop_until_bit_is_set (UCSRA, UDRE);
-  UDR = c;
+	if (c == '\n')
+		uart_putchar('\r');
+	loop_until_bit_is_set(UCSRA, UDRE);
+	UDR = c;
 }
 
 /*
  * Send a C (NUL-terminated) string down the UART Tx.
  */
-void uart_printstr (char *s)
+void uart_printstr(char *s)
 {
-  while (*s)
-  {
-    /*
-    if (*s == '\n')
-      uart_putchar ('\r');
-      */
-    uart_putchar (*s++);
-  }
+	while (*s) {
+		/*
+		   if (*s == '\n')
+		   uart_putchar ('\r');
+		 */
+		uart_putchar(*s++);
+	}
 }

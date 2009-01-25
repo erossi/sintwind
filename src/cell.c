@@ -16,6 +16,7 @@
  */
 
 #include <inttypes.h>
+#include <string.h>
 #include <avr/io.h>
 #include "default.h"
 #include "uart.h"
@@ -23,60 +24,72 @@
 /* put this after default because we have to set F_CPU */
 #include <util/delay.h>
 
-void phone_init(void)
+extern struct uartStruct *uartPtr;
+
+void phone_on(void)
 {
-  uint8_t i;
+	uint8_t i;
 
-  uart_init();
+	/*
+	 * Press the red button for 1 sec
+	 * then release it and wait another second.
+	 */
 
-/*
- * Press the red button for 1 sec
- * then release it and wait another second.
- */
+	_PHONE_PORT |= _BV(_PHONE_ON);
+	for (i = 0; i < 100; i++)
+		_delay_ms(10);
 
-  _PHONE_PORT |= _BV (_PHONE_ON);
-  for (i=0; i<100; i++)
-    _delay_ms (10);
-
-  _PHONE_PORT &= ~(_BV (_PHONE_ON));
-  for (i=0; i<100; i++)
-    _delay_ms (10);
+	_PHONE_PORT &= ~(_BV(_PHONE_ON));
+	for (i = 0; i < 100; i++)
+		_delay_ms(10);
 }
 
-uint8_t phone_message(char *s) {
-	if (uart->rx_flag) {
-		/*
-		   copia string
-		   uartPtr->rx_buffer
-		 */
-		uart->rx_flag = 0;
-		return(1);
-	}
-	else
-		return(0);
-}
-
-void send(const char *s) {
+void send(const char *s)
+{
 	uart_printstr(s);
 }
 
-void waitfor(const char *s) {
-}
-
-uint8_t ring(void)
+int waitfor(const char *s)
 {
-  return (bit_is_set (_PHONE_IN, _PHONE_RING));
+	uint8_t i;
+	int j;
+
+	j = 1;
+
+	for (i = 0; i < 50; i++)
+		if (uartPtr->rx_flag) {
+			j = strcmp(uartPtr->rx_buffer, s);
+			uartPtr->rx_flag = 0;
+			uartPtr->rxIdx = 0;
+			uartPtr->rx_buffer[0] = 0;
+			i = 50;
+		} else
+			_delay_ms(10);
+
+	return (j);
 }
 
-void answer_phone (void)
+int phone_init(void)
+{
+	uartPtr = uart_init();
+	phone_on();
+	send('AT');
+	return (waitfor("OK"));
+}
+
+int ring(void)
+{
+	return (waitfor("RING"));
+}
+
+void answer_phone(void)
 {
 	send('ATA');
 	waitfor('OK');
 }
 
-void hangup_phone (void)
+void hangup_phone(void)
 {
 	send('ATH');
 	waitfor('OK');
 }
-

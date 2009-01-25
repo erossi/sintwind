@@ -36,51 +36,47 @@ struct wind_array *wind;
 volatile int loop;
 struct uartStruct *uartPtr;
 
-int main (void)
+int main(void)
 {
-  struct sht11_t *temperature;
-  char *message;
+	struct sht11_t *temperature;
+	char *message;
 
-  loop = 0;
-  wind = malloc(sizeof(struct wind_array));
-  temperature = malloc(sizeof(struct sht11_t));
-  message = malloc(UART_RXBUF_SIZE);
+	loop = 0;
+	wind = malloc(sizeof(struct wind_array));
+	temperature = malloc(sizeof(struct sht11_t));
+	message = malloc(UART_RXBUF_SIZE);
 
-  /*
-   * initializing parts
-   */
+	/*
+	 * initializing parts
+	 */
 
-  port_init ();
-  array_init (wind);
-  anemometer_init ();
-  uartPtr = uart_init();
-  phone_init ();
-  sht11_init ();
+	port_init();
+	array_init(wind);
+	anemometer_init();
+	phone_init();
+	sht11_init();
 
-  synth_pause ();
+	synth_pause();
 
-  /* Enable interrupt */
-  sei ();
+	/* Enable interrupt */
+	sei();
 
-  for (;;)
-  {
-    if (wind->flag)
-    {
-      do_media (wind);
-      wind->flag = 0;
-      sei ();
-    }
-    
-    if (phone_message()) {
+	for (;;) {
+		if (wind->flag) {
+			do_media(wind);
+			wind->flag = 0;
+			sei();
+		}
 
-	    if (ring())
-	    {
-		    answer_phone ();
-		    sht11_read_all (temperature);
-		    synth_play_message (wind, temperature);
-		    hangup_phone ();
-	    }
-    }
-  }
+		if (ring()) {
+			answer_phone();
+			sht11_read_all(temperature);
+			synth_play_message(wind, temperature);
+			hangup_phone();
+		}
+	}
+
+	free(wind);
+	free(temperture);
+	free(message);
 }
-
