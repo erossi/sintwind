@@ -16,9 +16,11 @@ SUBDIRS =
 .SUFFIXES: .c, .o
 
 all: $(objects)
-	$(CC) $(CFLAGS) -D TXRXI -c uart.c
 	$(CC) $(CFLAGS) -o ../sint.elf main.c $(objects) $(LFLAGS)
 
+uart.o:
+	$(CC) $(CFLAGS) -D TXRXI -c uart.c
+	 
 test_sht11: $(objects)
 	$(CC) $(CFLAGS) -o ../sint.elf test_sht11.c $(objects) $(LFLAGS)
 
