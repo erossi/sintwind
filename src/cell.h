@@ -22,8 +22,8 @@
 #define _PHONE_ON 4
 
 void phone_init(void);
-uint8_t ring(void);
-void answer_phone(void);
-void hangup_phone(void);
+int phone_msg(char *s);
+void phone_answer(void);
+void phone_hangup(void);
 
 #endif

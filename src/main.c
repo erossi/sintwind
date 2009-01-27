@@ -68,12 +68,15 @@ int main(void)
 			sei();
 		}
 
-		if (ring()) {
-			answer_phone();
-			sht11_read_all(temperature);
-			synth_play_message(wind, temperature);
-			hangup_phone();
-		}
+		if (phone_msg(message))
+			switch (*message) {
+			case 'RING':
+				phone_answer();
+				sht11_read_all(temperature);
+				synth_play_message(wind, temperature);
+				phone_hangup();
+				break;
+			}
 	}
 
 	free(wind);

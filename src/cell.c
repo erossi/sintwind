@@ -51,8 +51,7 @@ void send(const char *s)
 
 int waitfor(const char *s)
 {
-	uint8_t i;
-	int j;
+	int i,j;
 
 	j = 1;
 
@@ -77,18 +76,22 @@ int phone_init(void)
 	return (waitfor("OK"));
 }
 
-int ring(void)
+int phone_msg(char *s)
 {
-	return (waitfor("RING"));
+	if (uartPtr->rx_flag) {
+		uart_get_msg(s);
+		return (1);
+	} else
+		return(0);
 }
 
-void answer_phone(void)
+void phone_answer(void)
 {
 	send('ATA');
 	waitfor('OK');
 }
 
-void hangup_phone(void)
+void phone_hangup(void)
 {
 	send('ATH');
 	waitfor('OK');
