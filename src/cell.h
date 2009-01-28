@@ -25,5 +25,6 @@ int phone_init(void);
 int phone_msg(char *s);
 void phone_answer(void);
 void phone_hangup(void);
+enum phone_message phone_check_msg(char *s);
 
 #endif

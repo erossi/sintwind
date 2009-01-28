@@ -69,12 +69,14 @@ int main(void)
 		}
 
 		if (phone_msg(message))
-			switch (*message) {
-			case "RING":
+			switch (phone_check_msg(message)) {
+			case RING:
 				phone_answer();
 				sht11_read_all(temperature);
 				synth_play_message(wind, temperature);
 				phone_hangup();
+				break;
+			case UNKNOWN:
 				break;
 			}
 	}
