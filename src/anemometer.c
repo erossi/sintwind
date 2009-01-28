@@ -25,10 +25,10 @@
 #include "adc.h"
 #include "anemometer.h"
 
-void anemometer_init (void)
+void anemometer_init(void)
 {
-  adc_init ();
-  isr_init ();
+	adc_init();
+	isr_init();
 
 /* Do We need a port Setup for the Pulse counter??? Maybe */
 }
@@ -37,31 +37,30 @@ void anemometer_init (void)
   return standard direction
   from encoder 0-359
 */
-enum wind_dir
-get_wind_direction (int direction)
+enum wind_dir get_wind_direction(int direction)
 {
-  enum wind_dir wind;
+	enum wind_dir wind;
 
-  wind = NORTH;
+	wind = NORTH;
 
-  /* Default case */
+	/* Default case */
 /*   if ((direction < 23) || (direction >= 338)) */
 /*     wind = NORTH; */
 
-  if ((direction >= 23) && (direction < 68))
-    wind = NORTH_EAST;
-  if ((direction >= 68) && (direction < 113))
-    wind = EAST;
-  if ((direction >= 113) && (direction < 158))
-    wind = SOUTH_EAST;
-  if ((direction >= 158) && (direction < 203))
-    wind = SOUTH;
-  if ((direction >= 203) && (direction < 248))
-    wind = SOUTH_WEST;
-  if ((direction >= 248) && (direction < 293))
-    wind = WEST;
-  if ((direction >= 293) && (direction < 338))
-    wind = NORTH_WEST;
+	if ((direction >= 23) && (direction < 68))
+		wind = NORTH_EAST;
+	if ((direction >= 68) && (direction < 113))
+		wind = EAST;
+	if ((direction >= 113) && (direction < 158))
+		wind = SOUTH_EAST;
+	if ((direction >= 158) && (direction < 203))
+		wind = SOUTH;
+	if ((direction >= 203) && (direction < 248))
+		wind = SOUTH_WEST;
+	if ((direction >= 248) && (direction < 293))
+		wind = WEST;
+	if ((direction >= 293) && (direction < 338))
+		wind = NORTH_WEST;
 
-  return (wind);
+	return (wind);
 }
