@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _INIT_H_
-#define _INIT_H_
+#ifndef INIT_H_
+#define INIT_H_
 
 /* void init_port (void); */
 /* void init_counter (void); */

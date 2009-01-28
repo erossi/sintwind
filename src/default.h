@@ -15,15 +15,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _DEFAULT_WIND_H_
-#define _DEFAULT_WIND_H_
+#ifndef DEFAULT_WIND_H_
+#define DEFAULT_WIND_H_
 
 /*
  * Delay.h CPU speed definition
  */
 
-/* CPU Speed 4 MHz */
-#define F_CPU 4000000UL
+#ifndef F_CPU
+
+/* CPU Speed 1 MHz */
+#define F_CPU 1000000UL
 /*
  #define F_CPU 4000000UL 4Mhz
  #define F_CPU 14.7456E6
@@ -32,6 +34,7 @@
  The maximal possible delay is 262.14 ms / F_CPU in MHz.
  so we have 4Mhz CPU, maximum is 65ms. (65.535 actually).
 */
+#endif
 
 /*
  *  Set the prescaler used for the timer.

@@ -15,8 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _UART_H_
-#define _UART_H_
+#ifndef UART_H_
+#define UART_H_
 
 struct uartStruct *uart_init(void);
 void uart_putchar(const char c);

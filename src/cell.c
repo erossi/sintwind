@@ -35,11 +35,11 @@ void phone_on(void)
 	 * then release it and wait another second.
 	 */
 
-	_PHONE_PORT |= _BV(_PHONE_ON);
+	PHONE_PORT |= _BV(PHONE_ON);
 	for (i = 0; i < 100; i++)
 		_delay_ms(10);
 
-	_PHONE_PORT &= ~(_BV(_PHONE_ON));
+	PHONE_PORT &= ~(_BV(PHONE_ON));
 	for (i = 0; i < 100; i++)
 		_delay_ms(10);
 }

@@ -92,8 +92,6 @@ void uart_get_msg(char *s)
 
 void uart_putchar(const char c)
 {
-	if (c == '\n')
-		uart_putchar('\r');
 	loop_until_bit_is_set(UCSRA, UDRE);
 	UDR = c;
 }
@@ -104,10 +102,8 @@ void uart_putchar(const char c)
 void uart_printstr(char *s)
 {
 	while (*s) {
-		/*
-		   if (*s == '\n')
-		   uart_putchar ('\r');
-		 */
+		if (*s == '\n')
+			uart_putchar ('\r');
 		uart_putchar(*s++);
 	}
 }

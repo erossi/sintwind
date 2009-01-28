@@ -15,11 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _CELL_H_
-#define _CELL_H_
+#ifndef CELL_H_
+#define CELL_H_
 
-#define _PHONE_PORT PORTB
-#define _PHONE_ON 4
+#define PHONE_PORT PORTB
+#define PHONE_ON 4
 
 void phone_init(void);
 int phone_msg(char *s);

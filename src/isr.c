@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2008 Enrico Rossi
+ * Copyright (C) 2005-2009 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -68,7 +68,7 @@ ISR (SIG_INPUT_CAPTURE1)
     is less than _ANEMOMETER_CUTOFF count prescaled, we have a spike,
     ignoring it.
   */
-  if (diff > _ANEMOMETER_CUTOFF)
+  if (diff > ANEMOMETER_CUTOFF)
     {
       ++loop;
       timer = ICR1;

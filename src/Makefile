@@ -2,7 +2,8 @@ MCU = atmega8
 INC = -I/usr/avr/include/
 LIBS = m
 OPTLEV = s
-export CFLAGS = $(INC) -Wall -Wstrict-prototypes -pedantic -mmcu=$(MCU) -O$(OPTLEV)
+FCPU = 4000000UL
+export CFLAGS = $(INC) -Wall -Wstrict-prototypes -pedantic -mmcu=$(MCU) -O$(OPTLEV) -D F_CPU=$(FCPU)
 export LFLAGS = -l$(LIBS)
 export CC = avr-gcc
 
