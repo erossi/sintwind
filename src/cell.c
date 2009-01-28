@@ -72,7 +72,7 @@ int phone_init(void)
 {
 	uartPtr = uart_init();
 	phone_on();
-	send('AT');
+	send("AT");
 	return (waitfor("OK"));
 }
 
@@ -87,12 +87,12 @@ int phone_msg(char *s)
 
 void phone_answer(void)
 {
-	send('ATA');
-	waitfor('OK');
+	send("ATA");
+	waitfor("OK");
 }
 
 void phone_hangup(void)
 {
-	send('ATH');
-	waitfor('OK');
+	send("ATH");
+	waitfor("OK");
 }

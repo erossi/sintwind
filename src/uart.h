@@ -19,7 +19,8 @@
 #define UART_H_
 
 struct uartStruct *uart_init(void);
+void uart_get_msg(char *s);
 void uart_putchar(const char c);
-void uart_printstr(char *s);
+void uart_printstr(const char *s);
 
 #endif

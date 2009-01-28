@@ -70,7 +70,7 @@ int main(void)
 
 		if (phone_msg(message))
 			switch (*message) {
-			case 'RING':
+			case "RING":
 				phone_answer();
 				sht11_read_all(temperature);
 				synth_play_message(wind, temperature);
@@ -80,6 +80,6 @@ int main(void)
 	}
 
 	free(wind);
-	free(temperture);
+	free(temperature);
 	free(message);
 }

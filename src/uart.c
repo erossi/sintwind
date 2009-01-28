@@ -16,10 +16,13 @@
  */
 
 #include <stdlib.h>
+#include <string.h>
 #include <avr/io.h>
 #include "default.h"
 #include "uart_isr.h"
 #include "uart.h"
+
+extern struct uartStruct *uartPtr;
 
 /*
  * Initialize the UART to 9600 Bd, tx/rx, 8N1.
@@ -99,7 +102,7 @@ void uart_putchar(const char c)
 /*
  * Send a C (NUL-terminated) string down the UART Tx.
  */
-void uart_printstr(char *s)
+void uart_printstr(const char *s)
 {
 	while (*s) {
 		if (*s == '\n')

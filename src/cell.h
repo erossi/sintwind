@@ -21,7 +21,7 @@
 #define PHONE_PORT PORTB
 #define PHONE_ON 4
 
-void phone_init(void);
+int phone_init(void);
 int phone_msg(char *s);
 void phone_answer(void);
 void phone_hangup(void);
