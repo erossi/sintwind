@@ -18,11 +18,11 @@
 #ifndef SHT11_H_
 #define SHT11_H_
 
-#define SHT11_DDR	DDRC
-#define SHT11_PORT	PORTC
-#define SHT11_PIN	PINC
-#define SHT11_SCK	PC5
-#define SHT11_DATA	PC4
+#define SHT11_DDR	DDRB
+#define SHT11_PORT	PORTB
+#define SHT11_PIN	PINB
+#define SHT11_DATA	PB1
+#define SHT11_SCK	PB2
 
 #define SHT11_CMD_STATUS_REG_W 6
 #define SHT11_CMD_STATUS_REG_R 7

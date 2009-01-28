@@ -20,70 +20,79 @@
 #include "default.h"
 #include "init.h"
 
-void port_b_init (void)
+void port_a_init(void)
 {
-  /*
-   * pb0: IN - Davis wind speed pulse
-   * pb1: IN - /EOM from synth
-   * pb2: OUT - PD to synth
-   * pb3: OUT - /CE to synth
-   * pb4: OUT - A2 addr bus synth
-   * pb5: OUT - A3 addr bus synth
-   * pb6-7: UnUsed
-   */
+	/*
+	 * pa0: IN - ADC0 Wind direction
+	 * pa1-7: Unused
+	 */
 
-  /*
-   * Synth Pre init.
-   * Setting these before enable port to avoid
-   * playing message at startup.
-   * PD = 0, /CE = 1
-   */
-  PORTB = _BV (3);
-  DDRB = _BV (2) | _BV (3) | _BV (4) | _BV (5);
+	PORTA = 0;
+	DDRA = 0;
 }
 
-void port_c_init (void)
+void port_b_init(void)
 {
-  /*
-  * pc0: IN - ?
-  * pc1: IN - ADC1 Wind direction
-  * pc2: OUT - mc35i IGT_IN
-  * pc3: OUT - Led LD1
-  * pc4: xx - sht11 SDA used in/out on needed
-  * pc5: xx - sht11 SCL used in/out on needed
-  * pc6-7: UnUsed
-  */
+	/*
+	 * pb0: OUT - IGT_IN mc35i on/off pulse
+	 * pb1: xx - sht11 SDA used in/out on needed
+	 * pb2: xx - sht11 SCL used in/out on needed
+	 * pb3: IN - /EOM from synth
+	 * pb4: OUT - PD to synth
+	 * pb5: OUT - /CE to synth
+	 * pb6: OUT - LD1 led
+	 * pb7: unused
+	 */
 
-  PORTC = 0;
-  DDRC = _BV (2) | _BV (3);
+	/*
+	 * Synth Pre init.
+	 * Setting these before enable port to avoid
+	 * playing message at startup.
+	 * PD = 0, /CE = 1
+	 */
+	PORTB = _BV(5);
+	DDRB = _BV(0) | _BV(4) | _BV(5) | _BV(6);
 }
 
-void port_d_init (void)
+void port_c_init(void)
 {
-  /*
-   * pd0-1: xx RS232 rx/tx
-   * ps2-7: OUT - sht11 A4-A9
-   */
-  DDRD = 0xFC;
+	/*
+	 * pc0-7: OUT - sht11 A2-A9
+	 */
+
+	PORTC = 0;
+	DDRC = 0xff;
 }
 
-void port_init (void)
+void port_d_init(void)
 {
-  port_b_init ();
-  port_c_init ();
-  port_d_init ();
+	/*
+	 * pd0-1: xx RS232 rx/tx
+	 * pd6: IN - ICP1 Davis wind speed pulse
+	 */
+
+	PORTD = 0;
+	DDRD = 0;
 }
 
-void array_init (struct wind_array *wind)
+void port_init(void)
 {
-  wind->flag = 0; /* 0=ok take value 1=value taken */
-  wind->speed = 0;
-  wind->vmin = 255;
-  wind->vmax = 0;
-  wind->angle = 0;
-  wind->direction = NORTH;
-  wind->tendency = STABLE;
-  wind->media_rt.x = 0;
-  wind->media_rt.y = 0;
-  wind->counter_rt = 0;
+	port_a_init();
+	port_b_init();
+	port_c_init();
+	port_d_init();
+}
+
+void array_init(struct wind_array *wind)
+{
+	wind->flag = 0;		/* 0=ok take value 1=value taken */
+	wind->speed = 0;
+	wind->vmin = 255;
+	wind->vmax = 0;
+	wind->angle = 0;
+	wind->direction = NORTH;
+	wind->tendency = STABLE;
+	wind->media_rt.x = 0;
+	wind->media_rt.y = 0;
+	wind->counter_rt = 0;
 }

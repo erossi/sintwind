@@ -128,10 +128,4 @@ struct uartStruct
   volatile uint8_t rx_flag, tx_flag, rxIdx, txIdx;
 };
 
-enum phone_message
-{
-  RING,
-  UNKNOWN
-};
-
 #endif

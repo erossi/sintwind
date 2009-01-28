@@ -96,9 +96,3 @@ void phone_hangup(void)
 	send("ATH");
 	waitfor("OK");
 }
-
-enum phone_message phone_check_msg(char *s)
-{
-	return(UNKNOWN);
-}
-

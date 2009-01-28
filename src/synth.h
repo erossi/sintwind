@@ -22,12 +22,12 @@
  * Synth PORT
  */
 
-#define SYNTH_ADDR PORTD
+#define SYNTH_ADDR PORTC
 #define SYNTH_CTRL_OUT PORTB
 #define SYNTH_CTRL_IN  PINB
-#define SYNTH_EOM 1
-#define SYNTH_PD 2
-#define SYNTH_CE 3
+#define SYNTH_EOM 4
+#define SYNTH_PD 5
+#define SYNTH_CE 6
 
 /* club di volo */
 #define SYNTH_S_CLUB 112

@@ -18,13 +18,13 @@
 #ifndef CELL_H_
 #define CELL_H_
 
+/* PB0 */
 #define PHONE_PORT PORTB
-#define PHONE_ON 4
+#define PHONE_ON 0
 
 int phone_init(void);
 int phone_msg(char *s);
 void phone_answer(void);
 void phone_hangup(void);
-enum phone_message phone_check_msg(char *s);
 
 #endif

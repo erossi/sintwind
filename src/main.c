@@ -17,6 +17,7 @@
 
 #include <inttypes.h>
 #include <stdlib.h>
+#include <string.h>
 #include <avr/interrupt.h>
 #include "default.h"
 #include "init.h"
@@ -68,17 +69,14 @@ int main(void)
 			sei();
 		}
 
-		if (phone_msg(message))
-			switch (phone_check_msg(message)) {
-			case RING:
+		if (phone_msg(message)) {
+			if (!strcasecmp(message, "RING")) {
 				phone_answer();
 				sht11_read_all(temperature);
 				synth_play_message(wind, temperature);
 				phone_hangup();
-				break;
-			case UNKNOWN:
-				break;
 			}
+		}
 	}
 
 	free(wind);

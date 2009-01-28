@@ -1,3 +1,12 @@
+
+SETUP:
+ cell.h: On/off port and PIN.
+ Makefile: F_CPU if different from 1Mhz CPU clock.
+ init.c: All PORT setup.
+ adc.c: Choose which ADC for wind direction.
+ sht11.h: Port and PIN used by SHT11
+ synth.h: Port and PIN used by Synth.
+
 - RESET del synth in fase di boot
 - sistemare la routine di EOM per l'attesa e l'antiskpike
 - PD a zero per tutta la durata della frase per non sentire i klick!

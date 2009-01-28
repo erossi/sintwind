@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2008 Enrico Rossi
+ * Copyright (C) 2005-2009 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,30 +19,28 @@
 #include <avr/io.h>
 #include "adc.h"
 
-void
-adc_init (void)
+void adc_init(void)
 {
-  /*
-     enable ADC, select ADC clock = F_CPU / 128
-     manual sample.
-   */
-  ADCSRA = _BV (ADEN) | _BV (ADPS2) | _BV (ADPS1) | _BV (ADPS0);
+	/*
+	   enable ADC, select ADC clock = F_CPU / 128
+	   manual sample.
+	 */
+	ADCSRA = _BV(ADEN) | _BV(ADPS2) | _BV(ADPS1) | _BV(ADPS0);
 
-  /* Set left adjusted result, adc1 */
-  ADMUX = _BV (REFS0) | _BV (ADLAR) | _BV (MUX0);
+	/* Set internal VREF, left adjusted result, adc0 */
+	ADMUX = _BV(REFS0) | _BV(ADLAR);
 }
 
-uint8_t
-adc_read (void)
+uint8_t adc_read(void)
 {
 /* Start the conversion */
-  ADCSRA |= _BV (ADSC);
+	ADCSRA |= _BV(ADSC);
 
 /* Wait until the conversion is ended */
-  loop_until_bit_is_clear (ADCSRA, ADSC);
+	loop_until_bit_is_clear(ADCSRA, ADSC);
 
 /* Return 8-bit conversion's value */
-  return (ADCH);
+	return (ADCH);
 }
 
 /*
@@ -50,13 +48,13 @@ adc_read (void)
   between 0-255 to 0-360 degrees
 */
 
-int get_wind_position (void)
+int get_wind_position(void)
 {
-  int i;
+	int i;
 
-  i = adc_read () * _ADC_RATIO;
-  if (i>359)
-    i = 359;
+	i = adc_read() * _ADC_RATIO;
+	if (i > 359)
+		i = 359;
 
-  return (i);
+	return (i);
 }
