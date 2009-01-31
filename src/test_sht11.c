@@ -33,52 +33,48 @@
 struct wind_array *wind;
 volatile int loop;
 
-int main (void)
+int main(void)
 {
-  /* Global VARS */
-  struct wind_array why_not_use_malloc;
-  struct sht11_t why_not_use_malloc2;
-  struct sht11_t *temperature;
+	/* Global VARS */
+	struct wind_array why_not_use_malloc;
+	struct sht11_t why_not_use_malloc2;
+	struct sht11_t *temperature;
 
-  /*
-   * allocating variables
-   */
+	/*
+	 * allocating variables
+	 */
 
-  wind = &why_not_use_malloc;
-  loop = 0;
-  temperature = &why_not_use_malloc2;
+	wind = &why_not_use_malloc;
+	loop = 0;
+	temperature = &why_not_use_malloc2;
 
-  /*
-   * initializing parts
-   */
+	/*
+	 * initializing parts
+	 */
 
-  port_init ();
-  array_init (wind);
-  anemometer_init ();
-  phone_init ();
-  sht11_init ();
+	port_init();
+	array_init(wind);
+	anemometer_init();
+	phone_init();
+	sht11_init();
 
-  synth_pause ();
+	synth_pause();
 
-  /* Enable interrupt */
-  sei ();
+	/* Enable interrupt */
+	sei();
 
-  for (;;)
-  {
-    if (wind->flag)
-    {
-      do_media (wind);
-      wind->flag = 0;
-      sei ();
-    }
+	for (;;) {
+		if (wind->flag) {
+			do_media(wind);
+			wind->flag = 0;
+			sei();
+		}
 
-    if (ring ())
-    {
-      answer_phone ();
-      sht11_read_all (temperature);
-      synth_play_message (wind, temperature);
-      hangup_phone ();
-    }
-  }
+		if (ring()) {
+			answer_phone();
+			sht11_read_all(temperature);
+			synth_play_message(wind, temperature);
+			hangup_phone();
+		}
+	}
 }
-

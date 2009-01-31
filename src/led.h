@@ -15,20 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MEDIA_H_
-#define MEDIA_H_
+#ifndef LED_H
+#define LED_H
 
-/*
-  Minutes to use to calculate media
-  It depends on cpu speed and prescaled timer
-  4.19 sec/cycle, 1 min= 15 cycle, 5 min= 75 cycle
-
-#define MEDIA_MINUTES 75
-*/
-
-/* 2 minutes */
-#define MEDIA_MINUTES 15
-
-void do_media(struct wind_array *wind);
+void led_blink(int num);
+void wait_for_click(void);
 
 #endif

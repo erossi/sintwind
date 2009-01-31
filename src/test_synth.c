@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2008 Enrico Rossi
+ * Copyright (C) 2005-2009 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,16 +16,20 @@
  */
 
 #include <inttypes.h>
+#include <util/delay.h>
 #include "default.h"
 #include "init.h"
 #include "synth.h"
 
-int main (void)
+/* Globals */
+struct wind_array *wind;
+volatile int loop;
+
+int main(void)
 {
-  uint8_t i;
-  
-  port_init ();
-  synth_pause ();
+	uint8_t i;
+
+	port_init();
 
 /*   for (;;) */
 /*     { */
@@ -93,15 +97,14 @@ int main (void)
 /*     } */
 
 /* Play the whole synth memory */
-  for (;;)
-    {
-      for (i=0; i<97; i+=2)
-	say_it (i);
+	for (;;) {
+		for (i = 0; i < 97; i += 2)
+			say_it(i);
 
-      say_it (99);
-      say_it (102);
-      say_it (105);
-      say_it (108);
-      say_it (112);
-    }
+		say_it(99);
+		say_it(102);
+		say_it(105);
+		say_it(108);
+		say_it(112);
+	}
 }

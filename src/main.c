@@ -54,8 +54,8 @@ int main(void)
 	port_init();
 	array_init(wind);
 	anemometer_init();
-	phone_init();
 	sht11_init();
+	phone_init();
 
 	synth_pause();
 

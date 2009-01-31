@@ -17,26 +17,16 @@
 
 #include <inttypes.h>
 #include <avr/io.h>
-#include "default.h"
-/* put this after default because we have to set F_CPU */
 #include <util/delay.h>
+#include "default.h"
 #include "sht11.h"
 #include "synth.h"
-
-void synth_pause(void)
-{
-	uint8_t i;
-
-	/* 200ms */
-	for (i = 0; i < 4; i++)
-		_delay_ms(50);
-}
 
 void synth_reset(void)
 {
 	/* RESET SYNTH */
 	/* errore devono essere up tutte e 2 alti */
-	SYNTH_CTRL_OUT = _BV(SYNTH_PD) | _BV(SYNTH_CE);
+	SYNTH_CTRL_OUT |= _BV(SYNTH_PD) | _BV(SYNTH_CE);
 	_delay_ms(50);
 }
 
@@ -57,7 +47,8 @@ void wait_for_eom(void)
 void say_it(uint8_t position)
 {
 	/* set PD to 0 */
-	SYNTH_CTRL_OUT = _BV(SYNTH_CE);	/* PD = 0, /CE = 1 */
+	SYNTH_CTRL_OUT &= ~_BV(SYNTH_PD);
+	SYNTH_CTRL_OUT |= _BV(SYNTH_CE);	/* PD = 0, /CE = 1 */
 	_delay_ms(50);
 
 	/* set a0-a8 to address the text */
@@ -65,11 +56,11 @@ void say_it(uint8_t position)
 	_delay_ms(50);		/* Only for PD -> CE > 100msec */
 
 	/* set /CE to 0 */
-	SYNTH_CTRL_OUT = 0;	/* PD = 0, /CE = 0 */
+	SYNTH_CTRL_OUT &= ~_BV(SYNTH_CE);	/* PD = 0, /CE = 0 */
 	_delay_ms(5);
 
 	/* set /CE to 1 */
-	SYNTH_CTRL_OUT = _BV(SYNTH_CE);	/* PD = 0, /CE = 1 */
+	SYNTH_CTRL_OUT |= _BV(SYNTH_CE);	/* PD = 0, /CE = 1 */
 	_delay_ms(1);
 
 	wait_for_eom();

@@ -106,7 +106,9 @@ void uart_printstr(const char *s)
 {
 	while (*s) {
 		if (*s == '\n')
-			uart_putchar ('\r');
+			uart_putchar('\r');
 		uart_putchar(*s++);
 	}
+	uart_putchar('\r');
+	uart_putchar('\n');
 }

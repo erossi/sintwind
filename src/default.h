@@ -20,21 +20,17 @@
 
 /*
  * Delay.h CPU speed definition
- */
+ * MUST BE IN MAKEFILE OR IN GCC -D F_CPU=4000000UL
 
-#ifndef F_CPU
-
-/* CPU Speed 1 MHz */
-#define F_CPU 1000000UL
-/*
+ #define F_CPU 1000000UL 1Mhz
  #define F_CPU 4000000UL 4Mhz
  #define F_CPU 14.7456E6
 
  maximum delay possible is: (see util/delay.h)
  The maximal possible delay is 262.14 ms / F_CPU in MHz.
  so we have 4Mhz CPU, maximum is 65ms. (65.535 actually).
+ Over this range you loose precision.
 */
-#endif
 
 /*
  *  Set the prescaler used for the timer.
@@ -53,62 +49,59 @@
 #define MEDIA_NEXT_CYCLE 1
  */
 
-enum wind_dir
-{
-  NORTH,
-  NORTH_EAST,
-  EAST,
-  SOUTH_EAST,
-  SOUTH,
-  SOUTH_WEST,
-  WEST,
-  NORTH_WEST
+enum wind_dir {
+	NORTH,
+	NORTH_EAST,
+	EAST,
+	SOUTH_EAST,
+	SOUTH,
+	SOUTH_WEST,
+	WEST,
+	NORTH_WEST
 };
 
-enum wind_tendency
-{
-  INCREASE,
-  DECREASE,
-  STABLE
+enum wind_tendency {
+	INCREASE,
+	DECREASE,
+	STABLE
 };
 
-struct complex
-{
-  float x;
-  float y;
+struct complex {
+	float x;
+	float y;
 };
 
-struct wind_array
-{
-  /*
-    Volatile stuff, used into ISR
-    flag: boolean used by ISR to tell to main there is a new
-          data (speed and direction) to be elaborated.
-    speed_rt: number of pulse x round detected.
-    angle_rt: 0-359 degrees detected
-  */
-  volatile uint8_t flag;
-  volatile uint8_t speed_rt;
-  volatile int angle_rt;
+struct wind_array {
+	/*
+	   Volatile stuff, used into ISR
+	   flag: boolean used by ISR to tell to main there is a new
+	   data (speed and direction) to be elaborated.
+	   speed_rt: number of pulse x round detected.
+	   angle_rt: 0-359 degrees detected
+	 */
+	volatile uint8_t flag;
+	volatile uint8_t speed_rt;
+	volatile int angle_rt;
 
-  /*
-    wind elements
-    speed
-    0-359 degrees
-  */
-  uint8_t speed, vmin, vmax;
-  int angle;
-  enum wind_dir direction;
-  enum wind_tendency tendency;
+	/*
+	   wind elements
+	   speed
+	   0-359 degrees
+	 */
+	uint8_t speed, vmin, vmax;
+	int angle;
+	enum wind_dir direction;
+	enum wind_tendency tendency;
 
-  /*
-    real time elements
-  */
-  uint8_t vmin_rt, vmax_rt;
-  struct complex vector_rt, media_rt;
-  uint8_t counter_rt;
+	/*
+	   real time elements
+	 */
+	uint8_t vmin_rt, vmax_rt;
+	struct complex vector_rt, media_rt;
+	uint8_t counter_rt;
 };
 
+#define UART_HAVE_DEFAULT
 #define UART_BAUD 9600
 #define UART_RXBUF_SIZE 128
 #define UART_TXBUF_SIZE 128
@@ -121,11 +114,47 @@ struct wind_array
 #error TX buffer size is not a power of 2
 #endif
 
-struct uartStruct
-{
-  char *rx_buffer;
-  char *tx_buffer;
-  volatile uint8_t rx_flag, tx_flag, rxIdx, txIdx;
+struct uartStruct {
+	char *rx_buffer;
+	char *tx_buffer;
+	volatile uint8_t rx_flag, tx_flag, rxIdx, txIdx;
+};
+
+/* Led setup */
+#define LED_HAVE_DEFAULT
+#define LED_PORT PORTB
+#define LED_P PB5
+#define LED_MANUAL_PORT PINB
+#define LED_MANUAL_P PINB7
+
+/* Phone setup */
+#define PHONE_HAVE_DEFAULT
+#define PHONE_PORT PORTB
+#define PHONE_ON PB0
+
+/* Synth */
+#define SYNTH_HAVE_DEFAULT
+#define SYNTH_ADDR PORTC
+#define SYNTH_CTRL_OUT PORTB
+#define SYNTH_CTRL_IN  PINB
+#define SYNTH_EOM PINB3
+#define SYNTH_PD PB4
+#define SYNTH_CE PB5
+
+#define SHT11_HAVE_DEFAULT
+#define SHT11_DDR	DDRB
+#define SHT11_PORT	PORTB
+#define SHT11_PIN	PINB
+#define SHT11_DATA	PB1
+#define SHT11_SCK	PB2
+
+struct sht11_t {
+	uint16_t raw_temperature;
+	uint16_t raw_humidity;
+	float temperature;
+	float humidity_linear;
+	float humidity_compensated;
+	float dewpoint;
 };
 
 #endif

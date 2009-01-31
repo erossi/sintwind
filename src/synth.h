@@ -18,17 +18,6 @@
 #ifndef SYNTH_H_
 #define SYNTH_H_
 
-/*
- * Synth PORT
- */
-
-#define SYNTH_ADDR PORTC
-#define SYNTH_CTRL_OUT PORTB
-#define SYNTH_CTRL_IN  PINB
-#define SYNTH_EOM 4
-#define SYNTH_PD 5
-#define SYNTH_CE 6
-
 /* club di volo */
 #define SYNTH_S_CLUB 112
 
@@ -49,7 +38,7 @@
 
 /* a */
 #define SYNTH_S_TO 86
- 
+
 /* XXX */
 
 /* km/h */
@@ -84,13 +73,12 @@
 /* data not avaiable */
 #define SYNTH_S_DNA 105
 
-void synth_init (void);
-void synth_play_message (struct wind_array *wind, struct sht11_t *temp);
+void synth_init(void);
+void synth_play_message(struct wind_array *wind, struct sht11_t *temp);
 
 /* Use under test only */
-void say_it (uint8_t position);
-void say_int (int value);
-void synth_pause (void);
-void synth_say_wind_direction (enum wind_dir direction);
+void say_it(uint8_t position);
+void say_int(int value);
+void synth_say_wind_direction(enum wind_dir direction);
 
 #endif

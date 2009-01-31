@@ -15,20 +15,25 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MEDIA_H_
-#define MEDIA_H_
+#include <avr/io.h>
+#include <util/delay.h>
+#include "default.h"
+#include "led.h"
 
-/*
-  Minutes to use to calculate media
-  It depends on cpu speed and prescaled timer
-  4.19 sec/cycle, 1 min= 15 cycle, 5 min= 75 cycle
+void led_blink(int num)
+{
+	while (num) {
+		LED_PORT |= _BV(LED_P);
+		_delay_ms(500);
+		LED_PORT &= ~_BV(LED_P);
+		_delay_ms(500);
+		num--;
+	}
+}
 
-#define MEDIA_MINUTES 75
-*/
-
-/* 2 minutes */
-#define MEDIA_MINUTES 15
-
-void do_media(struct wind_array *wind);
-
-#endif
+void wait_for_click(void)
+{
+	loop_until_bit_is_set(LED_MANUAL_PORT, LED_MANUAL_P);
+	led_blink(1);
+	_delay_ms(1000);
+}

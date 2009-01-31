@@ -27,33 +27,30 @@
 struct wind_array *wind;
 volatile int loop;
 
-int
-main (void)
+int main(void)
 {
-  /* Global VARS */
-  struct wind_array why_not_use_malloc;
+	/* Global VARS */
+	struct wind_array why_not_use_malloc;
 
-  wind = &why_not_use_malloc;
-  loop = 0;
-  array_init (wind);
-  anemometer_init ();
-  port_init ();
+	wind = &why_not_use_malloc;
+	loop = 0;
+	array_init(wind);
+	anemometer_init();
+	port_init();
 
-  synth_pause ();
+	synth_pause();
 
-  /* Enable interrupt */
-  sei ();
+	/* Enable interrupt */
+	sei();
 
-  for (;;)
-    {
-      if (wind->flag)
-	{
-	  do_media (wind);
-	  wind->flag = 0;
-	  sei ();
+	for (;;) {
+		if (wind->flag) {
+			do_media(wind);
+			wind->flag = 0;
+			sei();
+		}
+
+		if (wind->counter_rt == 1)
+			synth_play_message(wind);
 	}
-
-      if (wind->counter_rt == 1)
-	synth_play_message (wind);
-    }
 }

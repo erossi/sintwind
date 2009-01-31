@@ -1,4 +1,4 @@
-MCU = atmega8
+MCU = atmega16
 INC = -I/usr/avr/include/
 LIBS = m
 OPTLEV = s
@@ -43,9 +43,12 @@ test_adc: $(SUBDIRS)
 test_synth: $(SUBDIRS)
 	$(OBJCOPY) sint.elf sint.hex
 
+test_uart: $(SUBDIRS)
+	$(OBJCOPY) sint.elf sint.hex
+
 clean: $(SUBDIRS)
 	$(REMOVE) sint.elf sint.hex
 
-indent:
+indent: $(SUBDIRS)
 	indent *.c *.h
 

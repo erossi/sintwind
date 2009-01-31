@@ -18,11 +18,10 @@
 #include <inttypes.h>
 #include <string.h>
 #include <avr/io.h>
+#include <util/delay.h>
 #include "default.h"
 #include "uart.h"
 #include "cell.h"
-/* put this after default because we have to set F_CPU */
-#include <util/delay.h>
 
 extern struct uartStruct *uartPtr;
 
@@ -51,7 +50,7 @@ void send(const char *s)
 
 int waitfor(const char *s)
 {
-	int i,j;
+	int i, j;
 
 	j = 1;
 
@@ -76,13 +75,21 @@ int phone_init(void)
 	return (waitfor("OK"));
 }
 
+int phone_valid_msg(const char *s1, const char *s2)
+{
+	if (strstr(s1, s2))
+		return (1);
+	else
+		return (0);
+}
+
 int phone_msg(char *s)
 {
 	if (uartPtr->rx_flag) {
 		uart_get_msg(s);
 		return (1);
 	} else
-		return(0);
+		return (0);
 }
 
 void phone_answer(void)

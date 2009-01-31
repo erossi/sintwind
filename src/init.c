@@ -27,7 +27,6 @@ void port_a_init(void)
 	 * pa1-7: Unused
 	 */
 
-	PORTA = 0;
 	DDRA = 0;
 }
 
@@ -41,7 +40,7 @@ void port_b_init(void)
 	 * pb4: OUT - PD to synth
 	 * pb5: OUT - /CE to synth
 	 * pb6: OUT - LD1 led
-	 * pb7: unused
+	 * pb7: IN - Manual click
 	 */
 
 	/*
@@ -50,18 +49,18 @@ void port_b_init(void)
 	 * playing message at startup.
 	 * PD = 0, /CE = 1
 	 */
-	PORTB = _BV(5);
-	DDRB = _BV(0) | _BV(4) | _BV(5) | _BV(6);
+	PORTB = _BV(PB5);
+	DDRB = _BV(PB0) | _BV(PB4) | _BV(PB5) | _BV(PB6);
 }
 
 void port_c_init(void)
 {
 	/*
-	 * pc0-7: OUT - sht11 A2-A9
+	 * pc0-7: OUT - synth A2-A9
 	 */
 
-	PORTC = 0;
 	DDRC = 0xff;
+	PORTC = 0;
 }
 
 void port_d_init(void)
@@ -71,7 +70,6 @@ void port_d_init(void)
 	 * pd6: IN - ICP1 Davis wind speed pulse
 	 */
 
-	PORTD = 0;
 	DDRD = 0;
 }
 

@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2008 Enrico Rossi
+ * Copyright (C) 2005-2009 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -39,7 +39,8 @@ void set_data_out(void)
 
 void set_data_in(void)
 {
-	SHT11_DDR &= _BV(SHT11_SCK) | ~_BV(SHT11_DATA);
+	SHT11_DDR |= _BV(SHT11_SCK);
+	SHT11_DDR &= ~_BV(SHT11_DATA);
 }
 
 void set_data_high(void)
