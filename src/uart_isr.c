@@ -35,7 +35,7 @@ ISR(USART_RXC_vect)
 		uartPtr->rxIdx++;
 		uartPtr->rx_buffer[uartPtr->rxIdx] = 0;
 
-		if (tmp == '\n')
+		if (tmp == '\r')
 			uartPtr->rx_flag++;
 	} else {
 		uartPtr->rxIdx = 0;

@@ -85,11 +85,18 @@ int phone_valid_msg(const char *s1, const char *s2)
 
 int phone_msg(char *s)
 {
+	int i;
+
+	i = 0;
+
 	if (uartPtr->rx_flag) {
 		uart_get_msg(s);
-		return (1);
-	} else
-		return (0);
+
+		if (strlen(s) > 2)
+			i = 1;
+	}
+
+	return (i);
 }
 
 void phone_answer(void)

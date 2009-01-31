@@ -24,9 +24,9 @@ void led_blink(int num)
 {
 	while (num) {
 		LED_PORT |= _BV(LED_P);
-		_delay_ms(500);
+		_delay_ms(300);
 		LED_PORT &= ~_BV(LED_P);
-		_delay_ms(500);
+		_delay_ms(300);
 		num--;
 	}
 }
