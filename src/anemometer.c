@@ -29,8 +29,6 @@ void anemometer_init(void)
 {
 	adc_init();
 	isr_init();
-
-/* Do We need a port Setup for the Pulse counter??? Maybe */
 }
 
 /*

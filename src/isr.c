@@ -102,7 +102,7 @@ ISR(TIMER1_OVF_vect)
 	wind->speed_rt = loop;
 
 	/* 0-359 degrees */
-	wind->angle_rt = get_wind_position();
+	wind->angle_rt = adc_wind_position();
 	wind->flag = 1;
 	loop = 0;
 }

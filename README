@@ -4,6 +4,7 @@ SETUP:
  Makefile: F_CPU if different from 1Mhz CPU clock.
  init.c: All PORT setup.
  adc.c: Choose which ADC for wind direction.
+ adc.h: ADC ratio if not 0 - 5V.
  sht11.h: Port and PIN used by SHT11
  synth.h: Port and PIN used by Synth.
 
