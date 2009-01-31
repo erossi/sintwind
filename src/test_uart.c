@@ -31,29 +31,12 @@
 #include "media.h"
 #include "cell.h"
 #include "uart.h"
+#include "led.h"
 
 /* Globals */
 struct wind_array *wind;
 volatile int loop;
 struct uartStruct *uartPtr;
-
-void led_blink(int num)
-{
-	while (num) {
-		LED_PORT |= _BV(LED_P);
-		_delay_ms(500);
-		LED_PORT &= ~_BV(LED_P);
-		_delay_ms(500);
-		num--;
-	}
-}
-
-void wait_for_click(void)
-{
-	loop_until_bit_is_set(MANUAL_PORT, MANUAL_P);
-	led_blink(1);
-	_delay_ms(1000);
-}
 
 int main(void)
 {
@@ -70,7 +53,7 @@ int main(void)
 	 */
 
 	port_init();
-	led_blink(7);
+	led_blink(1);
 	wait_for_click();
 
 	array_init(wind);
@@ -94,13 +77,14 @@ int main(void)
 
 	for (;;) {
 		if (wind->flag) {
-			led_blink(2);
+			led_blink(1);
+			do_media(wind);
 			wind->flag = 0;
 			sei();
 		}
 
 		if (phone_msg(message)) {
-			led_blink(3);
+			led_blink(2);
 
 			if (phone_valid_msg(message, "RING")) {
 				phone_answer();
