@@ -20,3 +20,7 @@ How to set LFUSE bit for external Ceramic OSC at 4Mhz:
  and change for atmega16 to 0xee with:
  write lfuse 0 0xee
 
+ on atmega16 disable JTAG and free PORTC with:
+ dump hfuse
+ write hfuse 0 0xd9
+
