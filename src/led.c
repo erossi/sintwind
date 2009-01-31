@@ -33,7 +33,7 @@ void led_blink(int num)
 
 void wait_for_click(void)
 {
-	loop_until_bit_is_set(LED_MANUAL_PORT, LED_MANUAL_P);
+	loop_until_bit_is_clear(LED_MANUAL_PORT, LED_MANUAL_P);
 	led_blink(1);
 	_delay_ms(1000);
 }

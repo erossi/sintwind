@@ -123,7 +123,7 @@ struct uartStruct {
 /* Led setup */
 #define LED_HAVE_DEFAULT
 #define LED_PORT PORTB
-#define LED_P PB5
+#define LED_P PB6
 #define LED_MANUAL_PORT PINB
 #define LED_MANUAL_P PINB7
 
