@@ -10,29 +10,12 @@ contatore: uguale all'altro / 2, xche' ha una sola chiusura.
 
 "dati non disponibili" primo ciclo.
 
-BUG:
-----
-- 2.3.2008 -
+- Init debug, se il pIN di debug e' attivo in fase di boot allora switcha sul sistema di debug.
 
- > Allora....
- > Dati inpostati prima dell'accensione: direzione sud/ovest; velocit?
- > 21. Accendo e dopo qualche secondo dice "Stazione meteo
- > club........vento proveniente da nord con una intensit? media da 155
- > a 0 Km/h". Immagino che i dati NORD, 155 e 0 siano quelli che vengono
- > detti quando non ci sono dati disponibili.  
- 
- Al boot:
-   wind->speed = 0;
-   wind->vmin = 255;
-   wind->vmax = 0;
-   wind->angle = 0;
-   wind->direction = NORTH;
-   wind->tendency = STABLE;
- 
- > Dopo 5': "Stazione..........sud/ovest.........7...82 Km/h".  
- 
- Ok questo e' un bug da considerare, perche' nel ciclo successivo, viene
- preso come primo elemento min e max la media del ciclo precedente,
- questo genera l'errore, in quanto 82 come max vince per tutto il
- periodo, mentre il minimo viene cambiato quasi subito. Prendo nota.
+- Sistema anti-bouncing, alla prima accensione setta nella eeprom un flag.
+  1. Se tutto e' ok allora togli il flag e prosegui.
+  2. Se il modem non risponde, ma siamo ancora vivi, allora delay 1H e rirpova (1).
+
+  Se all'accensione c'e' il flag nella eeprom allora:
+  - attando 1H e riprendo dal 1.
 
