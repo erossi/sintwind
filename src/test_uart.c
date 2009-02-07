@@ -42,6 +42,7 @@ int main(void)
 {
 	struct sht11_t *temperature;
 	char *message;
+	int i;
 
 	loop = 0;
 	wind = malloc(sizeof(struct wind_array));
@@ -74,6 +75,13 @@ int main(void)
 
 	/* Enable interrupt */
 	sei();
+
+	if (phone_setup())
+		led_blink(5);
+	else
+		led_blink(1);
+
+	wait_for_click();
 
 	for (;;) {
 		if (wind->flag) {

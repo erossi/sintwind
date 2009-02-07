@@ -18,7 +18,8 @@
 #ifndef CELL_H_
 #define CELL_H_
 
-int phone_init(void);
+void phone_init(void);
+int phone_setup(void);
 int phone_msg(char *s);
 void phone_answer(void);
 void phone_hangup(void);
