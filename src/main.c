@@ -17,7 +17,7 @@
 
 #include <inttypes.h>
 #include <stdlib.h>
-#include <string.h>
+#include <util/delay.h>
 #include <avr/interrupt.h>
 #include "default.h"
 #include "init.h"
@@ -31,6 +31,7 @@
 #include "media.h"
 #include "cell.h"
 #include "uart.h"
+#include "led.h"
 
 /* Globals */
 struct wind_array *wind;
@@ -57,20 +58,26 @@ int main(void)
 	sht11_init();
 	phone_init();
 
-	synth_pause();
-
 	/* Enable interrupt */
 	sei();
 
+	if (phone_setup())
+		led_blink(5);
+	else
+		led_blink(1);
+
 	for (;;) {
 		if (wind->flag) {
+			led_blink(1);
 			do_media(wind);
 			wind->flag = 0;
 			sei();
 		}
 
 		if (phone_msg(message)) {
-			if (!strcasecmp(message, "RING")) {
+			led_blink(2);
+
+			if (phone_valid_msg(message, "RING")) {
 				phone_answer();
 				sht11_read_all(temperature);
 				synth_play_message(wind, temperature);
