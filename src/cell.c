@@ -26,15 +26,6 @@
 
 extern struct uartStruct *uartPtr;
 
-void phone_on(void)
-{
-	_delay_ms(1000);
-	PHONE_PORT |= _BV(PHONE_ON);
-	_delay_ms(500);
-	PHONE_PORT &= ~(_BV(PHONE_ON));
-	_delay_ms(1000);
-}
-
 void send(const char *s)
 {
 	uart_printstr(s);
@@ -87,11 +78,15 @@ int waitfor(const char *s)
 void phone_init(void)
 {
 	uartPtr = uart_init();
-	phone_on();
 }
 
-int phone_setup(void)
+int phone_on(void)
 {
+	_delay_ms(1000);
+	PHONE_PORT |= _BV(PHONE_ON);
+	_delay_ms(500);
+	PHONE_PORT &= ~(_BV(PHONE_ON));
+	_delay_ms(10000);
 	send("AT&FE0&C0&D0");
 	return (waitfor("OK"));
 }

@@ -1,3 +1,7 @@
+RUN
+ At power-on Sint the phone will be checked, if it does not respond
+ an idle time of 1h will be execuded blinking 5 times every 10sec.
+ You can terminate idle time by grounding the DEBUG switch.
 
 SETUP:
  cell.h: On/off port and PIN.

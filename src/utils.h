@@ -15,10 +15,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef LED_H
-#define LED_H
+#ifndef UTILS_H
+#define UTILS_H
 
 void led_blink(int num);
 void wait_for_click(void);
+int check_for_click(void);
 
 #endif

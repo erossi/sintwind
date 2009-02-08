@@ -18,14 +18,14 @@
 #include <avr/io.h>
 #include <util/delay.h>
 #include "default.h"
-#include "led.h"
+#include "utils.h"
 
 void led_blink(int num)
 {
 	while (num) {
-		LED_PORT |= _BV(LED_P);
+		UTILS_LED_PORT |= _BV(UTILS_LED_PIN);
 		_delay_ms(300);
-		LED_PORT &= ~_BV(LED_P);
+		UTILS_LED_PORT &= ~_BV(UTILS_LED_PIN);
 		_delay_ms(300);
 		num--;
 	}
@@ -33,7 +33,17 @@ void led_blink(int num)
 
 void wait_for_click(void)
 {
-	loop_until_bit_is_clear(LED_MANUAL_PORT, LED_MANUAL_P);
+	loop_until_bit_is_clear(UTILS_SWITCH_PORT, UTILS_SWITCH_PIN);
 	led_blink(1);
 	_delay_ms(1000);
+}
+
+int check_for_click(void)
+{
+	if (bit_is_clear(UTILS_SWITCH_PORT, UTILS_SWITCH_PIN)) {
+		led_blink(1);
+		_delay_ms(1000);
+		return(1);
+	} else
+		return(0);
 }

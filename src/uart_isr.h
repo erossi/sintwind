@@ -18,4 +18,6 @@
 #ifndef UART_ISRSINT_H_
 #define UART_ISRSINT_H_
 
+#define UART_EOL '\r'
+
 #endif

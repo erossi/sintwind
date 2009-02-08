@@ -19,7 +19,7 @@
 #define CELL_H_
 
 void phone_init(void);
-int phone_setup(void);
+int phone_on(void);
 int phone_msg(char *s);
 void phone_answer(void);
 void phone_hangup(void);

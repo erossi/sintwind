@@ -23,3 +23,6 @@
  periodo, mentre il minimo viene cambiato quasi subito. Prendo nota.
 
 07.02.2009: SHT11 elimina i due loop until bit x senno il codice si inkioda se l'SHT11 ha problemi
+
+08.02.2009: Il settaggio di wind->flag esegue un cli() ogni 4 secondi, ora con la 232 forse non e' il caso.
+

@@ -19,6 +19,7 @@
 #include <stdlib.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
+#include <avr/eeprom.h>
 #include "default.h"
 #include "init.h"
 #include "synth.h"
@@ -27,15 +28,32 @@
 #include "media.h"
 #include "cell.h"
 #include "uart.h"
-#include "led.h"
+#include "utils.h"
+
+/* EEPROM Area have to be global? */
+uint8_t EEMEM EE_chkpoint;
 
 /* Globals */
 struct wind_array *wind;
 volatile int loop;
 struct uartStruct *uartPtr;
 
+void delay1h(void)
+{
+	int i;
+
+	for (i=0; i<360; i++) {
+		led_blink(5);
+		_delay_ms(10000);
+
+		if (check_for_click())
+			i = 360;
+	}
+}
+
 int main(void)
 {
+	uint8_t chkpoint;
 	struct sht11_t *temperature;
 	char *message;
 
@@ -44,23 +62,33 @@ int main(void)
 	temperature = malloc(sizeof(struct sht11_t));
 	message = malloc(UART_RXBUF_SIZE);
 
-	/*
-	 * initializing parts
-	 */
-
+	/* initializing parts */
 	port_init();
 	array_init(wind);
 	anemometer_init();
 	sht11_init();
-	phone_init();
+	phone_init(); /* activate uart comm only */
+	sei(); /* Enable interrupt */
 
-	/* Enable interrupt */
-	sei();
+	/* Read eeprom checkpoint status */
+	chkpoint = eeprom_read_byte(&EE_chkpoint);
 
-	if (phone_setup())
-		led_blink(5);
-	else
-		led_blink(1);
+	if (chkpoint)
+		delay1h();
+	else {
+		chkpoint = 1;
+		eeprom_write_byte(&EE_chkpoint, chkpoint);
+	}
+
+	/* if there is not enought juice we may crash here */
+	while (chkpoint) {
+		if (phone_on())
+			delay1h(); /* error */
+		else {
+			chkpoint = 0;
+			eeprom_write_byte(&EE_chkpoint, chkpoint);
+		}
+	}
 
 	for (;;) {
 		if (wind->flag) {
