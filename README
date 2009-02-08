@@ -4,15 +4,9 @@ SETUP:
  Makefile: F_CPU if different from 1Mhz CPU clock.
  init.c: All PORT setup.
  adc.c: Choose which ADC for wind direction.
- adc.h: ADC ratio if not 0 - 5V.
+ adc.h: ADC ratio if not 0 - 4V.
  sht11.h: Port and PIN used by SHT11
  synth.h: Port and PIN used by Synth.
-
-- RESET del synth in fase di boot
-- sistemare la routine di EOM per l'attesa e l'antiskpike
-- PD a zero per tutta la durata della frase per non sentire i klick!
-- DELAY reset synth a 50ms da sistemare.
-- reset synth da mettere nell'init del prog. principale
 
 How to set LFUSE bit for external Ceramic OSC at 4Mhz:
  avrdude -c stk500 -p atmega16 -P /dev/ttyUSB0 -t -u

@@ -1,7 +1,3 @@
-contatore: uguale all'altro / 2, xche' ha una sola chiusura.
-
-- controlla con la demo board la tenuta o meno delle porte i/o, ovvero setta a zeo un BV e poi setta dopo altri BV e verifica che il primo non sia cambiato.
-
 - reset synth con PD CE a 1
 
 - frase finale:
@@ -18,4 +14,10 @@ contatore: uguale all'altro / 2, xche' ha una sola chiusura.
 
   Se all'accensione c'e' il flag nella eeprom allora:
   - attando 1H e riprendo dal 1.
+
+- RESET del synth in fase di boot
+- sistemare la routine di EOM per l'attesa e l'antiskpike
+- PD a zero per tutta la durata della frase per non sentire i klick!
+- DELAY reset synth a 50ms da sistemare.
+- reset synth da mettere nell'init del prog. principale
 
