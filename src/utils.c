@@ -47,3 +47,16 @@ int check_for_click(void)
 	} else
 		return(0);
 }
+
+void delay1h(void)
+{
+	int i;
+
+	for (i=0; i<360; i++) {
+		led_blink(5);
+		_delay_ms(10000);
+
+		if (check_for_click())
+			i = 360;
+	}
+}

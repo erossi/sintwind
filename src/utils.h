@@ -21,5 +21,6 @@
 void led_blink(int num);
 void wait_for_click(void);
 int check_for_click(void);
+void delay1h(void);
 
 #endif

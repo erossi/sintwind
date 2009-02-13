@@ -30,7 +30,7 @@
 #include "uart.h"
 #include "utils.h"
 
-/* EEPROM Area have to be global? */
+/* EEPROM Area really have to be global? */
 uint8_t EEMEM EE_chkpoint;
 
 /* Globals */
@@ -38,41 +38,19 @@ struct wind_array *wind;
 volatile int loop;
 struct uartStruct *uartPtr;
 
-void delay1h(void)
+/* Better 2 main with and without debug since only one will run */
+void run_with_debug(struct sht11_t *temperature, char *message)
 {
-	int i;
-
-	for (i=0; i<360; i++) {
-		led_blink(5);
-		_delay_ms(10000);
-
-		if (check_for_click())
-			i = 360;
-	}
 }
 
-int main(void)
+void run_free(struct sht11_t *temperature, char *message)
 {
 	uint8_t chkpoint;
-	struct sht11_t *temperature;
-	char *message;
 
-	loop = 0;
-	wind = malloc(sizeof(struct wind_array));
-	temperature = malloc(sizeof(struct sht11_t));
-	message = malloc(UART_RXBUF_SIZE);
-
-	/* initializing parts */
-	port_init();
-	array_init(wind);
-	anemometer_init();
-	sht11_init();
-	phone_init(); /* activate uart comm only */
-	sei(); /* Enable interrupt */
-
-	/* Read eeprom checkpoint status */
+	/* Read eeprom checkpoint status (last boot) */
 	chkpoint = eeprom_read_byte(&EE_chkpoint);
 
+	/* If checkpoint then last boot went wrong */
 	if (chkpoint)
 		delay1h();
 	else {
@@ -80,10 +58,10 @@ int main(void)
 		eeprom_write_byte(&EE_chkpoint, chkpoint);
 	}
 
-	/* if there is not enought juice we may crash here */
+	/* without enought power we may die here */
 	while (chkpoint) {
 		if (phone_on())
-			delay1h(); /* error */
+			delay1h();	/* error */
 		else {
 			chkpoint = 0;
 			eeprom_write_byte(&EE_chkpoint, chkpoint);
@@ -115,8 +93,38 @@ int main(void)
 			synth_play_message(wind, temperature);
 		}
 	}
+}
+
+int main(void)
+{
+	int debug;
+	struct sht11_t *temperature;
+	char *message;
+
+	/* Init globals */
+	loop = 0;
+	wind = malloc(sizeof(struct wind_array));
+
+	/* Init locals */
+	temperature = malloc(sizeof(struct sht11_t));
+	message = malloc(UART_RXBUF_SIZE);
+
+	/* initializing parts */
+	port_init();
+	debug = check_for_click();
+	array_init(wind);
+	anemometer_init();
+	sht11_init();
+	phone_init();		/* activate uart comm only */
+	sei();			/* Enable interrupt */
+
+	if (debug)
+		run_with_debug(temperature, message);
+	else
+		run_free(temperature, message);
 
 	free(wind);
 	free(temperature);
 	free(message);
+	return(0);
 }
