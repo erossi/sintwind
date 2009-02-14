@@ -82,15 +82,17 @@ void phone_init(void)
 
 int phone_on(void)
 {
+	int i;
+
 	_delay_ms(1000);
 	PHONE_PORT |= _BV(PHONE_ON);
 	_delay_ms(500);
 	PHONE_PORT &= ~(_BV(PHONE_ON));
 	_delay_ms(10000);
 	send("AT&FE0&C0&D0");
-	return (waitfor("OK"));
+	i = waitfor("OK");
 	send("AT^SNFS=5");
-	return (waitfor("OK"));
+	return (i | waitfor("OK"));
 }
 
 void phone_answer(void)
