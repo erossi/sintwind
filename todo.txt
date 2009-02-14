@@ -21,3 +21,5 @@
 - DELAY reset synth a 50ms da sistemare.
 - reset synth da mettere nell'init del prog. principale
 
+- Input gain e/o attenuazione in EEPROM con settaggio via debug/sms
+

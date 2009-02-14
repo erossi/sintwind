@@ -89,6 +89,8 @@ int phone_on(void)
 	_delay_ms(10000);
 	send("AT&FE0&C0&D0");
 	return (waitfor("OK"));
+	send("AT^SNFS=5");
+	return (waitfor("OK"));
 }
 
 void phone_answer(void)
