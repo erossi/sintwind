@@ -10,6 +10,7 @@ CC = avr-gcc
 REMOVE = rm -f
 
 objects = sht11.o cell.o init.o adc.o anemometer.o synth.o media.o isr.o uart_isr.o uart.o utils.o
+objects += debug.o
 adc_obj = init.o adc.o led.o
 synth_obj = sht11.o init.o adc.o anemometer.o synth.o isr.o
 

@@ -29,6 +29,7 @@
 #include "cell.h"
 #include "uart.h"
 #include "utils.h"
+#include "debug.h"
 
 /* EEPROM Area really have to be global? */
 uint8_t EEMEM EE_chkpoint;
@@ -41,6 +42,48 @@ struct uartStruct *uartPtr;
 /* Better 2 main with and without debug since only one will run */
 void run_with_debug(struct sht11_t *temperature, char *message)
 {
+	uint8_t chkpoint;
+
+	debug_hello();
+	
+	/* Read eeprom checkpoint status (last boot) */
+	chkpoint = eeprom_read_byte(&EE_chkpoint);
+
+
+	/* If checkpoint then last boot went wrong */
+	if (chkpoint)
+		debug_write("Last power up went wrong\r\n");
+	else {
+		chkpoint = 1;
+		eeprom_write_byte(&EE_chkpoint, chkpoint);
+		debug_write("Setting up EEPROM checkpoint");
+	}
+
+	/* Keep the checkpoint set or clear in the eeprom */
+	if (debug_phone_on()) {
+		chkpoint = 0;
+		eeprom_write_byte(&EE_chkpoint, chkpoint);
+	}
+
+	for (;;) {
+		if (wind->flag) {
+			led_blink(1);
+			do_media(wind);
+			wind->flag = 0;
+			sei();
+		}
+
+		if (phone_msg(message)) {
+			led_blink(2);
+
+			if (phone_valid_msg(message, "RING")) {
+				phone_answer();
+				sht11_read_all(temperature);
+				synth_play_message(wind, temperature);
+				phone_hangup();
+			}
+		}
+	}
 }
 
 void run_free(struct sht11_t *temperature, char *message)
