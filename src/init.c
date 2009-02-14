@@ -40,7 +40,7 @@ void port_b_init(void)
 	 * pb4: OUT - PD to synth
 	 * pb5: OUT - /CE to synth
 	 * pb6: OUT - LD1 led
-	 * pb7: IN - Manual click
+	 * pb7: IN - Manual click - force PULL-UP
 	 */
 
 	/*
@@ -49,7 +49,7 @@ void port_b_init(void)
 	 * playing message at startup.
 	 * PD = 0, /CE = 1
 	 */
-	PORTB = _BV(PB5);
+	PORTB = _BV(PB5) | _BV(PB7);
 	DDRB = _BV(PB0) | _BV(PB4) | _BV(PB5) | _BV(PB6);
 }
 
