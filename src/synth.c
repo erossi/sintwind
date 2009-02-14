@@ -44,6 +44,39 @@ void wait_for_eom(void)
 	_delay_ms(25);
 }
 
+/* I need to rotate Synth Address bus according to electric schema */
+uint8_t adjust_addressbus(uint8_t position)
+{
+	uint8_t addr;
+
+	addr = 0;
+	if (position & 128) /* 0 or 128 */
+		addr |= _BV(0); /* set bit 0 */
+
+	if (position & 64) /* 0 or 64 */
+		addr |= _BV(1); /* set bit 1 */
+
+	if (position & 32)
+		addr |= _BV(2);
+
+	if (position & 16)
+		addr |= _BV(3);
+
+	if (position & 8)
+		addr |= _BV(4);
+
+	if (position & 4)
+		addr |= _BV(5);
+
+	if (position & 2)
+		addr |= _BV(6);
+
+	if (position & 1)
+		addr |= _BV(7);
+
+	return(addr);
+}
+
 void say_it(uint8_t position)
 {
 	/* set PD to 0 */
@@ -52,7 +85,7 @@ void say_it(uint8_t position)
 	_delay_ms(50);
 
 	/* set a0-a8 to address the text */
-	SYNTH_ADDR = position;
+	SYNTH_ADDR = adjust_addressbus(position);
 	_delay_ms(50);		/* Only for PD -> CE > 100msec */
 
 	/* set /CE to 0 */
