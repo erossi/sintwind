@@ -103,8 +103,9 @@ struct wind_array {
 
 #define UART_HAVE_DEFAULT
 #define UART_BAUD 9600
-#define UART_RXBUF_SIZE 128
-#define UART_TXBUF_SIZE 128
+/* Keep in mind that you don't have enought RAM */
+#define UART_RXBUF_SIZE 64
+#define UART_TXBUF_SIZE 64
 #define UART_RXBUF_MASK ( UART_RXBUF_SIZE - 1 )
 #define UART_TXBUF_MASK ( UART_TXBUF_SIZE - 1 )
 #if ( UART_RXBUF_SIZE & UART_RXBUF_MASK )

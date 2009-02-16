@@ -109,6 +109,8 @@ void uart_printstr(const char *s)
 			uart_putchar('\r');
 		uart_putchar(*s++);
 	}
-	uart_putchar('\r');
-	uart_putchar('\n');
+	/* Check if it's working before remove this
+	   uart_putchar('\r');
+	   uart_putchar('\n');
+	 */
 }

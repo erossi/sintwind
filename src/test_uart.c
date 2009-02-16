@@ -101,17 +101,17 @@ int main(void)
 				phone_answer();
 				led_blink(3);
 				wait_for_click();
-				
+
 				/*
-				sht11_read_all(temperature);
-				*/
+				   sht11_read_all(temperature);
+				 */
 				led_blink(3);
 				wait_for_click();
-				
+
 				synth_play_message(wind, temperature);
 				led_blink(3);
 				wait_for_click();
-				
+
 				phone_hangup();
 			}
 		}

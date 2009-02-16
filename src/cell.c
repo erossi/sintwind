@@ -93,20 +93,20 @@ int phone_on(void)
 	_delay_ms(500);
 	PHONE_PORT &= ~(_BV(PHONE_ON));
 	_delay_ms(10000);
-	phone_send("AT&FE0&C0&D0");
+	phone_send("AT&FE0&C0&D0\n");
 	i = phone_waitfor("OK", 0);
-	phone_send("AT^SNFS=5");
+	phone_send("AT^SNFS=5\n");
 	return (i | phone_waitfor("OK", 0));
 }
 
 void phone_answer(void)
 {
-	phone_send("ATA");
+	phone_send("ATA\n");
 	phone_waitfor("OK", 0);
 }
 
 void phone_hangup(void)
 {
-	phone_send("ATH0");
+	phone_send("ATH0\n");
 	phone_waitfor("OK", 0);
 }

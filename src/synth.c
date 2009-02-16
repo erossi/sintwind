@@ -57,11 +57,11 @@ uint8_t adjust_addressbus(uint8_t position)
 	uint8_t addr;
 
 	addr = 0;
-	if (position & 128) /* 0 or 128 */
-		addr |= _BV(0); /* set bit 0 */
+	if (position & 128)	/* 0 or 128 */
+		addr |= _BV(0);	/* set bit 0 */
 
-	if (position & 64) /* 0 or 64 */
-		addr |= _BV(1); /* set bit 1 */
+	if (position & 64)	/* 0 or 64 */
+		addr |= _BV(1);	/* set bit 1 */
 
 	if (position & 32)
 		addr |= _BV(2);
@@ -81,7 +81,7 @@ uint8_t adjust_addressbus(uint8_t position)
 	if (position & 1)
 		addr |= _BV(7);
 
-	return(addr);
+	return (addr);
 }
 
 void say_it(uint8_t position)

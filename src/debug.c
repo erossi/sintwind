@@ -19,7 +19,7 @@
 #include <stdlib.h>
 #include <util/delay.h>
 #include "default.h"
-#include "uart.h" /* should we use somethink from cell ? */
+#include "uart.h"		/* should we use somethink from cell ? */
 #include "cell.h"
 #include "utils.h"
 #include "debug.h"
@@ -34,18 +34,18 @@ void debug_write(const char *s)
 void debug_hello(void)
 {
 	debug_write("\n");
-	debug_write("***********************************************");
-	debug_write("*                                             *");
-	debug_write("* Open Sint Project - Sint Wind vX.Y          *");
-	debug_write("*               By                            *");
-	debug_write("*                                             *");
-	debug_write("* Andrea Marabini (info@marabo.it)            *");
-	debug_write("* Enrico Rossi    (e.rossi@tecnobrain.com)    *");
-	debug_write("*                                             *");
-	debug_write("* http://tecnobrain.com/OpenSint/             *");
-	debug_write("*            GNU GPL v3                       *");
-	debug_write("*                                             *");
-	debug_write("***********************************************");
+	debug_write("***********************************************\n");
+	debug_write("*                                             *\n");
+	debug_write("* Open Sint Project - Sint Wind vX.Y          *\n");
+	debug_write("*               By                            *\n");
+	debug_write("*                                             *\n");
+	debug_write("* Andrea Marabini (info@marabo.it)            *\n");
+	debug_write("* Enrico Rossi    (e.rossi@tecnobrain.com)    *\n");
+	debug_write("*                                             *\n");
+	debug_write("* http://tecnobrain.com/OpenSint/             *\n");
+	debug_write("*            GNU GPL v3                       *\n");
+	debug_write("*                                             *\n");
+	debug_write("***********************************************\n");
 	debug_write("\n");
 }
 
@@ -59,6 +59,7 @@ int debug_phone_on(char *msg)
 		led_blink(1);
 
 	debug_write(msg);
+	debug_write("\n");
 	led_blink(2);
 
 	if (phone_valid_msg(msg, "yes")) {
@@ -69,51 +70,51 @@ int debug_phone_on(char *msg)
 		i = 0;
 	}
 
-	return(i);
+	return (i);
 }
 
 void debug_wind_status(struct wind_array *wind)
 {
-	debug_write("This is the wind status (not yet!)\r\n");
+	debug_write("This is the wind status (not yet!)\n");
 }
 
-void debug_temperature(struct sht11_t *temp)
+/* passing an already malloc string spare RAM */
+void debug_temperature(struct sht11_t *temp, char *string)
 {
-	char *string;
+	string = ultoa(temp->raw_temperature, string, 10);
+	debug_write("Raw temperature value: ----------> ");
+	debug_write(string);
+	debug_write("\n");
 
-	string = malloc (20);
+	string = ultoa(temp->raw_humidity, string, 10);
+	debug_write("Raw humidity value: -------------> ");
+	debug_write(string);
+	debug_write("\n");
 
-	string = ultoa (temp->raw_temperature, string, 10);
-	debug_write (string);
-	debug_write (" ");
+	string = dtostrf((double)temp->temperature, 6, 3, string);
+	debug_write("Temperature (°C): ---------------> ");
+	debug_write(string);
+	debug_write("\n");
 
-	string = ultoa (temp->raw_humidity, string, 10);
-	debug_write (string);
-	debug_write (" ");
+	string = dtostrf((double)temp->humidity_linear, 6, 3, string);
+	debug_write("Linear Humidity (%): ------------> ");
+	debug_write(string);
+	debug_write("\n");
 
-	string = dtostrf ((double)temp->temperature, 6, 3, string);
-	debug_write (string);
-	debug_write (" ");
+	string = dtostrf((double)temp->humidity_compensated, 6, 3, string);
+	debug_write("Temp-compensated Humidity (%): --> ");
+	debug_write(string);
+	debug_write("\n");
 
-	string = dtostrf ((double)temp->humidity_linear, 6, 3, string);
-	debug_write (string);
-	debug_write (" ");
+	string = dtostrf((double)temp->dewpoint, 6, 3, string);
+	debug_write("Temperature dewpoint (°C): ------> ");
+	debug_write(string);
+	debug_write("\n");
 
-	string = dtostrf ((double)temp->humidity_compensated, 6, 3, string);
-	debug_write (string);
-	debug_write (" ");
-
-	string = dtostrf ((double)temp->dewpoint, 6, 3, string);
-	debug_write (string);
-	debug_write ("\r\n");
-
-	_delay_ms (100);
-
-	free (string);
+	_delay_ms(1000);
 }
 
 void debug_synth(struct wind_array *wind, struct sht11_t *temp)
 {
-	debug_write("This is the Synth part unimplemented yet!\r\n");
+	debug_write("This is the Synth part unimplemented yet!\n");
 }
-

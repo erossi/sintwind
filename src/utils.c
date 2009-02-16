@@ -43,16 +43,16 @@ int check_for_click(void)
 	if (bit_is_clear(UTILS_SWITCH_PORT, UTILS_SWITCH_PIN)) {
 		led_blink(1);
 		_delay_ms(1000);
-		return(1);
+		return (1);
 	} else
-		return(0);
+		return (0);
 }
 
 void delay1h(void)
 {
 	int i;
 
-	for (i=0; i<360; i++) {
+	for (i = 0; i < 360; i++) {
 		led_blink(5);
 		_delay_ms(10000);
 

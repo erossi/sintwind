@@ -45,10 +45,9 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 	uint8_t chkpoint;
 
 	debug_hello();
-	
+
 	/* Read eeprom checkpoint status (last boot) */
 	chkpoint = eeprom_read_byte(&EE_chkpoint);
-
 
 	/* If checkpoint then last boot went wrong */
 	if (chkpoint)
@@ -80,7 +79,8 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 			if (phone_valid_msg(message, "RING")) {
 				phone_answer();
 				sht11_read_all(temperature);
-				debug_temperature(temperature);
+				/* passing message to avoid malloc */
+				debug_temperature(temperature, message);
 				debug_synth(wind, temperature);
 				phone_hangup();
 			}
@@ -171,5 +171,5 @@ int main(void)
 	free(wind);
 	free(temperature);
 	free(message);
-	return(0);
+	return (0);
 }
