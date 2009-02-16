@@ -108,6 +108,12 @@ int main(void)
 				phone_hangup();
 			}
 		}
+
+		if (check_for_click()) {
+			led_blink(3);
+			sht11_read_all(temperature);
+			synth_play_message(wind, temperature);
+		}
 	}
 
 	free(wind);
