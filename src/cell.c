@@ -22,45 +22,45 @@
 /* put this after default because we have to set F_CPU */
 #include <util/delay.h>
 
-void phone_init (void)
+void phone_init(void)
 {
-  uint8_t i;
+	uint8_t i;
 
 /*
  * Press the red button for 1 sec
  * then release it and wait another second.
  */
 
-  _PHONE_PORT |= _BV (_PHONE_OFF);
-  for (i=0; i<100; i++)
-    _delay_ms (10);
+	_PHONE_PORT |= _BV(_PHONE_OFF);
+	for (i = 0; i < 100; i++)
+		_delay_ms(10);
 
-  _PHONE_PORT &= ~(_BV (_PHONE_OFF));
-  for (i=0; i<100; i++)
-    _delay_ms (10);
+	_PHONE_PORT &= ~(_BV(_PHONE_OFF));
+	for (i = 0; i < 100; i++)
+		_delay_ms(10);
 }
 
-uint8_t ring (void)
+uint8_t ring(void)
 {
-  return (bit_is_set (_PHONE_IN, _PHONE_RING));
+	return (bit_is_set(_PHONE_IN, _PHONE_RING));
 }
 
-void answer_phone (void)
+void answer_phone(void)
 {
-  uint8_t i;
+	uint8_t i;
 
 /*
  * Press the green button for 1/2 sec
  * then release it and wait another second.
  */
 
-  _PHONE_PORT |= _BV (_PHONE_ON);
-  for (i=0; i<50; i++)
-    _delay_ms (10);
+	_PHONE_PORT |= _BV(_PHONE_ON);
+	for (i = 0; i < 50; i++)
+		_delay_ms(10);
 
-  _PHONE_PORT &= ~(_BV (_PHONE_ON));
-  for (i=0; i<100; i++)
-    _delay_ms (10);
+	_PHONE_PORT &= ~(_BV(_PHONE_ON));
+	for (i = 0; i < 100; i++)
+		_delay_ms(10);
 }
 
 /*
@@ -69,16 +69,15 @@ void answer_phone (void)
  * case the communication is hangup before.
  */
 
-void hangup_phone (void)
+void hangup_phone(void)
 {
-  uint8_t i;
+	uint8_t i;
 
-  _PHONE_PORT |= _BV (_PHONE_OFF);
-  for (i=0; i<50; i++)
-    _delay_ms (10);
+	_PHONE_PORT |= _BV(_PHONE_OFF);
+	for (i = 0; i < 50; i++)
+		_delay_ms(10);
 
-  _PHONE_PORT &= ~(_BV (_PHONE_OFF));
-  for (i=0; i<100; i++)
-    _delay_ms (10);
+	_PHONE_PORT &= ~(_BV(_PHONE_OFF));
+	for (i = 0; i < 100; i++)
+		_delay_ms(10);
 }
-

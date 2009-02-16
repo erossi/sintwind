@@ -18,7 +18,7 @@
 #ifndef _ANEMOMETER_H_
 #define _ANEMOMETER_H_
 
-void anemometer_init (void);
-enum wind_dir get_wind_direction (int direction);
+void anemometer_init(void);
+enum wind_dir get_wind_direction(int direction);
 
 #endif

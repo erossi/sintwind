@@ -20,45 +20,46 @@
 #include "default.h"
 #include "init.h"
 
-void port_init (void)
+void port_init(void)
 {
-  /*
-   * Synth Pre-port init.
-   * Setting these before enable port to avoid
-   * playing message at startup.
-   * PD = 0, /CE = 1
-   */
-  _SYNTH_CTRL_OUT = _BV (_SYNTH_CE);
+	/*
+	 * Synth Pre-port init.
+	 * Setting these before enable port to avoid
+	 * playing message at startup.
+	 * PD = 0, /CE = 1
+	 */
+	_SYNTH_CTRL_OUT = _BV(_SYNTH_CE);
 
-  /*
-   * DDRB
-   * Synth PD and CE to out,
-   * phone ON and OFF to out.
-   */
-  DDRB = _BV (_SYNTH_PD) | _BV (_SYNTH_CE) | _BV (_PHONE_ON) | _BV (_PHONE_OFF);
+	/*
+	 * DDRB
+	 * Synth PD and CE to out,
+	 * phone ON and OFF to out.
+	 */
+	DDRB = _BV(_SYNTH_PD) | _BV(_SYNTH_CE) |
+	    _BV(_PHONE_ON) | _BV(_PHONE_OFF);
 
-  /*
-   * DDRD Synth address bus to OUT
-   */
-  DDRD = 0xFF;
+	/*
+	 * DDRD Synth address bus to OUT
+	 */
+	DDRD = 0xFF;
 
-  /*
-   * Phone RING in
-   * should be so by default!
-   * DDRC = .... keep the default
-   */
+	/*
+	 * Phone RING in
+	 * should be so by default!
+	 * DDRC = .... keep the default
+	 */
 }
 
-void array_init (struct wind_array *wind)
+void array_init(struct wind_array *wind)
 {
-  wind->flag = 0; /* 0=ok take value 1=value taken */
-  wind->speed = 0;
-  wind->vmin = 255;
-  wind->vmax = 0;
-  wind->angle = 0;
-  wind->direction = NORTH;
-  wind->tendency = STABLE;
-  wind->media_rt.x = 0;
-  wind->media_rt.y = 0;
-  wind->counter_rt = 0;
+	wind->flag = 0;		/* 0=ok take value 1=value taken */
+	wind->speed = 0;
+	wind->vmin = 255;
+	wind->vmax = 0;
+	wind->angle = 0;
+	wind->direction = NORTH;
+	wind->tendency = STABLE;
+	wind->media_rt.x = 0;
+	wind->media_rt.y = 0;
+	wind->counter_rt = 0;
 }

@@ -23,19 +23,18 @@
 #include "anemometer.h"
 #include "adc.h"
 
-int main (void)
+int main(void)
 {
-  struct wind_array wind;
+	struct wind_array wind;
 
-  port_init ();
-  adc_init ();
-  synth_pause ();
+	port_init();
+	adc_init();
+	synth_pause();
 
-  for (;;)
-    {
-      wind.angle = get_wind_position ();
-      wind.direction = get_wind_direction (wind.angle);
-      synth_say_wind_direction (wind.direction);
-      synth_pause ();
-    }
+	for (;;) {
+		wind.angle = get_wind_position();
+		wind.direction = get_wind_direction(wind.angle);
+		synth_say_wind_direction(wind.direction);
+		synth_pause();
+	}
 }

@@ -50,154 +50,152 @@ from a clean situation.
  default.h
  */
 
-void
-store_media (struct wind_array *wind)
+void store_media(struct wind_array *wind)
 {
-  float radiant;
+	float radiant;
 
-  /* set min and max */
-  wind->vmin = wind->vmin_rt;
-  wind->vmax = wind->vmax_rt;
+	/* set min and max */
+	wind->vmin = wind->vmin_rt;
+	wind->vmax = wind->vmax_rt;
 
-  /* media = sum / number of element */
-  wind->media_rt.x /= wind->counter_rt;
-  wind->media_rt.y /= wind->counter_rt;
+	/* media = sum / number of element */
+	wind->media_rt.x /= wind->counter_rt;
+	wind->media_rt.y /= wind->counter_rt;
 
-  /*
-     from complex back to p(r,theta)
-     r = sqrt(x*x + y*y)
-     theta = arc tangent (y/x)
-   */
-  wind->speed = sqrt ((wind->media_rt.x * wind->media_rt.x) +
-	  (wind->media_rt.y * wind->media_rt.y));
+	/*
+	   from complex back to p(r,theta)
+	   r = sqrt(x*x + y*y)
+	   theta = arc tangent (y/x)
+	 */
+	wind->speed = sqrt((wind->media_rt.x * wind->media_rt.x) +
+			   (wind->media_rt.y * wind->media_rt.y));
 
-  /* securing from division by zero error in the atan div! */
-  if (wind->media_rt.x == 0)
-    wind->media_rt.x = 0.01;
+	/* securing from division by zero error in the atan div! */
+	if (wind->media_rt.x == 0)
+		wind->media_rt.x = 0.01;
 
-  /*  theta in radiant */
-  radiant = atan (wind->media_rt.y / wind->media_rt.x);
+	/*  theta in radiant */
+	radiant = atan(wind->media_rt.y / wind->media_rt.x);
 
-  /*
-     Convert theta (radiant) to 360 degrees
-     atan (-PI to PI)
-     check your forgotten math school book
-   */
-  wind->angle = radiant * 180 / M_PI;
+	/*
+	   Convert theta (radiant) to 360 degrees
+	   atan (-PI to PI)
+	   check your forgotten math school book
+	 */
+	wind->angle = radiant * 180 / M_PI;
 
-  if (wind->media_rt.x >= 0)	/* 1th or 4th quadrant */
-    wind->angle = 90 - wind->angle;
-  else				/* 2th or 3th quadrant */
-    wind->angle = 270 - wind->angle;
+	if (wind->media_rt.x >= 0)	/* 1th or 4th quadrant */
+		wind->angle = 90 - wind->angle;
+	else			/* 2th or 3th quadrant */
+		wind->angle = 270 - wind->angle;
 
-  /* Get the direction from the angle */
-  wind->direction = get_wind_direction (wind->angle);
+	/* Get the direction from the angle */
+	wind->direction = get_wind_direction(wind->angle);
 
-  /* clear the real time media
-     if you want to start from 0,0 you have to clean the media
-     and reset min and max. If you want the first element of the next
-     cycle is the media of this cycle then keep the value.
-   */
+	/* clear the real time media
+	   if you want to start from 0,0 you have to clean the media
+	   and reset min and max. If you want the first element of the next
+	   cycle is the media of this cycle then keep the value.
+	 */
 #ifndef MEDIA_NEXT_CYCLE
-  /* case a) */
-  wind->media_rt.x = 0;
-  wind->media_rt.y = 0;
-  wind->counter_rt = 0;		/* clear real time counter */
-  wind->vmin_rt = 255;
-  wind->vmax_rt = 0;
+	/* case a) */
+	wind->media_rt.x = 0;
+	wind->media_rt.y = 0;
+	wind->counter_rt = 0;	/* clear real time counter */
+	wind->vmin_rt = 255;
+	wind->vmax_rt = 0;
 
 #else
-  /* case b) */
-  wind->counter_rt = 1;		/* set real time counter to 1 */
-  wind->vmin_rt = wind->speed;
-  wind->vmax_rt = wind->speed;
+	/* case b) */
+	wind->counter_rt = 1;	/* set real time counter to 1 */
+	wind->vmin_rt = wind->speed;
+	wind->vmax_rt = wind->speed;
 #endif
 }
 
-void
-do_media (struct wind_array *wind)
+void do_media(struct wind_array *wind)
 {
-  float radiant;
+	float radiant;
 
-  /*
-     Any time the main find it has a wind speed flag activate, it means
-     we have a tick per minutes value to elaborate.
-     This routine which is also hardware dependant is used to trasform
-     ticks per minuter in (?? m/s) (?? km/h).
-     REMEMBER: clear media_rt the first time (init)
-     speed_rt and angle_rt are set by interrupt routine
-   */
+	/*
+	   Any time the main find it has a wind speed flag activate, it means
+	   we have a tick per minutes value to elaborate.
+	   This routine which is also hardware dependant is used to trasform
+	   ticks per minuter in (?? m/s) (?? km/h).
+	   REMEMBER: clear media_rt the first time (init)
+	   speed_rt and angle_rt are set by interrupt routine
+	 */
 
-  /*
-   * Davis anemometer correction, 1 pulse per cycle instead of 2
-   * Wind speed * 2 to avoid changing boundaries below.
-   * If Davids anemometer becomes standard this MUST be fixed.
-   */
+	/*
+	 * Davis anemometer correction, 1 pulse per cycle instead of 2
+	 * Wind speed * 2 to avoid changing boundaries below.
+	 * If Davids anemometer becomes standard this MUST be fixed.
+	 */
 
-  wind->speed_rt *= 2;
+	wind->speed_rt *= 2;
 
-  /*
-     Adjust wind speed, these value are hardware dependant.
-     See spreadsheet.
-   */
-  if (wind->speed_rt < 140)
-    wind->speed_rt /= 2.7;
+	/*
+	   Adjust wind speed, these value are hardware dependant.
+	   See spreadsheet.
+	 */
+	if (wind->speed_rt < 140)
+		wind->speed_rt /= 2.7;
 
-  if ((wind->speed_rt >= 140) && (wind->speed_rt < 170))
-    wind->speed_rt /= 3;
+	if ((wind->speed_rt >= 140) && (wind->speed_rt < 170))
+		wind->speed_rt /= 3;
 
-  if ((wind->speed_rt >= 170) && (wind->speed_rt < 210))
-    wind->speed_rt /= 3.5;
+	if ((wind->speed_rt >= 170) && (wind->speed_rt < 210))
+		wind->speed_rt /= 3.5;
 
-  if (wind->speed_rt >= 210)
-    wind->speed_rt /= 6;
+	if (wind->speed_rt >= 210)
+		wind->speed_rt /= 6;
 
-  /*
-     convert wind direction from degrees to radiant
-     sin, cos etc. work with radiant.
-     radiant = degrees * 2PI /360
-   */
-  radiant = wind->angle_rt * M_PI / 180;
+	/*
+	   convert wind direction from degrees to radiant
+	   sin, cos etc. work with radiant.
+	   radiant = degrees * 2PI /360
+	 */
+	radiant = wind->angle_rt * M_PI / 180;
 
-  /*
-     convert from polar p(r,theta) to complex p(x,y)
-     theta 0 degrees is p(0,1)
-     x = r sin(theta)
-     y = r cos(theta)
-   */
-  wind->vector_rt.x = wind->speed_rt * sin (radiant);
-  wind->vector_rt.y = wind->speed_rt * cos (radiant);
+	/*
+	   convert from polar p(r,theta) to complex p(x,y)
+	   theta 0 degrees is p(0,1)
+	   x = r sin(theta)
+	   y = r cos(theta)
+	 */
+	wind->vector_rt.x = wind->speed_rt * sin(radiant);
+	wind->vector_rt.y = wind->speed_rt * cos(radiant);
 
-  /*
-     collecting the sum of all x and y
-     to calculate the media at the end
-   */
-  wind->media_rt.x += wind->vector_rt.x;
-  wind->media_rt.y += wind->vector_rt.y;
+	/*
+	   collecting the sum of all x and y
+	   to calculate the media at the end
+	 */
+	wind->media_rt.x += wind->vector_rt.x;
+	wind->media_rt.y += wind->vector_rt.y;
 
-  /* RT min e max */
-  if (wind->speed_rt < wind->vmin_rt)
-    wind->vmin_rt = wind->speed_rt;
+	/* RT min e max */
+	if (wind->speed_rt < wind->vmin_rt)
+		wind->vmin_rt = wind->speed_rt;
 
-  if (wind->speed_rt > wind->vmax_rt)
-    wind->vmax_rt = wind->speed_rt;
+	if (wind->speed_rt > wind->vmax_rt)
+		wind->vmax_rt = wind->speed_rt;
 
-  /*
-    Read the media.h to know how many ticks we use.
-    If we use the last calculated media as the first
-    element into the next sequence, than we must start counting
-    from 1.
-  */
+	/*
+	   Read the media.h to know how many ticks we use.
+	   If we use the last calculated media as the first
+	   element into the next sequence, than we must start counting
+	   from 1.
+	 */
 
 #ifndef MEDIA_NEXT_CYCLE
-  /* We don't have an 0 element from the media */
-  if (++wind->counter_rt == MEDIA_MINUTES)
-    store_media (wind);
+	/* We don't have an 0 element from the media */
+	if (++wind->counter_rt == MEDIA_MINUTES)
+		store_media(wind);
 
 #else
-  /* the 1st element was a media calculated before */
-  if (++wind->counter_rt > MEDIA_MINUTES)
-    store_media (wind);
+	/* the 1st element was a media calculated before */
+	if (++wind->counter_rt > MEDIA_MINUTES)
+		store_media(wind);
 
 #endif
 }

@@ -55,7 +55,7 @@
 
 /* a */
 #define _SYNTH_S_TO 86
- 
+
 /* XXX */
 
 /* km/h */
@@ -90,13 +90,13 @@
 /* data not avaiable */
 #define _SYNTH_S_DNA 105
 
-void synth_init (void);
-void synth_play_message (struct wind_array *wind, struct sht11_t *temp);
+void synth_init(void);
+void synth_play_message(struct wind_array *wind, struct sht11_t *temp);
 
 /* Use under test only */
-void say_it (uint8_t position);
-void say_int (int value);
-void synth_pause (void);
-void synth_say_wind_direction (enum wind_dir direction);
+void say_it(uint8_t position);
+void say_int(int value);
+void synth_pause(void);
+void synth_say_wind_direction(enum wind_dir direction);
 
 #endif

@@ -27,7 +27,7 @@
  */
 #define _ADC_RATIO 1.75
 
-void adc_init (void);
-int get_wind_position (void);
+void adc_init(void);
+int get_wind_position(void);
 
 #endif

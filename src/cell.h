@@ -18,9 +18,9 @@
 #ifndef _CELL_H_
 #define _CELL_H_
 
-void phone_init (void);
-uint8_t ring (void);
-void answer_phone (void);
-void hangup_phone (void);
+void phone_init(void);
+uint8_t ring(void);
+void answer_phone(void);
+void hangup_phone(void);
 
 #endif

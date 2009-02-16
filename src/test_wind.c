@@ -32,36 +32,34 @@ to discover where it is set. */
 volatile wind_array wind;
 enum address_bus addr_bus;
 
-void _delay_1s (uint8_t delay)
+void _delay_1s(uint8_t delay)
 {
-  uint8_t i;
+	uint8_t i;
 
-  while (delay--)
-    for (i=0; i<20; i++)
-      _delay_ms (50);
+	while (delay--)
+		for (i = 0; i < 20; i++)
+			_delay_ms(50);
 }
 
-int main (void)
+int main(void)
 {
-  init_port ();
-  reset_synth ();
-  clear_wind_array ();
-  init_counter ();
+	init_port();
+	reset_synth();
+	clear_wind_array();
+	init_counter();
 
-  /* enable interrupts */
-  sei ();
+	/* enable interrupts */
+	sei();
 
-  for (;;)
-    {
-      if (wind.flag)
-	{
-	do_media ();
-	wind.flag = 0;
-	cli (); /* disable interrupts */
-	play_message ();
-	sei ();
-	}
-    };
+	for (;;) {
+		if (wind.flag) {
+			do_media();
+			wind.flag = 0;
+			cli();	/* disable interrupts */
+			play_message();
+			sei();
+		}
+	};
 
-  return (0);
+	return (0);
 }
