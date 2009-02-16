@@ -20,7 +20,9 @@
 
 void debug_write(const char *s);
 void debug_hello(void);
-int debug_phone_on(void);
-
+int debug_phone_on(char *msg);
+void debug_wind_status(struct wind_array *wind);
+void debug_temperature(struct sht11_t *temp);
+void debug_synth(struct wind_array *wind, struct sht11_t *temp);
 
 #endif

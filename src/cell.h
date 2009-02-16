@@ -18,11 +18,13 @@
 #ifndef CELL_H_
 #define CELL_H_
 
+void phone_send(const char *s);
 void phone_init(void);
 int phone_on(void);
 int phone_msg(char *s);
 void phone_answer(void);
 void phone_hangup(void);
 int phone_valid_msg(const char *s1, const char *s2);
+int phone_waitfor(const char *s, const int loked);
 
 #endif

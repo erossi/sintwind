@@ -52,15 +52,15 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 
 	/* If checkpoint then last boot went wrong */
 	if (chkpoint)
-		debug_write("Last power up went wrong\r\n");
+		debug_write("Last power up went wrong!\n");
 	else {
+		debug_write("Setting up EEPROM checkpoint\n");
 		chkpoint = 1;
 		eeprom_write_byte(&EE_chkpoint, chkpoint);
-		debug_write("Setting up EEPROM checkpoint");
 	}
 
 	/* Keep the checkpoint set or clear in the eeprom */
-	if (debug_phone_on()) {
+	if (debug_phone_on(message)) {
 		chkpoint = 0;
 		eeprom_write_byte(&EE_chkpoint, chkpoint);
 	}
@@ -71,6 +71,7 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 			do_media(wind);
 			wind->flag = 0;
 			sei();
+			debug_wind_status(wind);
 		}
 
 		if (phone_msg(message)) {
@@ -79,7 +80,8 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 			if (phone_valid_msg(message, "RING")) {
 				phone_answer();
 				sht11_read_all(temperature);
-				synth_play_message(wind, temperature);
+				debug_temperature(temperature);
+				debug_synth(wind, temperature);
 				phone_hangup();
 			}
 		}

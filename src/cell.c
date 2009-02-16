@@ -26,7 +26,7 @@
 
 extern struct uartStruct *uartPtr;
 
-void send(const char *s)
+void phone_send(const char *s)
 {
 	uart_printstr(s);
 }
@@ -55,7 +55,8 @@ int phone_msg(char *s)
 	return (i);
 }
 
-int waitfor(const char *s)
+/* Wait for string from rs232, if loked, wait forever */
+int phone_waitfor(const char *s, const int loked)
 {
 	int i, j;
 	char *msg;
@@ -63,13 +64,16 @@ int waitfor(const char *s)
 	msg = malloc(UART_RXBUF_SIZE);
 	j = 1;
 
-	for (i = 0; i < 50; i++)
-		if (phone_msg(msg) && phone_valid_msg(msg, s))
-		{
-			j = 0;
-			i = 50;
-		} else
+	if (loked)
+		while (!(phone_msg(msg) && phone_valid_msg(msg, s)))
 			_delay_ms(100);
+	else
+		for (i = 0; i < 50; i++)
+			if (phone_msg(msg) && phone_valid_msg(msg, s)) {
+				j = 0;
+				i = 50;
+			} else
+				_delay_ms(100);
 
 	free(msg);
 	return (j);
@@ -89,20 +93,20 @@ int phone_on(void)
 	_delay_ms(500);
 	PHONE_PORT &= ~(_BV(PHONE_ON));
 	_delay_ms(10000);
-	send("AT&FE0&C0&D0");
-	i = waitfor("OK");
-	send("AT^SNFS=5");
-	return (i | waitfor("OK"));
+	phone_send("AT&FE0&C0&D0");
+	i = phone_waitfor("OK", 0);
+	phone_send("AT^SNFS=5");
+	return (i | phone_waitfor("OK", 0));
 }
 
 void phone_answer(void)
 {
-	send("ATA");
-	waitfor("OK");
+	phone_send("ATA");
+	phone_waitfor("OK", 0);
 }
 
 void phone_hangup(void)
 {
-	send("ATH0");
-	waitfor("OK");
+	phone_send("ATH0");
+	phone_waitfor("OK", 0);
 }
