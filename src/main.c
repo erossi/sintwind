@@ -95,7 +95,7 @@ int main(void)
 			led_blink(1);
 			do_media(wind);
 			wind->flag = 0;
-			sei();
+			/* sei(); */ /* Not a naked ISR */
 		}
 
 		if (phone_msg(message)) {
