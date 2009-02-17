@@ -94,6 +94,18 @@ void debug_wind_status(struct wind_array *wind, char *string)
 	debug_write_P (PSTR(" ] A.rt [ "));
 	string = itoa(wind->angle_rt, string, 10);
 	debug_write(string);
+	debug_write_P (PSTR(" ] V.min [ "));
+	string = itoa(wind->vmin, string, 10);
+	debug_write(string);
+	debug_write_P (PSTR(" ] V.max [ "));
+	string = itoa(wind->vmax, string, 10);
+	debug_write(string);
+	debug_write_P (PSTR(" ] V [ "));
+	string = itoa(wind->speed, string, 10);
+	debug_write(string);
+	debug_write_P (PSTR(" ] Deg. [ "));
+	string = itoa(wind->vmax, string, 10);
+	debug_write(string);
 	debug_write_P (PSTR(" ]\n"));
 }
 
