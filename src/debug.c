@@ -104,7 +104,7 @@ void debug_wind_status(struct wind_array *wind, char *string)
 	string = itoa(wind->speed, string, 10);
 	debug_write(string);
 	debug_write_P (PSTR(" ] Deg. [ "));
-	string = itoa(wind->vmax, string, 10);
+	string = itoa(wind->angle, string, 10);
 	debug_write(string);
 	debug_write_P (PSTR(" ]\n"));
 }
