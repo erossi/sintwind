@@ -19,9 +19,10 @@
 #define DEBUG_H_
 
 void debug_write(const char *s);
+void debug_write_P(PGM_P s);
 void debug_hello(void);
 int debug_phone_on(char *msg);
-void debug_wind_status(struct wind_array *wind);
+void debug_wind_status(struct wind_array *wind, char *string);
 void debug_temperature(struct sht11_t *temp, char *string);
 void debug_synth(struct wind_array *wind, struct sht11_t *temp);
 

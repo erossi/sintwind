@@ -20,6 +20,7 @@
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include <avr/eeprom.h>
+#include <avr/pgmspace.h>
 #include "default.h"
 #include "init.h"
 #include "synth.h"
@@ -51,9 +52,9 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 
 	/* If checkpoint then last boot went wrong */
 	if (chkpoint)
-		debug_write("Last power up went wrong!\n");
+		debug_write_P(PSTR("Last power up went wrong!\n"));
 	else {
-		debug_write("Setting up EEPROM checkpoint\n");
+		debug_write(PSTR ("Setting up EEPROM checkpoint\n"));
 		chkpoint = 1;
 		eeprom_write_byte(&EE_chkpoint, chkpoint);
 	}
@@ -70,7 +71,8 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 			do_media(wind);
 			wind->flag = 0;
 			sei();
-			debug_wind_status(wind);
+			/* passing message to avoid malloc */
+			debug_wind_status(wind, message);
 		}
 
 		if (phone_msg(message)) {

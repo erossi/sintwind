@@ -43,6 +43,9 @@ void debug_write_P(PGM_P s)
 
 void debug_hello(void)
 {
+	debug_write_P (PSTR("\n"));
+	debug_write_P (PSTR("\n"));
+	debug_write_P (PSTR("\n"));
 	debug_write_P (PSTR("***********************************************\n"));
 	debug_write_P (PSTR("*                                             *\n"));
 	debug_write_P (PSTR("* Open Sint Project - Sint Wind v3.1          *\n"));
@@ -56,15 +59,14 @@ void debug_hello(void)
 	debug_write_P (PSTR("*                                             *\n"));
 	debug_write_P (PSTR("*            GNU GPL v3                       *\n"));
 	debug_write_P (PSTR("***********************************************\n"));
-
-	debug_write("\n");
+	debug_write_P (PSTR("\n"));
 }
 
 int debug_phone_on(char *msg)
 {
 	int i;
 
-	debug_write_P (PSTR("Do you want to clean checkpoint EEPROM (yes/N)? "));
+	debug_write_P (PSTR("Do you want to clean checkpoint EEPROM (yes/NO)? "));
 
 	while (!(phone_msg(msg)))
 		led_blink(1);
@@ -77,16 +79,22 @@ int debug_phone_on(char *msg)
 		i = 1;
 		debug_write_P (PSTR("Clearing EEPROM checkpoint\n"));
 	} else {
-		debug_write_P (PSTR("Leaving EEPROM boot error set!\n"));
+		debug_write_P (PSTR("OK\n"));
 		i = 0;
 	}
 
 	return (i);
 }
 
-void debug_wind_status(struct wind_array *wind)
+void debug_wind_status(struct wind_array *wind, char *string)
 {
-	debug_write_P (PSTR("This is the wind status (not yet!)\n"));
+	debug_write_P (PSTR("S.rt [ "));
+	string = itoa(wind->speed_rt, string, 5);
+	debug_write(string);
+	debug_write_P (PSTR(" ] A.rt [ "));
+	string = itoa(wind->angle_rt, string, 5);
+	debug_write(string);
+	debug_write_P (PSTR(" ]\n"));
 }
 
 /* passing an already malloc string spare RAM */
