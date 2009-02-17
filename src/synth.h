@@ -75,10 +75,6 @@
 
 void synth_init(void);
 void synth_play_message(struct wind_array *wind, struct sht11_t *temp);
-
-/* Use under test only */
-void say_it(uint8_t position);
-void say_int(int value);
-void synth_say_wind_direction(enum wind_dir direction);
+void synth_play_memory(void);
 
 #endif

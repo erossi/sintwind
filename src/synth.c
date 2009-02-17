@@ -232,25 +232,6 @@ void synth_say_wind_direction(enum wind_dir direction)
 
 void synth_play_message(struct wind_array *wind, struct sht11_t *temp)
 {
-
-	/* say_it (SYNTH_S_ABSENT); */
-	/* say_it (SYNTH_S_EAST); */
-	/* say_it (SYNTH_S_SOUTH); */
-	/* say_it (SYNTH_S_WEST); */
-	/* say_it (SYNTH_S_NORTH); */
-	/* say_it (SYNTH_S_KMH); */
-	/* say_it (SYNTH_S_TO); */
-	/* say_it (SYNTH_S_TEMP); */
-	/* say_it (SYNTH_S_MINUS); */
-	/* say_it (SYNTH_S_COMMA); */
-	/* say_it (SYNTH_S_PERC); */
-	/* say_it (SYNTH_S_WIND); */
-	/* say_it (SYNTH_S_CELSIUS); */
-	/* say_it (SYNTH_S_UMIDITY); */
-	/* say_it (SYNTH_S_DNA); */
-	/* say_it (SYNTH_S_INTENSITY); */
-	/* say_it (SYNTH_S_CLUB); */
-
 	say_it(SYNTH_S_CLUB);
 	say_it(SYNTH_S_WIND);
 
@@ -270,5 +251,35 @@ void synth_play_message(struct wind_array *wind, struct sht11_t *temp)
 	say_it(SYNTH_S_UMIDITY);
 	say_int((int)temp->humidity_compensated);
 	say_it(SYNTH_S_PERC);
+	/*   synth_reset (); */
+}
+void synth_play_memory(void)
+{
+	int i;
+
+	say_it (SYNTH_S_CLUB);
+	say_it (SYNTH_S_WIND);
+	say_it (SYNTH_S_NORTH);
+	say_it (SYNTH_S_EAST);
+	say_it (SYNTH_S_SOUTH);
+	say_it (SYNTH_S_WEST);
+	say_it (SYNTH_S_INTENSITY);
+	say_it (SYNTH_S_ABSENT);
+	say_it (SYNTH_S_TO);
+	say_it (SYNTH_S_KMH);
+	say_it (SYNTH_S_TEMP);
+	say_it (SYNTH_S_MINUS);
+	say_it (SYNTH_S_COMMA);
+	say_it (SYNTH_S_CELSIUS);
+	say_it (SYNTH_S_UMIDITY);
+	say_it (SYNTH_S_PERC);
+	say_it (SYNTH_S_DNA);
+
+	for (i=0; i<22; i++)
+		say_int(i);
+
+	for (i=30; i<101; i+=10)
+		say_int(i);
+
 	/*   synth_reset (); */
 }
