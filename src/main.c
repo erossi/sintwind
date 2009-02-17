@@ -70,7 +70,6 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 			led_blink(1);
 			do_media(wind);
 			wind->flag = 0;
-			sei();
 			/* passing message to avoid malloc */
 			debug_wind_status(wind, message);
 		}

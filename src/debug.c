@@ -89,10 +89,10 @@ int debug_phone_on(char *msg)
 void debug_wind_status(struct wind_array *wind, char *string)
 {
 	debug_write_P (PSTR("S.rt [ "));
-	string = itoa(wind->speed_rt, string, 5);
+	string = itoa(wind->speed_rt, string, 10);
 	debug_write(string);
 	debug_write_P (PSTR(" ] A.rt [ "));
-	string = itoa(wind->angle_rt, string, 5);
+	string = itoa(wind->angle_rt, string, 10);
 	debug_write(string);
 	debug_write_P (PSTR(" ]\n"));
 }
