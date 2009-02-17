@@ -24,6 +24,6 @@ void debug_hello(void);
 int debug_phone_on(char *msg);
 void debug_wind_status(struct wind_array *wind, char *string);
 void debug_temperature(struct sht11_t *temp, char *string);
-void debug_synth(struct wind_array *wind, struct sht11_t *temp);
+void debug_synth(struct wind_array *wind, struct sht11_t *temp, char *msg);
 
 #endif

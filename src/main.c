@@ -54,7 +54,7 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 	if (chkpoint)
 		debug_write_P(PSTR("Last power up went wrong!\n"));
 	else {
-		debug_write(PSTR ("Setting up EEPROM checkpoint\n"));
+		debug_write_P(PSTR ("Setting up EEPROM checkpoint\n"));
 		chkpoint = 1;
 		eeprom_write_byte(&EE_chkpoint, chkpoint);
 	}
@@ -82,7 +82,7 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 				sht11_read_all(temperature);
 				/* passing message to avoid malloc */
 				debug_temperature(temperature, message);
-				debug_synth(wind, temperature);
+				debug_synth(wind, temperature, message);
 				phone_hangup();
 			}
 		}

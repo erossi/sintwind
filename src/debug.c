@@ -20,7 +20,7 @@
 #include <util/delay.h>
 #include <avr/pgmspace.h>
 #include "default.h"
-#include "uart.h"		/* should we use somethink from cell ? */
+#include "synth.h"
 #include "cell.h"
 #include "utils.h"
 #include "debug.h"
@@ -145,7 +145,36 @@ void debug_temperature(struct sht11_t *temp, char *string)
 	_delay_ms(1000);
 }
 
-void debug_synth(struct wind_array *wind, struct sht11_t *temp)
+void debug_synth(struct wind_array *wind, struct sht11_t *temp, char *msg)
 {
-	debug_write_P (PSTR("This is the Synth part unimplemented yet!\n"));
+	debug_write_P (PSTR("Do you want to synth data? (yes/NO) "));
+
+	while (!(phone_msg(msg)))
+		led_blink(1);
+
+	debug_write(msg);
+	debug_write("\n");
+
+	if (phone_valid_msg(msg, "yes")) {
+		debug_write_P (PSTR("Ok. Playing data...\n"));
+		synth_play_message(wind, temp);
+		debug_write_P (PSTR("Done!\n"));
+	}
+
+	debug_write_P (PSTR("\n"));
+	debug_write_P (PSTR("Do you want to play all synth memory? (yes/NO) "));
+
+	while (!(phone_msg(msg)))
+		led_blink(1);
+
+	debug_write(msg);
+	debug_write("\n");
+
+	if (phone_valid_msg(msg, "yes")) {
+		debug_write_P (PSTR("Ok. Playing all synth memory...\n"));
+		synth_play_memory();
+		debug_write_P (PSTR("Done!\n"));
+	}
+
+	debug_write_P (PSTR("HangUp...\n"));
 }
