@@ -83,22 +83,22 @@ struct wind_array {
 	volatile uint8_t speed_rt;
 	volatile int angle_rt;
 
-	/*
-	   wind elements
-	   speed
-	   0-359 degrees
-	 */
+	/* wind elements speed 0-359 degrees */
 	uint8_t speed, vmin, vmax;
 	int angle;
 	enum wind_dir direction;
 	enum wind_tendency tendency;
 
-	/*
-	   real time elements
-	 */
+	/* real time elements */
 	uint8_t vmin_rt, vmax_rt;
 	struct complex vector_rt, media_rt;
 	uint8_t counter_rt;
+
+	/*
+	  lacrosse bitmapped message into a long unsigned int
+	  [00100bbb][bvvvvvvv][vvvvvccc][c-------]
+	 */
+	long unsigned int lacrosse;
 };
 
 #define UART_HAVE_DEFAULT

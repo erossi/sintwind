@@ -67,6 +67,7 @@ void port_d_init(void)
 {
 	/*
 	 * pd0-1: xx RS232 rx/tx
+	 * pd2: INT0 rx lacrosse
 	 * pd6: IN - ICP1 Davis wind speed pulse
 	 */
 
@@ -93,4 +94,5 @@ void array_init(struct wind_array *wind)
 	wind->media_rt.x = 0;
 	wind->media_rt.y = 0;
 	wind->counter_rt = 0;
+	wind->lacrosse=0;
 }

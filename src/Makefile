@@ -9,10 +9,14 @@ CC = avr-gcc
 
 REMOVE = rm -f
 
-objects = sht11.o cell.o init.o adc.o anemometer.o synth.o 
-objects += media.o davis.o uart_isr.o uart.o utils.o debug.o
 adc_obj = init.o adc.o led.o
+anemometer_obj = davis.o lacrosse.o anemometer.o adc.o
+init_obj = init.o
+phone_obj = cell.o uart_isr.o uart.o 
 synth_obj = sht11.o init.o adc.o anemometer.o synth.o davis.o
+objects = sht11.o cell.o init.o synth.o 
+objects += media.o uart_isr.o uart.o utils.o debug.o
+objects += anemometer_obj
 
 
 .PHONY: clean indent
@@ -31,8 +35,8 @@ test_sht11: $(objects)
 test_media: $(objects)
 	$(CC) $(CFLAGS) -o ../sint.elf test_media.c $(objects) $(LFLAGS)
 
-test_anemometer: $(objects)
-	$(CC) $(CFLAGS) -o ../sint.elf test_anemometer.c $(objects) $(LFLAGS)
+test_anemometer: $(anemometer_obj) init.o
+	$(CC) $(CFLAGS) -o ../sint.elf test_anemometer.c $(anemometer_obj) init.o $(LFLAGS)
 
 test_adc: $(adc_obj)
 	$(CC) $(CFLAGS) -o ../sint.elf test_adc.c $(adc_obj) $(LFLAGS)
