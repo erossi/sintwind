@@ -278,8 +278,10 @@ void synth_play_memory(void)
 	for (i=0; i<22; i++)
 		say_int(i);
 
-	for (i=30; i<101; i+=10)
+	for (i=30; i<101; i+=10) {
 		say_int(i);
+		say_int(i+1);
+	}
 
 	/*   synth_reset (); */
 }
