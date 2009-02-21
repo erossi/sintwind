@@ -21,14 +21,12 @@
 
 #include <inttypes.h>
 #include "default.h"
-#include "isr.h"
-#include "adc.h"
+#include "davis.h"
 #include "anemometer.h"
 
 void anemometer_init(void)
 {
-	adc_init();
-	isr_init();
+	davis_init();
 }
 
 /*

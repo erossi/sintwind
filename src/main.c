@@ -119,7 +119,6 @@ void run_free(struct sht11_t *temperature, char *message)
 			led_blink(1);
 			do_media(wind);
 			wind->flag = 0;
-			/* sei(); */ /* Not a naked ISR */
 		}
 
 		if (phone_msg(message)) {

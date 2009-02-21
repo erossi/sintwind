@@ -24,7 +24,7 @@
 #include "default.h"
 #include "adc.h"
 #include "anemometer.h"
-#include "isr.h"
+#include "davis.h"
 
 /* Global variable and pointer to be used */
 /* inside the ISR routine */
@@ -95,9 +95,6 @@ ISR(TIMER1_OVF_vect)
 	   why it will not be converted in here.
 	 */
 
-	/* Stop the ISR */
-	/* cli(); */ /* Not a naked ISR */
-
 	/* for now 1 to 1 conversion */
 	wind->speed_rt = loop;
 
@@ -107,7 +104,7 @@ ISR(TIMER1_OVF_vect)
 	loop = 0;
 }
 
-void isr_init(void)
+void davis_timer_setup(void)
 {
 	TCCR1A = 0;
 	/* ICES1 = 0 trigger edge on negative */
@@ -139,3 +136,10 @@ void isr_init(void)
 	   use include deprecated.h to use the function */
 	TIMSK = _BV(TICIE1) | _BV(TOIE1);
 }
+
+void davis_init(void)
+{
+	adc_init();
+	davis_timer_setup();
+}
+

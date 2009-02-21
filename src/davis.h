@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef ISRSINT_H_
-#define ISRSINT_H_
+#ifndef DAVIS_H_
+#define DAVIS_H_
 
 /* Filter cutoff to eliminate spike */
 #define ANEMOMETER_CUTOFF 5
 
-void isr_init(void);
+void davis_init(void);
 
 #endif
