@@ -18,8 +18,8 @@
 #ifndef DEFAULT_WIND_H_
 #define DEFAULT_WIND_H_
 
+/* ---- Delay.h CPU speed definition ---- */
 /*
- * Delay.h CPU speed definition
  * MUST BE IN MAKEFILE OR IN GCC -D F_CPU=4000000UL
 
  #define F_CPU 1000000UL 1Mhz
@@ -32,9 +32,14 @@
  Over this range you loose precision.
 */
 
-/*
- *  Set the prescaler used for the timer.
- */
+/* ---- Anemometer ---- */
+
+#define LACROSSE_CE_PORT PORTD
+#define LACROSSE_CE PD3
+#define LACROSSE_RX_PORT PIND
+#define LACROSSE_RX PIND2
+
+/* Set the prescaler used for the timer. */
 
 /* #define TIMER_PRESCALER_1024 */
 #define TIMER_PRESCALER_256
@@ -94,12 +99,18 @@ struct wind_array {
 	struct complex vector_rt, media_rt;
 	uint8_t counter_rt;
 
-	/*
-	  lacrosse bitmapped message into a long unsigned int
-	  [00100bbb][bvvvvvvv][vvvvvccc][c-------]
+	/* Type of anemometer: 0 for lacrosse */
+	uint8_t sensor;
+
+	/* LaCrosse data
+ 	   [00000100][0000bbbb][000vvvvvvvvvvvv][0000cccc]
 	 */
-	long unsigned int lacrosse;
+	uint8_t lacrosse_head, lacrosse_bearing, lacrosse_chksum;
+	uint16_t lacrosse_speed;
 };
+
+
+/* ---- Cell and modem ---- */
 
 #define UART_HAVE_DEFAULT
 #define UART_BAUD 9600
@@ -121,19 +132,22 @@ struct uartStruct {
 	volatile uint8_t rx_flag, tx_flag, rxIdx, txIdx;
 };
 
-/* Led setup */
+#define PHONE_HAVE_DEFAULT
+#define PHONE_PORT PORTB
+#define PHONE_ON PB0
+
+
+/* ---- Utils setup ----- */
+
 #define UTILS_HAVE_DEFAULT
 #define UTILS_LED_PORT PORTB
 #define UTILS_LED_PIN PB6
 #define UTILS_SWITCH_PORT PINB
 #define UTILS_SWITCH_PIN PINB7
 
-/* Phone setup */
-#define PHONE_HAVE_DEFAULT
-#define PHONE_PORT PORTB
-#define PHONE_ON PB0
 
-/* Synth */
+/* ---- Synth ---- */
+
 #define SYNTH_HAVE_DEFAULT
 #define SYNTH_ADDR PORTC
 #define SYNTH_CTRL_OUT PORTB
@@ -141,6 +155,9 @@ struct uartStruct {
 #define SYNTH_EOM PINB3
 #define SYNTH_PD PB4
 #define SYNTH_CE PB5
+
+
+/* ---- sht11 ----- */
 
 #define SHT11_HAVE_DEFAULT
 #define SHT11_DDR	DDRB

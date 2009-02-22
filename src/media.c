@@ -25,6 +25,9 @@
 #include "anemometer.h"
 #include "media.h"
 
+/* Globals */
+extern struct wind_array *wind;
+
 /*
 Test version:
 I want to test if use the media value find out for a cycle as
@@ -113,42 +116,17 @@ void store_media(struct wind_array *wind)
 #endif
 }
 
-void do_media(struct wind_array *wind)
+void media(void)
 {
 	float radiant;
 
-	/*
-	   Any time the main find it has a wind speed flag activate, it means
-	   we have a tick per minutes value to elaborate.
-	   This routine which is also hardware dependant is used to trasform
-	   ticks per minuter in (?? m/s) (?? km/h).
-	   REMEMBER: clear media_rt the first time (init)
-	   speed_rt and angle_rt are set by interrupt routine
+	/* 
+	   Adjust value based on the sensor type and specs.
+	   after this point wind->speed_rt and wind->angle_rt
+	   must contain real km/h and degrees.
 	 */
-
-	/*
-	 * Davis anemometer correction, 1 pulse per cycle instead of 2
-	 * Wind speed * 2 to avoid changing boundaries below.
-	 * If Davids anemometer becomes standard this MUST be fixed.
-	 */
-
-	wind->speed_rt *= 2;
-
-	/*
-	   Adjust wind speed, these value are hardware dependant.
-	   See spreadsheet.
-	 */
-	if (wind->speed_rt < 140)
-		wind->speed_rt /= 2.7;
-
-	if ((wind->speed_rt >= 140) && (wind->speed_rt < 170))
-		wind->speed_rt /= 3;
-
-	if ((wind->speed_rt >= 170) && (wind->speed_rt < 210))
-		wind->speed_rt /= 3.5;
-
-	if (wind->speed_rt >= 210)
-		wind->speed_rt /= 6;
+	/* Ignoring wrong data TOBEFIXED */
+	anemometer_adjust(wind);
 
 	/*
 	   convert wind direction from degrees to radiant
@@ -198,4 +176,6 @@ void do_media(struct wind_array *wind)
 		store_media(wind);
 
 #endif
+
+	wind->flag = 0;
 }

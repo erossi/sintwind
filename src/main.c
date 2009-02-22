@@ -34,6 +34,7 @@
 
 /* EEPROM Area really have to be global? */
 uint8_t EEMEM EE_chkpoint;
+uint8_t EEMEM EE_sensor; /* Lacrosse = 1, default Davis */
 
 /* Globals */
 struct wind_array *wind;
@@ -49,6 +50,10 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 
 	/* Read eeprom checkpoint status (last boot) */
 	chkpoint = eeprom_read_byte(&EE_chkpoint);
+	wind->sensor = eeprom_read_byte(&EE_sensor);
+
+	/* which sensor are we using? */
+	debug_which_sensor(wind);
 
 	/* If checkpoint then last boot went wrong */
 	if (chkpoint)
@@ -68,8 +73,7 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 	for (;;) {
 		if (wind->flag) {
 			led_blink(1);
-			do_media(wind);
-			wind->flag = 0;
+			media();
 			/* passing message to avoid malloc */
 			debug_wind_status(wind, message);
 		}
@@ -85,6 +89,17 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 				debug_synth(wind, temperature, message);
 				phone_hangup();
 			}
+
+			if (phone_valid_msg(message, "sensor")) {
+				/* passing message to avoid malloc */
+				debug_sensor(wind, message);
+				eeprom_write_byte(&EE_sensor, wind->sensor);
+			}
+
+			if (phone_valid_msg(message, "help")) {
+				/* passing message to avoid malloc */
+				debug_help();
+			}
 		}
 	}
 }
@@ -95,6 +110,7 @@ void run_free(struct sht11_t *temperature, char *message)
 
 	/* Read eeprom checkpoint status (last boot) */
 	chkpoint = eeprom_read_byte(&EE_chkpoint);
+	wind->sensor = eeprom_read_byte(&EE_sensor);
 
 	/* If checkpoint then last boot went wrong */
 	if (chkpoint)
@@ -117,8 +133,7 @@ void run_free(struct sht11_t *temperature, char *message)
 	for (;;) {
 		if (wind->flag) {
 			led_blink(1);
-			do_media(wind);
-			wind->flag = 0;
+			media();
 		}
 
 		if (phone_msg(message)) {
@@ -158,7 +173,7 @@ int main(void)
 	port_init();
 	debug = check_for_click();
 	array_init(wind);
-	anemometer_init();
+	anemometer_init(wind);
 	sht11_init();
 	phone_init();		/* activate uart comm only */
 	sei();			/* Enable interrupt */

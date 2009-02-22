@@ -51,12 +51,40 @@ ISR(INT0_vect)
 {
 	uint8_t i;
 
-	wind->lacrosse = 0;
+	/* Maybe neccessary ~500us delay to read bits not near up/down front */
+	wind->lacrosse_head = 0;
 
-	for (i=0; i<21; i++) {
+	/* header */
+	for (i=0; i<5; i++) {
 		if (LACROSSE_RX_PORT & _BV(LACROSSE_RX))
-				wind->lacrosse |= _BV(i);
-		_delay_us(1200);
+				wind->lacrosse_head |= _BV(i);
+	}
+
+	_delay_us(LACROSSE_RX_DELAY);
+	wind->lacrosse_bearing = 0;
+	
+	/* bearing */
+	for (i=0; i<5; i++) {
+		if (LACROSSE_RX_PORT & _BV(LACROSSE_RX))
+				wind->lacrosse_bearing |= _BV(i);
+	}
+
+	_delay_us(LACROSSE_RX_DELAY);
+	wind->lacrosse_speed = 0;
+	
+	/* speed */
+	for (i=0; i<13; i++) {
+		if (LACROSSE_RX_PORT & _BV(LACROSSE_RX))
+				wind->lacrosse_speed |= _BV(i);
+	}
+
+	_delay_us(LACROSSE_RX_DELAY);
+	wind->lacrosse_chksum = 0;
+	
+	/* checksum */
+	for (i=0; i<5; i++) {
+		if (LACROSSE_RX_PORT & _BV(LACROSSE_RX))
+				wind->lacrosse_chksum |= _BV(i);
 	}
 
 	wind->flag = 1;
@@ -71,11 +99,13 @@ ISR(INT0_vect)
 void lacrosse_stop(void)
 {
 	/* Clear \CE */
+	LACROSSE_CE_PORT &= ~(_BV(LACROSSE_CE));
 }
 
 void lacrosse_start(void)
 {
 	/* Set \CE */
+	LACROSSE_CE_PORT |= _BV(LACROSSE_CE);
 }
 
 void lacrosse_init(void)
@@ -90,5 +120,33 @@ void lacrosse_init(void)
 	/*
 	   lacrosse_start();
 	 */
+}
+
+/* check if header is 00100 */
+uint8_t header_ok(void)
+{
+	if (wind->lacrosse_head == 4)
+		return (1);
+	else
+		return (0);
+}
+
+/* Extract and store correct value from lacrosse stream */
+uint8_t lacrosse_adjust(void)
+{
+	uint8_t chksum;
+
+	if (header_ok()) {
+		wind->angle_rt = wind->lacrosse_bearing * 22.5;
+		wind->speed_rt = wind->lacrosse_speed * 0.2;
+		chksum = wind->lacrosse_bearing;
+		chksum ^= (wind->lacrosse_speed & 0xff);
+		chksum ^= (wind->lacrosse_speed >> 8);
+
+		if (chksum == wind->lacrosse_chksum)
+			return(1);
+	}
+
+	return(0);
 }
 

@@ -22,11 +22,23 @@
 #include <inttypes.h>
 #include "default.h"
 #include "davis.h"
+#include "lacrosse.h"
 #include "anemometer.h"
 
-void anemometer_init(void)
+void anemometer_adjust(struct wind_array *wind)
 {
-	davis_init();
+	if (wind->sensor)
+		davis_adjust();
+	else
+		lacrosse_adjust();
+}
+
+void anemometer_init(struct wind_array *wind)
+{
+	if (wind->sensor)
+		davis_init();
+	else
+		lacrosse_init();
 }
 
 /*

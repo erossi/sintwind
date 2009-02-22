@@ -22,5 +22,6 @@
 #define ANEMOMETER_CUTOFF 5
 
 void davis_init(void);
+void davis_adjust(void);
 
 #endif

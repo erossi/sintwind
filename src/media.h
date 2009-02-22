@@ -29,6 +29,6 @@
 /* 2 minutes */
 #define MEDIA_MINUTES 15
 
-void do_media(struct wind_array *wind);
+void media(void);
 
 #endif

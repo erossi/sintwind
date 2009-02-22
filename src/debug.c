@@ -86,6 +86,23 @@ int debug_phone_on(char *msg)
 	return (i);
 }
 
+void debug_lacrosse(struct wind_array *wind, char *string)
+{
+	debug_write_P (PSTR("header [ "));
+	string = itoa(wind->lacrosse_head, string, 2);
+	debug_write(string);
+	debug_write_P (PSTR(" ] bearing [ "));
+	string = itoa(wind->lacrosse_bearing, string, 10);
+	debug_write(string);
+	debug_write_P (PSTR(" ] speed [ "));
+	string = itoa(wind->lacrosse_speed, string, 10);
+	debug_write(string);
+	debug_write_P (PSTR(" ] chksum [ "));
+	string = itoa(wind->lacrosse_chksum, string, 2);
+	debug_write(string);
+	debug_write_P (PSTR(" ]\n"));
+}
+
 void debug_wind_status(struct wind_array *wind, char *string)
 {
 	debug_write_P (PSTR("S.rt [ "));
@@ -107,6 +124,9 @@ void debug_wind_status(struct wind_array *wind, char *string)
 	string = itoa(wind->angle, string, 10);
 	debug_write(string);
 	debug_write_P (PSTR(" ]\n"));
+
+	if (!wind->sensor)
+		debug_lacrosse(wind, string);
 }
 
 /* passing an already malloc string spare RAM */
@@ -177,4 +197,52 @@ void debug_synth(struct wind_array *wind, struct sht11_t *temp, char *msg)
 	}
 
 	debug_write_P (PSTR("HangUp...\n"));
+}
+
+void debug_which_sensor(struct wind_array *wind)
+{
+	/* Which sensor are we using */
+	if (!wind->sensor)
+		debug_write_P(PSTR("Sensor set to: LaCrosse.\n"));
+	else
+		debug_write_P(PSTR("Sensor set to: Davis.\n"));
+}
+
+void debug_sensor(struct wind_array *wind, char *msg)
+{
+	debug_which_sensor(wind);
+	debug_write_P (PSTR("Do you want to change it? (yes/[no]) "));
+
+	while (!(phone_msg(msg)))
+		led_blink(1);
+
+	debug_write(msg);
+	debug_write("\n");
+
+	if (phone_valid_msg(msg, "yes")) {
+		debug_write_P (PSTR("YOU MUST RESET!!!\n"));
+
+		if (!wind->sensor)
+			wind->sensor = 1;
+		else
+			wind->sensor = 0;
+	}
+
+	debug_which_sensor(wind);
+}
+
+void debug_help(void)
+{
+	debug_write_P (PSTR("\n"));
+	debug_write_P (PSTR("Help:\n"));
+	debug_write_P (PSTR(" RING   Start phone answer and playback\n"));
+	debug_write_P (PSTR(" sensor Change sensor(MUST RESET)\n"));
+	debug_write_P (PSTR("\n"));
+	debug_write_P (PSTR("S.rt = Speed in real time\n"));
+	debug_write_P (PSTR("A.rt = Angle in real time\n"));
+	debug_write_P (PSTR("V.min = Minimum speed in the last cycle\n"));
+	debug_write_P (PSTR("V.max = Maximum speed in the last cycle\n"));
+	debug_write_P (PSTR("V = Medium speed in the last cycle\n"));
+	debug_write_P (PSTR("Deg. = Medium angle in degrees in the last cycle\n"));
+	debug_write_P (PSTR("\n"));
 }

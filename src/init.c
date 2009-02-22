@@ -94,5 +94,8 @@ void array_init(struct wind_array *wind)
 	wind->media_rt.x = 0;
 	wind->media_rt.y = 0;
 	wind->counter_rt = 0;
-	wind->lacrosse=0;
+	wind->lacrosse_head=0;
+	wind->lacrosse_bearing=0;
+	wind->lacrosse_speed=0;
+	wind->lacrosse_chksum=0;
 }

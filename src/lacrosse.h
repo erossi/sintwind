@@ -18,9 +18,12 @@
 #ifndef LACROSSE_H_
 #define LACROSSE_H_
 
-#define LACROSSE_RX_PORT PIND
-#define LACROSSE_RX PIND2
+/* delay in usec from rx bit */
+#define LACROSSE_RX_DELAY 1250
 
 void lacrosse_init(void);
+void lacrosse_start(void);
+void lacrosse_stop(void);
+uint8_t lacrosse_adjust(void);
 
 #endif

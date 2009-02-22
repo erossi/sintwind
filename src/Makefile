@@ -9,15 +9,13 @@ CC = avr-gcc
 
 REMOVE = rm -f
 
-adc_obj = init.o adc.o led.o
-anemometer_obj = davis.o lacrosse.o anemometer.o adc.o
 init_obj = init.o
+anemometer_obj = davis.o lacrosse.o anemometer.o adc.o
 phone_obj = cell.o uart_isr.o uart.o 
 synth_obj = sht11.o init.o adc.o anemometer.o synth.o davis.o
 objects = sht11.o cell.o init.o synth.o 
 objects += media.o uart_isr.o uart.o utils.o debug.o
-objects += anemometer_obj
-
+objects += $(anemometer_obj)
 
 .PHONY: clean indent
 .SILENT: help

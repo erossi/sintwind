@@ -143,3 +143,31 @@ void davis_init(void)
 	davis_timer_setup();
 }
 
+void davis_adjust(void)
+{
+	/*
+	   Any time the main find it has a wind speed flag activate, it means
+	   we have a tick per minutes value to elaborate.
+	   This routine which is also hardware dependant is used to trasform
+	   ticks per minuter in (?? m/s) (?? km/h).
+	   REMEMBER: clear media_rt the first time (init)
+	   speed_rt and angle_rt are set by interrupt routine
+	 */
+
+	/*
+	   Adjust wind speed, these value are hardware dependant.
+	   See spreadsheet.
+	 */
+	if (wind->speed_rt < 70)
+		wind->speed_rt /= 2.7;
+
+	if ((wind->speed_rt >= 70) && (wind->speed_rt < 85))
+		wind->speed_rt /= 3;
+
+	if ((wind->speed_rt >= 85) && (wind->speed_rt < 105))
+		wind->speed_rt /= 3.5;
+
+	if (wind->speed_rt >= 105)
+		wind->speed_rt /= 6;
+
+}
