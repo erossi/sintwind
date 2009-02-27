@@ -52,48 +52,69 @@ ISR(INT0_vect)
 	uint8_t i;
 
 	/* Maybe neccessary ~500us delay to read bits not near up/down front */
-	wind->lacrosse_head = 0;
+	_delay_us(500);
 
 	/* header */
+	wind->lacrosse_head = 0;
+
 	for (i=0; i<5; i++) {
 		if (LACROSSE_RX_PORT & _BV(LACROSSE_RX))
 				wind->lacrosse_head |= _BV(i);
-	}
 
-	_delay_us(LACROSSE_RX_DELAY);
-	wind->lacrosse_bearing = 0;
+		_delay_us(LACROSSE_RX_DELAY);
+	}
 	
 	/* bearing */
-	for (i=0; i<5; i++) {
+	wind->lacrosse_bearing = 0;
+
+	for (i=0; i<4; i++) {
 		if (LACROSSE_RX_PORT & _BV(LACROSSE_RX))
 				wind->lacrosse_bearing |= _BV(i);
+
+		_delay_us(LACROSSE_RX_DELAY);
 	}
 
-	_delay_us(LACROSSE_RX_DELAY);
+	/* speed */
 	wind->lacrosse_speed = 0;
 	
-	/* speed */
-	for (i=0; i<13; i++) {
+	for (i=0; i<12; i++) {
 		if (LACROSSE_RX_PORT & _BV(LACROSSE_RX))
 				wind->lacrosse_speed |= _BV(i);
+
+		_delay_us(LACROSSE_RX_DELAY);
 	}
 
-	_delay_us(LACROSSE_RX_DELAY);
+	/* checksum */
 	wind->lacrosse_chksum = 0;
 	
-	/* checksum */
-	for (i=0; i<5; i++) {
+	for (i=0; i<4; i++) {
 		if (LACROSSE_RX_PORT & _BV(LACROSSE_RX))
 				wind->lacrosse_chksum |= _BV(i);
+
+		_delay_us(LACROSSE_RX_DELAY);
+	}
+
+	/* NOT bearing */
+	wind->lacrosse_nbearing = 0;
+
+	for (i=0; i<4; i++) {
+		if (LACROSSE_RX_PORT & _BV(LACROSSE_RX))
+				wind->lacrosse_nbearing |= _BV(i);
+
+		_delay_us(LACROSSE_RX_DELAY);
+	}
+
+	/* NOT speed */
+	wind->lacrosse_nspeed = 0;
+	
+	for (i=0; i<12; i++) {
+		if (LACROSSE_RX_PORT & _BV(LACROSSE_RX))
+				wind->lacrosse_nspeed |= _BV(i);
+
+		_delay_us(LACROSSE_RX_DELAY);
 	}
 
 	wind->flag = 1;
-
-	/*
-	wind->speed_rt = loop;
-	wind->angle_rt = adc_wind_position();
-	loop = 0;
-	 */
 }
 
 void lacrosse_stop(void)
@@ -117,9 +138,7 @@ void lacrosse_init(void)
 	/* enable INT0 */
 	GICR |= _BV(INT0);
 
-	/*
-	   lacrosse_start();
-	 */
+	lacrosse_start();
 }
 
 /* check if header is 00100 */
@@ -134,19 +153,17 @@ uint8_t header_ok(void)
 /* Extract and store correct value from lacrosse stream */
 uint8_t lacrosse_adjust(void)
 {
-	uint8_t chksum;
-
 	if (header_ok()) {
 		wind->angle_rt = wind->lacrosse_bearing * 22.5;
-		wind->speed_rt = wind->lacrosse_speed * 0.2;
-		chksum = wind->lacrosse_bearing;
-		chksum ^= (wind->lacrosse_speed & 0xff);
-		chksum ^= (wind->lacrosse_speed >> 8);
+		wind->speed_rt = wind->lacrosse_speed * LACROSSE_RATIO;
+		wind->lacrosse_chkok = wind->lacrosse_bearing;
+		wind->lacrosse_chkok ^= (wind->lacrosse_speed & 0x0f);
+		wind->lacrosse_chkok ^= ((wind->lacrosse_speed >> 4) & 0x0f);
+		wind->lacrosse_chkok ^= ((wind->lacrosse_speed >> 8) & 0x0f);
 
-		if (chksum == wind->lacrosse_chksum)
+		if (wind->lacrosse_chkok == wind->lacrosse_chksum)
 			return(1);
 	}
 
 	return(0);
 }
-

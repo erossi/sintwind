@@ -88,17 +88,28 @@ int debug_phone_on(char *msg)
 
 void debug_lacrosse(struct wind_array *wind, char *string)
 {
-	debug_write_P (PSTR("header [ "));
+	debug_write_P (PSTR("hd [ "));
 	string = itoa(wind->lacrosse_head, string, 2);
 	debug_write(string);
-	debug_write_P (PSTR(" ] bearing [ "));
+	debug_write_P (PSTR(" ] br [ "));
 	string = itoa(wind->lacrosse_bearing, string, 10);
 	debug_write(string);
-	debug_write_P (PSTR(" ] speed [ "));
+	debug_write_P (PSTR(" ] spd [ "));
 	string = itoa(wind->lacrosse_speed, string, 10);
 	debug_write(string);
-	debug_write_P (PSTR(" ] chksum [ "));
+	debug_write_P (PSTR(" ] nbr [ "));
+	string = itoa(wind->lacrosse_nbearing, string, 2);
+	debug_write(string);
+	debug_write_P (PSTR(" ] nspd [ "));
+	string = itoa(wind->lacrosse_nspeed, string, 10);
+	debug_write(string);
+	debug_write_P (PSTR(" ]\n"));
+
+	debug_write_P (PSTR("chksum [ "));
 	string = itoa(wind->lacrosse_chksum, string, 2);
+	debug_write(string);
+	debug_write_P (PSTR(" ] chkOK [ "));
+	string = itoa(wind->lacrosse_chkok, string, 2);
 	debug_write(string);
 	debug_write_P (PSTR(" ]\n"));
 }

@@ -24,10 +24,12 @@ void port_a_init(void)
 {
 	/*
 	 * pa0: IN - ADC0 Wind direction
-	 * pa1-7: Unused
+	 * pa1: OUT - LaCrosse \CE
+	 * pa2-7: Unused
 	 */
 
-	DDRA = 0;
+	PORTA = 0;
+	DDRA = _BV(LACROSSE_CE);
 }
 
 void port_b_init(void)
@@ -67,10 +69,11 @@ void port_d_init(void)
 {
 	/*
 	 * pd0-1: xx RS232 rx/tx
-	 * pd2: INT0 rx lacrosse
+	 * pd2: INT0 rx lacrosse PULL-UP software and hardware
 	 * pd6: IN - ICP1 Davis wind speed pulse
 	 */
 
+	PORTD = _BV(LACROSSE_RX);
 	DDRD = 0;
 }
 

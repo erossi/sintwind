@@ -34,10 +34,12 @@
 
 /* ---- Anemometer ---- */
 
-#define LACROSSE_CE_PORT PORTD
-#define LACROSSE_CE PD3
+#define LACROSSE_CE_PORT PORTA
+#define LACROSSE_CE PA1
 #define LACROSSE_RX_PORT PIND
 #define LACROSSE_RX PIND2
+/* Conversion factor */
+#define LACROSSE_RATIO 0.25
 
 /* Set the prescaler used for the timer. */
 
@@ -105,8 +107,10 @@ struct wind_array {
 	/* LaCrosse data
  	   [00000100][0000bbbb][000vvvvvvvvvvvv][0000cccc]
 	 */
-	uint8_t lacrosse_head, lacrosse_bearing, lacrosse_chksum;
-	uint16_t lacrosse_speed;
+	uint8_t lacrosse_head, lacrosse_chksum;
+	uint8_t lacrosse_bearing, lacrosse_nbearing;
+	uint16_t lacrosse_speed, lacrosse_nspeed;
+	uint8_t lacrosse_chkok; /* calculated checksum*/
 };
 
 

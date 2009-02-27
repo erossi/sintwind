@@ -19,7 +19,9 @@
 #define LACROSSE_H_
 
 /* delay in usec from rx bit */
-#define LACROSSE_RX_DELAY 1250
+/* should be 1250 us, but considering some delay due to 
+ programming delay */
+#define LACROSSE_RX_DELAY 1200
 
 void lacrosse_init(void);
 void lacrosse_start(void);
