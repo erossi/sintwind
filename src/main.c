@@ -50,7 +50,6 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 
 	/* Read eeprom checkpoint status (last boot) */
 	chkpoint = eeprom_read_byte(&EE_chkpoint);
-	wind->sensor = eeprom_read_byte(&EE_sensor);
 
 	/* which sensor are we using? */
 	debug_which_sensor(wind);
@@ -110,7 +109,6 @@ void run_free(struct sht11_t *temperature, char *message)
 
 	/* Read eeprom checkpoint status (last boot) */
 	chkpoint = eeprom_read_byte(&EE_chkpoint);
-	wind->sensor = eeprom_read_byte(&EE_sensor);
 
 	/* If checkpoint then last boot went wrong */
 	if (chkpoint)
@@ -168,6 +166,9 @@ int main(void)
 	/* Init locals */
 	temperature = malloc(sizeof(struct sht11_t));
 	message = malloc(UART_RXBUF_SIZE);
+
+	/* reading sensor to be used */
+	wind->sensor = eeprom_read_byte(&EE_sensor);
 
 	/* initializing parts */
 	port_init();

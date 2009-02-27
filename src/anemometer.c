@@ -35,10 +35,19 @@ void anemometer_adjust(struct wind_array *wind)
 
 void anemometer_init(struct wind_array *wind)
 {
+	/*
 	if (wind->sensor)
 		davis_init();
 	else
 		lacrosse_init();
+	 */
+
+	if (lacrosse_is_connected()) {
+		wind->sensor = 0; /* lacrosse */
+		lacrosse_init();
+	} else {
+		davis_init();
+	}
 }
 
 /*

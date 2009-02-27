@@ -141,6 +141,14 @@ void lacrosse_init(void)
 	lacrosse_start();
 }
 
+void lacrosse_shutdown(void)
+{
+	lacrosse_stop();
+
+	/* disable INT0 */
+	GICR &= ~(_BV(INT0));
+}
+
 /* check if header is 00100 */
 uint8_t header_ok(void)
 {
@@ -148,6 +156,27 @@ uint8_t header_ok(void)
 		return (1);
 	else
 		return (0);
+}
+
+uint8_t lacrosse_is_connected(void)
+{
+	uint8_t i, j;
+
+	j = 0;
+	lacrosse_init();
+	sei();
+
+	for (i=0; i<50; i++)
+		if (wind->flag) {
+			j = header_ok();
+			i = 100;
+		} else {
+			_delay_ms(200);
+		}
+
+	cli();
+	lacrosse_shutdown();
+	return(j);
 }
 
 /* Extract and store correct value from lacrosse stream */

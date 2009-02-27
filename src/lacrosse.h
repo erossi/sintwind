@@ -27,5 +27,6 @@ void lacrosse_init(void);
 void lacrosse_start(void);
 void lacrosse_stop(void);
 uint8_t lacrosse_adjust(void);
+uint8_t lacrosse_is_connected(void);
 
 #endif
