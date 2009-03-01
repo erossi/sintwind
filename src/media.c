@@ -25,9 +25,6 @@
 #include "anemometer.h"
 #include "media.h"
 
-/* Globals */
-extern struct wind_array *wind;
-
 /*
 Test version:
 I want to test if use the media value find out for a cycle as
@@ -60,6 +57,13 @@ void store_media(struct wind_array *wind)
 	/* set min and max */
 	wind->vmin = wind->vmin_rt;
 	wind->vmax = wind->vmax_rt;
+
+	/* if we started with the previous cycle's media,
+	   than we have one more element.
+	   */
+#ifdef MEDIA_NEXT_CYCLE
+	wind->counter_rt++;
+#endif
 
 	/* media = sum / number of element */
 	wind->media_rt.x /= wind->counter_rt;
@@ -100,23 +104,20 @@ void store_media(struct wind_array *wind)
 	   and reset min and max. If you want the first element of the next
 	   cycle is the media of this cycle then keep the value.
 	 */
-#ifndef MEDIA_NEXT_CYCLE
-	/* case a) */
-	wind->media_rt.x = 0;
-	wind->media_rt.y = 0;
 	wind->counter_rt = 0;	/* clear real time counter */
-	wind->vmin_rt = 255;
-	wind->vmax_rt = 0;
 
-#else
-	/* case b) */
-	wind->counter_rt = 1;	/* set real time counter to 1 */
+#ifdef MEDIA_NEXT_CYCLE
 	wind->vmin_rt = wind->speed;
 	wind->vmax_rt = wind->speed;
+#else
+	wind->media_rt.x = 0;
+	wind->media_rt.y = 0;
+	wind->vmin_rt = 255;
+	wind->vmax_rt = 0;
 #endif
 }
 
-void media(void)
+void media(struct wind_array *wind)
 {
 	float radiant;
 
@@ -125,7 +126,7 @@ void media(void)
 	   after this point wind->speed_rt and wind->angle_rt
 	   must contain real km/h and degrees.
 	 */
-	/* Ignoring wrong data TOBEFIXED */
+	/* Ignoring wrong data (lacrosse checksum TOBEFIXED) */
 	anemometer_adjust(wind);
 
 	/*
@@ -158,24 +159,9 @@ void media(void)
 	if (wind->speed_rt > wind->vmax_rt)
 		wind->vmax_rt = wind->speed_rt;
 
-	/*
-	   Read the media.h to know how many ticks we use.
-	   If we use the last calculated media as the first
-	   element into the next sequence, than we must start counting
-	   from 1.
-	 */
-
-#ifndef MEDIA_NEXT_CYCLE
-	/* We don't have an 0 element from the media */
+	/* Read the media.h to know how many ticks we use. */
 	if (++wind->counter_rt == MEDIA_MINUTES)
 		store_media(wind);
-
-#else
-	/* the 1st element was a media calculated before */
-	if (++wind->counter_rt > MEDIA_MINUTES)
-		store_media(wind);
-
-#endif
 
 	wind->flag = 0;
 }

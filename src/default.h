@@ -52,9 +52,9 @@
   the first element of run (x+1).
   This lead to a wrong value into the 2 first run from the 
   power up.
-
-#define MEDIA_NEXT_CYCLE 1
  */
+
+#define MEDIA_NEXT_CYCLE
 
 enum wind_dir {
 	NORTH,

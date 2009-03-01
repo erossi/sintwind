@@ -72,9 +72,9 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 	for (;;) {
 		if (wind->flag) {
 			led_blink(1);
-			media();
 			/* passing message to avoid malloc */
 			debug_wind_status(wind, message);
+			media(wind);
 		}
 
 		if (phone_msg(message)) {
@@ -131,7 +131,7 @@ void run_free(struct sht11_t *temperature, char *message)
 	for (;;) {
 		if (wind->flag) {
 			led_blink(1);
-			media();
+			media(wind);
 		}
 
 		if (phone_msg(message)) {
