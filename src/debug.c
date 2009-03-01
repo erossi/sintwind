@@ -46,19 +46,14 @@ void debug_hello(void)
 	debug_write_P (PSTR("\n"));
 	debug_write_P (PSTR("\n"));
 	debug_write_P (PSTR("\n"));
-	debug_write_P (PSTR("***********************************************\n"));
-	debug_write_P (PSTR("*                                             *\n"));
-	debug_write_P (PSTR("* Open Sint Project - Sint Wind v3.1          *\n"));
-	debug_write_P (PSTR("*                                             *\n"));
-	debug_write_P (PSTR("*               By                            *\n"));
-	debug_write_P (PSTR("*                                             *\n"));
-	debug_write_P (PSTR("* Andrea Marabini (info@marabo.it)            *\n"));
-	debug_write_P (PSTR("* Enrico Rossi    (e.rossi@tecnobrain.com)    *\n"));
-	debug_write_P (PSTR("*                                             *\n"));
-	debug_write_P (PSTR("* http://tecnobrain.com/OpenSint/             *\n"));
-	debug_write_P (PSTR("*                                             *\n"));
-	debug_write_P (PSTR("*            GNU GPL v3                       *\n"));
-	debug_write_P (PSTR("***********************************************\n"));
+	debug_write_P (PSTR("*****************************************\n"));
+	debug_write_P (PSTR("* Open Sint Project - Sint Wind v3      *\n"));
+	debug_write_P (PSTR("*               By                      *\n"));
+	debug_write_P (PSTR("* Andrea Marabini (info@marabo.it)      *\n"));
+	debug_write_P (PSTR("* Enrico Rossi (e.rossi@tecnobrain.com) *\n"));
+	debug_write_P (PSTR("* http://tecnobrain.com/OpenSint/       *\n"));
+	debug_write_P (PSTR("*            GNU GPL v3                 *\n"));
+	debug_write_P (PSTR("*****************************************\n"));
 	debug_write_P (PSTR("\n"));
 }
 
@@ -116,25 +111,39 @@ void debug_lacrosse(struct wind_array *wind, char *string)
 
 void debug_wind_status(struct wind_array *wind, char *string)
 {
-	debug_write_P (PSTR("S.rt [ "));
+	string = itoa(wind->counter_rt, string, 10);
+	debug_write(string);
+	debug_write_P (PSTR(" rt[ S "));
 	string = itoa(wind->speed_rt, string, 10);
 	debug_write(string);
-	debug_write_P (PSTR(" ] A.rt [ "));
+	debug_write_P (PSTR(", A "));
 	string = itoa(wind->angle_rt, string, 10);
 	debug_write(string);
-	debug_write_P (PSTR(" ] V.min [ "));
+	debug_write_P (PSTR(", vm "));
+	string = itoa(wind->vmin_rt, string, 10);
+	debug_write(string);
+	debug_write_P (PSTR(", Vx "));
+	string = itoa(wind->vmax_rt, string, 10);
+	debug_write(string);
+	debug_write_P (PSTR(", mX "));
+	string = itoa(wind->media_rt.x, string, 10);
+	debug_write(string);
+	debug_write_P (PSTR(", mY "));
+	string = itoa(wind->media_rt.y, string, 10);
+	debug_write(string);
+	debug_write_P (PSTR("] vm "));
 	string = itoa(wind->vmin, string, 10);
 	debug_write(string);
-	debug_write_P (PSTR(" ] V.max [ "));
+	debug_write_P (PSTR(", Vx "));
 	string = itoa(wind->vmax, string, 10);
 	debug_write(string);
-	debug_write_P (PSTR(" ] V [ "));
+	debug_write_P (PSTR(", V "));
 	string = itoa(wind->speed, string, 10);
 	debug_write(string);
-	debug_write_P (PSTR(" ] Deg. [ "));
+	debug_write_P (PSTR(", A "));
 	string = itoa(wind->angle, string, 10);
 	debug_write(string);
-	debug_write_P (PSTR(" ]\n"));
+	debug_write_P (PSTR("\n"));
 
 	if (!wind->sensor)
 		debug_lacrosse(wind, string);
@@ -247,12 +256,16 @@ void debug_help(void)
 	debug_write_P (PSTR("\n"));
 	debug_write_P (PSTR("Help:\n"));
 	debug_write_P (PSTR(" RING   Start phone answer and playback\n"));
-	debug_write_P (PSTR(" sensor Change sensor(MUST RESET)\n"));
+	debug_write_P (PSTR(" sensor Change sensor(MUST RESET) "));
+	debug_write_P (PSTR(" * autodetected now. Useless option\n"));
 	debug_write_P (PSTR("\n"));
-	debug_write_P (PSTR("S.rt = Speed in real time\n"));
-	debug_write_P (PSTR("A.rt = Angle in real time\n"));
-	debug_write_P (PSTR("V.min = Minimum speed in the last cycle\n"));
-	debug_write_P (PSTR("V.max = Maximum speed in the last cycle\n"));
+	debug_write_P (PSTR("rt []: Real Time elements\n"));
+	debug_write_P (PSTR("S = Speed in real time\n"));
+	debug_write_P (PSTR("A = Angle in degrees\n"));
+	debug_write_P (PSTR("vm = Minimum speed\n"));
+	debug_write_P (PSTR("Vx = Maximum speed\n"));
+	debug_write_P (PSTR("mX = complex media real part X\n"));
+	debug_write_P (PSTR("mY = complex media immaginary part Y\n"));
 	debug_write_P (PSTR("V = Medium speed in the last cycle\n"));
 	debug_write_P (PSTR("Deg. = Medium angle in degrees in the last cycle\n"));
 	debug_write_P (PSTR("\n"));
