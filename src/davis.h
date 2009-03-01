@@ -19,7 +19,7 @@
 #define DAVIS_H_
 
 /* Filter cutoff to eliminate spike */
-#define ANEMOMETER_CUTOFF 5
+#define DAVIS_CUTOFF 5
 
 void davis_init(void);
 void davis_adjust(void);

@@ -70,10 +70,10 @@ ISR(TIMER1_CAPT_vect)
 
 	/*
 	   if the difference between this front and the previous
-	   is less than _ANEMOMETER_CUTOFF count prescaled, we have a spike,
+	   is less than DAVIS_CUTOFF count prescaled, we have a spike,
 	   ignoring it.
 	 */
-	if (diff > ANEMOMETER_CUTOFF) {
+	if (diff > DAVIS_CUTOFF) {
 		++loop;
 		timer = ICR1;
 	}
@@ -85,8 +85,7 @@ ISR(TIMER1_OVF_vect)
 	   Any time the system trigger an overflow interrupt.
 	   The wind pointer must be present as global variables.
 	   wind flag is a boolean flag we enable to signal to
-	   main that there
-	   is a time to be elaborated.
+	   main that there is a time to be elaborated.
 	   Once the main take care of the new value, it
 	   switch off the flag, so if we find the flag on, it means that
 	   the main didn't take care of the last value (maybe it was too busy)
@@ -146,10 +145,10 @@ void davis_init(void)
 void davis_adjust(void)
 {
 	/*
-	   Any time the main find it has a wind speed flag activate, it means
-	   we have a tick per minutes value to elaborate.
-	   This routine which is also hardware dependant is used to trasform
-	   ticks per minuter in (?? m/s) (?? km/h).
+	   Any time the main find it has a wind speed flag active, it means
+	   we have a tick per cycle to elaborate.
+	   This routine is used to trasform
+	   ticks per cycle in (?? m/s) (?? km/h).
 	   REMEMBER: clear media_rt the first time (init)
 	   speed_rt and angle_rt are set by interrupt routine
 	 */
@@ -159,15 +158,14 @@ void davis_adjust(void)
 	   See spreadsheet.
 	 */
 	if (wind->speed_rt < 70)
-		wind->speed_rt /= 2.7;
+		wind->speed_rt /= 1.35;
 
 	if ((wind->speed_rt >= 70) && (wind->speed_rt < 85))
-		wind->speed_rt /= 3;
+		wind->speed_rt /= 1.5;
 
 	if ((wind->speed_rt >= 85) && (wind->speed_rt < 105))
-		wind->speed_rt /= 3.5;
+		wind->speed_rt /= 1.75;
 
 	if (wind->speed_rt >= 105)
-		wind->speed_rt /= 6;
-
+		wind->speed_rt /= 3;
 }
