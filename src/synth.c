@@ -235,15 +235,19 @@ void synth_play_message(struct wind_array *wind, struct sht11_t *temp)
 	say_it(SYNTH_S_CLUB);
 	say_it(SYNTH_S_WIND);
 
-	if (wind->vmax) {
-		synth_say_wind_direction(wind->direction);
-		say_it(SYNTH_S_INTENSITY);
-		say_int(wind->vmin);
-		say_it(SYNTH_S_TO);
-		say_int(wind->vmax);
-		say_it(SYNTH_S_KMH);	/* Km/h */
-	} else
+	if (wind->vmin == 255) {
 		say_it(SYNTH_S_DNA);
+	} else {
+		if (wind->vmax) {
+			synth_say_wind_direction(wind->direction);
+			say_it(SYNTH_S_INTENSITY);
+			say_int(wind->vmin);
+			say_it(SYNTH_S_TO);
+			say_int(wind->vmax);
+			say_it(SYNTH_S_KMH);	/* Km/h */
+		} else
+			say_it(SYNTH_S_ABSENT);
+	}
 
 	say_it(SYNTH_S_TEMP);
 	say_int((int)temp->temperature);
