@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2008 Enrico Rossi
+ * Copyright (C) 2005-2009 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -52,14 +52,21 @@ void port_init(void)
 
 void array_init(struct wind_array *wind)
 {
-	wind->flag = 0;		/* 0=ok take value 1=value taken */
+	wind->flag = 0;         /* 0=ok take value 1=value taken */
+	wind->speed_rt = 0;
+	wind->angle_rt = 0;
 	wind->speed = 0;
 	wind->vmin = 255;
 	wind->vmax = 0;
 	wind->angle = 0;
 	wind->direction = NORTH;
 	wind->tendency = STABLE;
+	wind->vmin_rt = 255;
+	wind->vmax_rt = 0;
+	wind->vector_rt.x = 0;
+	wind->vector_rt.y = 0;
 	wind->media_rt.x = 0;
 	wind->media_rt.y = 0;
 	wind->counter_rt = 0;
 }
+
