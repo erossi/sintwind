@@ -87,17 +87,16 @@ struct wind_array {
 	   angle_rt: 0-359 degrees detected
 	 */
 	volatile uint8_t flag;
-	volatile uint8_t speed_rt;
+	volatile int speed_rt;
 	volatile int angle_rt;
 
 	/* wind elements speed 0-359 degrees */
-	uint8_t speed, vmin, vmax;
-	int angle;
+	int speed, vmin, vmax, angle;
 	enum wind_dir direction;
 	enum wind_tendency tendency;
 
 	/* real time elements */
-	uint8_t vmin_rt, vmax_rt;
+	int vmin_rt, vmax_rt;
 	struct complex vector_rt, media_rt;
 	uint8_t counter_rt;
 

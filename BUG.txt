@@ -1,6 +1,5 @@
 - 2.3.2008 -
 
- > Allora....
  > Dati inpostati prima dell'accensione: direzione sud/ovest; velocit?
  > 21. Accendo e dopo qualche secondo dice "Stazione meteo
  > club........vento proveniente da nord con una intensit? media da 155
@@ -25,4 +24,3 @@
 07.02.2009: SHT11 elimina i due loop until bit x senno il codice si inkioda se l'SHT11 ha problemi
 
 08.02.2009: Il settaggio di wind->flag esegue un cli() ogni 4 secondi, ora con la 232 forse non e' il caso.
-

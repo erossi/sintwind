@@ -15,34 +15,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <inttypes.h>
-#include "default.h"
-#include "media.h"
+#ifndef MEDIA_H_
+#define MEDIA_H_
 
-int main(void)
-{
-	struct wind_array *wind;
-	int i;
+/*
+  Minutes to use to calculate media
+  It depends on cpu speed and prescaled timer
+  4.19 sec/cycle, 1 min= 15 cycle, 5 min= 75 cycle
+*/
 
-	wind = malloc(sizeof(struct wind_array));
-	wind->angle_rt = 0;
-	printf("In (Hz) | SpeesRT | AngleRT | vminRT | VmaxRT | ");
-	printf("vmin | Vmax | Speed | Angle");
-	printf("\n");
+#define MEDIA_MINUTES 15
 
-	for (i=0; i<300; i++) {
-		wind->speed_rt = i;
-		media(wind);
-		printf("%d | ", i);
-		printf("%d | %d | %d | ", wind->speed_rt, wind->angle_rt, wind->vmin_rt);
-		printf("%d | %d | %d | ", wind->vmax_rt, wind->vmin, wind->vmax);
-		printf("%d | %d", wind->speed, wind->angle);
-		printf("\n");
+/*
+   MEDIA_NEXT_CYCLE defines the first element (0) of
+   real time value. If defined we use medium value,
+   if undefined we reset the value.
+ */
 
-	}
+void media(struct wind_array *wind);
 
-	free(wind);
-	return(0);
-}
+#endif
