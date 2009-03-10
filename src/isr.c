@@ -96,7 +96,7 @@ ISR(TIMER1_OVF_vect)
 	 */
 
 	/* Stop the ISR */
-	cli();
+	/* cli(); */ /* Not a naked ISR */
 
 	/* for now 1 to 1 conversion */
 	wind->speed_rt = loop;

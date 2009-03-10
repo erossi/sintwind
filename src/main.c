@@ -69,7 +69,7 @@ void run_free(struct sht11_t *temperature)
 		if (wind->flag) {
 			do_media(wind);
 			wind->flag = 0;
-			sei();
+			/* sei(); */ /* Not a naked ISR */
 		}
 
 		if (phone_ring()) {
