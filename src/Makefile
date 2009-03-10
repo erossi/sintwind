@@ -2,16 +2,16 @@ MCU = atmega8
 INC = -I/usr/avr/include/
 LIBS = m
 OPTLEV = 2
-export CFLAGS = $(INC) -Wall -Wstrict-prototypes -pedantic -mmcu=$(MCU) -O$(OPTLEV)
-export LFLAGS = -l$(LIBS)
-export CC = avr-gcc
+FCPU = 4000000UL
+CFLAGS = $(INC) -Wall -Wstrict-prototypes -pedantic -mmcu=$(MCU) -O$(OPTLEV) -D F_CPU=$(FCPU)
+LFLAGS = -l$(LIBS)
+CC = avr-gcc
 
 REMOVE = rm -f
 
-objects = sht11.o cell.o init.o adc.o anemometer.o synth.o media.o isr.o
-SUBDIRS =
+objects = sht11.o cell.o init.o adc.o anemometer.o synth.o media.o isr.o utils.o
 
-.PHONY: clean indent $(SUBDIRS)
+.PHONY: clean indent
 .SILENT: help
 .SUFFIXES: .c, .o
 

@@ -15,13 +15,48 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CELL_H_
-#define CELL_H_
+#include <avr/io.h>
+#include <util/delay.h>
+#include "default.h"
+#include "utils.h"
 
-void phone_init(void);
-int phone_on(void);
-int phone_ring(void);
-void phone_answer(void);
-void phone_hangup(void);
+void led_blink(int num)
+{
+	while (num) {
+		UTILS_LED_PORT |= _BV(UTILS_LED_PIN);
+		_delay_ms(300);
+		UTILS_LED_PORT &= ~_BV(UTILS_LED_PIN);
+		_delay_ms(300);
+		num--;
+	}
+}
 
-#endif
+void wait_for_click(void)
+{
+	loop_until_bit_is_clear(UTILS_SWITCH_PORT, UTILS_SWITCH_PIN);
+	led_blink(1);
+	_delay_ms(1000);
+}
+
+int check_for_click(void)
+{
+	if (bit_is_clear(UTILS_SWITCH_PORT, UTILS_SWITCH_PIN)) {
+		led_blink(1);
+		_delay_ms(1000);
+		return (1);
+	} else
+		return (0);
+}
+
+void delay1h(void)
+{
+	int i;
+
+	for (i = 0; i < 360; i++) {
+		led_blink(5);
+		_delay_ms(10000);
+
+		if (check_for_click())
+			i = 360;
+	}
+}

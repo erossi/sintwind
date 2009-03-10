@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2008 Enrico Rossi
+ * Copyright (C) 2005-2009 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -16,7 +16,10 @@
  */
 
 #include <inttypes.h>
+#include <stdlib.h>
 #include <avr/interrupt.h>
+#include <avr/eeprom.h>
+#include <avr/pgmspace.h>
 #include "default.h"
 #include "init.h"
 /* sht11.h defined before synth.h to avoid
@@ -28,40 +31,39 @@
 #include "anemometer.h"
 #include "media.h"
 #include "cell.h"
+#include "utils.h"
+
+/* EEPROM Area really have to be global? */
+uint8_t EEMEM EE_chkpoint;
 
 /* Globals */
 struct wind_array *wind;
 volatile int loop;
 
-int main(void)
+void run_free(struct sht11_t *temperature)
 {
-	/* Global VARS */
-	struct wind_array why_not_use_malloc;
-	struct sht11_t why_not_use_malloc2;
-	struct sht11_t *temperature;
+	uint8_t chkpoint;
 
-	/*
-	 * allocating variables
-	 */
+	/* Read eeprom checkpoint status (last boot) */
+	chkpoint = eeprom_read_byte(&EE_chkpoint);
 
-	wind = &why_not_use_malloc;
-	loop = 0;
-	temperature = &why_not_use_malloc2;
+	/* If checkpoint then last boot went wrong */
+	if (chkpoint)
+		delay1h();
+	else {
+		chkpoint = 1;
+		eeprom_write_byte(&EE_chkpoint, chkpoint);
+	}
 
-	/*
-	 * initializing parts
-	 */
-
-	port_init();
-	array_init(wind);
-	anemometer_init();
-	phone_init();
-	sht11_init();
-
-	synth_pause();
-
-	/* Enable interrupt */
-	sei();
+	/* without enought power we may die here */
+	while (chkpoint) {
+		if (phone_on())
+			delay1h();	/* error */
+		else {
+			chkpoint = 0;
+			eeprom_write_byte(&EE_chkpoint, chkpoint);
+		}
+	}
 
 	for (;;) {
 		if (wind->flag) {
@@ -70,11 +72,37 @@ int main(void)
 			sei();
 		}
 
-		if (ring()) {
-			answer_phone();
+		if (phone_ring()) {
+			phone_answer();
 			sht11_read_all(temperature);
 			synth_play_message(wind, temperature);
-			hangup_phone();
+			phone_hangup();
 		}
 	}
+}
+
+int main(void)
+{
+	struct sht11_t *temperature;
+
+	/* Init globals */
+	loop = 0;
+	wind = malloc(sizeof(struct wind_array));
+
+	/* Init locals */
+	temperature = malloc(sizeof(struct sht11_t));
+
+	/* initializing parts */
+	port_init();
+	array_init(wind);
+	anemometer_init();
+	sht11_init();
+	phone_init();
+	sei();			/* Enable interrupt */
+
+	run_free(temperature);
+
+	free(wind);
+	free(temperature);
+	return (0);
 }

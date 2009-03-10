@@ -15,13 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef CELL_H_
-#define CELL_H_
+#ifndef UTILS_H
+#define UTILS_H
 
-void phone_init(void);
-int phone_on(void);
-int phone_ring(void);
-void phone_answer(void);
-void phone_hangup(void);
+void led_blink(int num);
+void wait_for_click(void);
+int check_for_click(void);
+void delay1h(void);
 
 #endif
