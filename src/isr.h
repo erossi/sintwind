@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2008 Enrico Rossi
+ * Copyright (C) 2005-2009 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,12 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef _ISRSINT_H_
-#define _ISRSINT_H_
+#ifndef ISRSINT_H_
+#define ISRSINT_H_
 
 /* Filter cutoff to eliminate spike */
-#define _ANEMOMETER_CUTOFF 5
+#define ANEMOMETER_CUTOFF 5
 
-void isr_init(void);
+void isr_init (void);
 
 #endif

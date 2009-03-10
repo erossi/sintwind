@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2008 Enrico Rossi
+ * Copyright (C) 2005-2009 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,7 +32,7 @@
 extern volatile int loop;
 extern struct wind_array *wind;
 
-ISR(SIG_INPUT_CAPTURE1)
+ISR(TIMER1_CAPT_vect)
 {
 	static uint16_t timer = 0;
 	/* only to implement low pass filter */
@@ -45,19 +45,24 @@ ISR(SIG_INPUT_CAPTURE1)
 	   interrupt to increment a counter. Note: this has to be a very quick
 	   routine because in a strong wind we may have impulses many times per
 	   second, keep also in
-	   mind that there are spikes also, which means that we may have a real uge
+	   mind that there are spikes also, which means that we may
+	   have a real huge
 	   qty of interrupt per second (this may be considered a bug).
-	   Any trigger simply increment by 1 a counter any half-turn of the anenom.
+	   Any trigger simply increment by 1 a counter any
+	   half-turn of the anenom.
 	   in the meantime any minute we count how many half-turn we did so
 	   we learn the wind speed.
-	   A low-pass filter is implemented to filter spikes, we do this by looking
+	   A low-pass filter is implemented to filter spikes,
+	   we do this by looking
 	   to the timers increment since the last time this routine has been
 	   triggered.
-	   If this difference is to low (less than 10 ticks) I consider this time
+	   If this difference is to low (less than 10 ticks) I consider
+	   this time
 	   the routine has been triggere by a spike, not by a pulse form
 	   the anemometer.
 
-	   loop is the external common variable used to count the pulse per second.
+	   loop is the external common variable used to count the
+	   pulse per second.
 	 */
 
 	/* How much time is passed? */
@@ -68,19 +73,21 @@ ISR(SIG_INPUT_CAPTURE1)
 	   is less than _ANEMOMETER_CUTOFF count prescaled, we have a spike,
 	   ignoring it.
 	 */
-	if (diff > _ANEMOMETER_CUTOFF) {
+	if (diff > ANEMOMETER_CUTOFF) {
 		++loop;
 		timer = ICR1;
 	}
 }
 
-ISR(SIG_OVERFLOW1)
+ISR(TIMER1_OVF_vect)
 {
 	/*
 	   Any time the system trigger an overflow interrupt.
 	   The wind pointer must be present as global variables.
-	   wind flag is a boolean flag we enable to signal to the main that there
-	   is a time to be elaborated. Once the main take care of the new value, it
+	   wind flag is a boolean flag we enable to signal to
+	   main that there
+	   is a time to be elaborated.
+	   Once the main take care of the new value, it
 	   switch off the flag, so if we find the flag on, it means that
 	   the main didn't take care of the last value (maybe it was too busy)
 	   so we simply do nothing.
