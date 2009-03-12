@@ -9,7 +9,7 @@ CC = gcc
 
 REMOVE = rm -f
 
-objects = media.o
+objects = anemometer.o media.o
 
 .PHONY: clean indent
 .SILENT: help
@@ -19,4 +19,4 @@ all: $(objects)
 	$(CC) $(CFLAGS) -o test_media test_media.c $(objects) $(LFLAGS)
 
 clean: $(SUBDIRS)
-	$(REMOVE) $(objects)
+	$(REMOVE) $(objects) test_media
