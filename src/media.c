@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2008 Enrico Rossi
+ * Copyright (C) 2005-2009 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -14,10 +14,6 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-
-/* These routines are used to read the wind speed and direction,
- * do media etc.
-*/
 
 #include <inttypes.h>
 #include <math.h>
@@ -50,6 +46,21 @@ from a clean situation.
  default.h
  */
 
+/* Standard deviation sd = sqrt(sum(Xi^2)/n - Xmed^2) */
+
+double sqr(double x)
+{
+	return(x*x);
+}
+
+double module(double x, double y)
+{
+	double m;
+
+	m = sqrt(sqr(x) + sqr(y));
+	return (m);
+}
+
 void store_media(struct wind_array *wind)
 {
 	double radiant;
@@ -69,26 +80,16 @@ void store_media(struct wind_array *wind)
 	wind->media_rt.x /= wind->counter_rt;
 	wind->media_rt.y /= wind->counter_rt;
 
-	/*
-	   from complex back to p(r,theta)
-	   r = sqrt(x*x + y*y)
-	   theta = arc tangent (y/x)
-	 */
-	wind->speed = sqrt((wind->media_rt.x * wind->media_rt.x) +
-			   (wind->media_rt.y * wind->media_rt.y));
+	/* from complex back to p(r,theta) r=sqrt(x*x + y*y) theta=atan(y/x) */
+	wind->speed = sqrt(sqr(wind->media_rt.x) + sqr(wind->media_rt.y));
 
 	/* securing from division by zero error in the atan div! */
 	if (wind->media_rt.x == 0)
-		wind->media_rt.x = 0.01;
+		radiant = atan(wind->media_rt.y / 0.01);
+	else
+		radiant = atan(wind->media_rt.y / wind->media_rt.x);
 
-	/*  theta in radiant */
-	radiant = atan(wind->media_rt.y / wind->media_rt.x);
-
-	/*
-	   Convert theta (radiant) to 360 degrees
-	   atan (-PI to PI)
-	   check your forgotten math school book
-	 */
+	/* Convert theta (radiant) to 360 degrees atan (-PI to PI) */
 	wind->angle = radiant * 180 / M_PI;
 
 	if (wind->media_rt.x >= 0)	/* 1th or 4th quadrant */
@@ -145,10 +146,7 @@ void media(struct wind_array *wind)
 	wind->vector_rt.x = wind->speed_rt * sin(radiant);
 	wind->vector_rt.y = wind->speed_rt * cos(radiant);
 
-	/*
-	   collecting the sum of all x and y
-	   to calculate the media at the end
-	 */
+	/* collecting the sum of all x and y to calculate the media. */
 	wind->media_rt.x += wind->vector_rt.x;
 	wind->media_rt.y += wind->vector_rt.y;
 
