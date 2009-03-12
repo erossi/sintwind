@@ -52,7 +52,7 @@ from a clean situation.
 
 void store_media(struct wind_array *wind)
 {
-	float radiant;
+	double radiant;
 
 	/* set min and max */
 	wind->vmin = wind->vmin_rt;
@@ -119,7 +119,7 @@ void store_media(struct wind_array *wind)
 
 void media(struct wind_array *wind)
 {
-	float radiant;
+	double radiant;
 
 	/* 
 	   Adjust value based on the sensor type and specs.

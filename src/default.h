@@ -74,8 +74,8 @@ enum wind_tendency {
 };
 
 struct complex {
-	float x;
-	float y;
+	double x;
+	double y;
 };
 
 struct wind_array {
@@ -172,10 +172,10 @@ struct uartStruct {
 struct sht11_t {
 	uint16_t raw_temperature;
 	uint16_t raw_humidity;
-	float temperature;
-	float humidity_linear;
-	float humidity_compensated;
-	float dewpoint;
+	double temperature;
+	double humidity_linear;
+	double humidity_compensated;
+	double dewpoint;
 };
 
 #endif

@@ -233,7 +233,7 @@ uint16_t sht11_send_command(uint8_t command)
 
 void sht11_dewpoint(struct sht11_t *dataset)
 {
-	float k;
+	double k;
 	k = (log10(dataset->humidity_compensated) - 2) / 0.4343 +
 	    (17.62 * dataset->temperature) / (243.12 + dataset->temperature);
 	dataset->dewpoint = 243.12 * k / (17.62 - k);
