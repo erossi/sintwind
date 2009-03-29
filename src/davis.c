@@ -157,12 +157,5 @@ void davis_adjust(void)
 	   Adjust wind speed, these value are hardware dependant.
 	   See spreadsheet.
 	 */
-        if (wind->speed_rt < 70)
-                wind->speed_rt /= 1.35;
-
-        if ((wind->speed_rt >= 70) && (wind->speed_rt < 105))
-                wind->speed_rt = (wind->speed_rt/4) + 34;
-
-        if (wind->speed_rt >= 105)
-                wind->speed_rt = (wind->speed_rt/10) + 50;
+	wind->speed_rt /= 1.35;
 }

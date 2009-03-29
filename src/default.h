@@ -39,7 +39,7 @@
 #define LACROSSE_RX_PORT PIND
 #define LACROSSE_RX PIND2
 /* Conversion factor */
-#define LACROSSE_RATIO 0.25
+#define LACROSSE_RATIO 0.3
 
 /* Set the prescaler used for the timer. */
 
