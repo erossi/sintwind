@@ -127,28 +127,10 @@ void do_media(struct wind_array *wind)
 	 */
 
 	/*
-	 * Davis anemometer correction, 1 pulse per cycle instead of 2
-	 * Wind speed * 2 to avoid changing boundaries below.
-	 * If Davids anemometer becomes standard this MUST be fixed.
-	 */
-
-	wind->speed_rt *= 2;
-
-	/*
 	   Adjust wind speed, these value are hardware dependant.
 	   See spreadsheet.
 	 */
-	if (wind->speed_rt < 140)
-		wind->speed_rt /= 2.7;
-
-	if ((wind->speed_rt >= 140) && (wind->speed_rt < 170))
-		wind->speed_rt /= 3;
-
-	if ((wind->speed_rt >= 170) && (wind->speed_rt < 210))
-		wind->speed_rt /= 3.5;
-
-	if (wind->speed_rt >= 210)
-		wind->speed_rt /= 6;
+	wind->speed_rt /= 1.35;
 
 	/*
 	   convert wind direction from degrees to radiant
