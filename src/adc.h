@@ -20,12 +20,13 @@
 
 /*
  * Ratio to convert 0-255 to 0-360 degrees (mostly)
- * From tha Davis sensor we have a range 0 - 4V, then
+ * From the Davis sensor we have a range 0 ~ 4V, then
  * we read 0 - (4/5)*255 value from the adc.
  * This means 0 - 204 rappresent 0-360 degrees.
- * 1.75 seems a good approximation
+ * Things changes slightly anytime.
+ * 1.65 seems a good approximation
  */
-#define _ADC_RATIO 1.75
+#define _ADC_RATIO 1.65
 
 void adc_init(void);
 int get_wind_position(void);
