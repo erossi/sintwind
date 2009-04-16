@@ -52,7 +52,7 @@ void port_init(void)
 
 void array_init(struct wind_array *wind)
 {
-	wind->flag = 0;         /* 0=ok take value 1=value taken */
+	wind->flag = 0;		/* 0=ok take value 1=value taken */
 	wind->speed_rt = 0;
 	wind->angle_rt = 0;
 	wind->speed = 0;
