@@ -40,17 +40,24 @@ void synth_reset(void)
 	_delay_ms(50);
 }
 
+/*
+   EOM goes down some ms before the end of the record.
+   How much time depends from the model used.
+   Delay 25msec after to be sure all the record has been played.
+*/
 void wait_for_eom(void)
 {
-/*   int i; */
+	int i;
 
-/*   for (i=0;i<20000;i++) */
-/*     if (!(_SYNTH_CTRL_IN & _BV(_SYNTH_EOM))) */
-/*       i=21000; */
-/*     else */
-/*       _delay_ms (1); */
+	for (i = 0; i < 20000; i++)
+		if (bit_is_clear(_SYNTH_CTRL_IN, _SYNTH_EOM))
+			i = 21000;
+		else
+			_delay_ms (1);
 
-	loop_until_bit_is_clear(_SYNTH_CTRL_IN, _SYNTH_EOM);
+	/*
+	   loop_until_bit_is_clear(SYNTH_CTRL_IN, SYNTH_EOM);
+	 */
 	_delay_ms(25);
 }
 
