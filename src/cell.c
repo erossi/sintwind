@@ -55,8 +55,8 @@ int phone_msg(char *s)
 	return (i);
 }
 
-/* Wait for string from rs232, if loked, wait forever */
-int phone_waitfor(const char *s, const int loked)
+/* Wait for string from rs232, if locked, wait forever */
+int phone_waitfor(const char *s, const int locked)
 {
 	int i, j;
 	char *msg;
@@ -64,7 +64,7 @@ int phone_waitfor(const char *s, const int loked)
 	msg = malloc(UART_RXBUF_SIZE);
 	j = 1;
 
-	if (loked)
+	if (locked)
 		while (!(phone_msg(msg) && phone_valid_msg(msg, s)))
 			_delay_ms(100);
 	else
@@ -84,6 +84,7 @@ void phone_init(void)
 	uartPtr = uart_init();
 }
 
+/* Turning on the modem will take from 11sec to 16sec */
 int phone_on(void)
 {
 	int i;

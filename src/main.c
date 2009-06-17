@@ -172,11 +172,13 @@ int main(void)
 
 	/* initializing parts */
 	port_init();
+	/* 1 sec if click, else no delay */
 	debug = check_for_click();
 	array_init(wind);
+	/* if lacrosse is not present, the check will take 10 sec */
 	anemometer_init(wind);
 	sht11_init();
-	phone_init();		/* activate uart comm only */
+	phone_init();		/* activate uart comm only, no delay */
 	sei();			/* Enable interrupt */
 
 	if (debug)
