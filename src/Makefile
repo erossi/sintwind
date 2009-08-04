@@ -4,6 +4,8 @@ LIBS = m
 OPTLEV = 2
 FCPU = 4000000UL
 CFLAGS = $(INC) -Wall -Wstrict-prototypes -pedantic -mmcu=$(MCU) -O$(OPTLEV) -D F_CPU=$(FCPU)
+# for test disable 1h delay routine
+# CFLAGS += -D NO_DELAY_AT_BOOT
 LFLAGS = -l$(LIBS)
 CC = avr-gcc
 

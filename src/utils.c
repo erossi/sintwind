@@ -20,43 +20,14 @@
 #include "default.h"
 #include "utils.h"
 
-void led_blink(int num)
-{
-	while (num) {
-		UTILS_LED_PORT |= _BV(UTILS_LED_PIN);
-		_delay_ms(300);
-		UTILS_LED_PORT &= ~_BV(UTILS_LED_PIN);
-		_delay_ms(300);
-		num--;
-	}
-}
-
-void wait_for_click(void)
-{
-	loop_until_bit_is_clear(UTILS_SWITCH_PORT, UTILS_SWITCH_PIN);
-	led_blink(1);
-	_delay_ms(1000);
-}
-
-int check_for_click(void)
-{
-	if (bit_is_clear(UTILS_SWITCH_PORT, UTILS_SWITCH_PIN)) {
-		led_blink(1);
-		_delay_ms(1000);
-		return (1);
-	} else
-		return (0);
-}
-
 void delay1h(void)
 {
 	int i;
 
-	for (i = 0; i < 360; i++) {
-		led_blink(5);
+	for (i = 0; i < 360; i++)
+#ifdef NO_DELAY_AT_BOOT
+		_delay_ms(10);
+#else
 		_delay_ms(10000);
-
-		if (check_for_click())
-			i = 360;
-	}
+#endif
 }

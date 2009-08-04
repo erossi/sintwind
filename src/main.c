@@ -56,20 +56,14 @@ void run_free(struct sht11_t *temperature)
 	}
 
 	/* without enought power we may die here */
-	while (chkpoint) {
-		if (phone_on())
-			delay1h();	/* error */
-		else {
-			chkpoint = 0;
-			eeprom_write_byte(&EE_chkpoint, chkpoint);
-		}
-	}
+	phone_on();
+	chkpoint = 0;
+	eeprom_write_byte(&EE_chkpoint, chkpoint);
 
 	for (;;) {
 		if (wind->flag) {
 			do_media(wind);
 			wind->flag = 0;
-			/* sei(); */ /* Not a naked ISR */
 		}
 
 		if (phone_ring()) {
