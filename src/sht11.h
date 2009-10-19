@@ -34,8 +34,6 @@
 #define SHT11_SCK_DELAY 1
 
 void sht11_init(void);
-uint16_t sht11_send_command(uint8_t command);
-uint8_t sht11_read_status_reg(void);
 void sht11_read_all(struct sht11_t *dataset);
 
 #endif

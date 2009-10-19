@@ -185,6 +185,7 @@ uint8_t sht11_read_status_reg(void)
 	return (result);
 }
 
+/* Disable Interrupt to avoid possible clk problem. */
 uint16_t sht11_send_command(uint8_t command)
 {
 	uint16_t result;
@@ -199,34 +200,33 @@ uint16_t sht11_send_command(uint8_t command)
 	send_byte(command);
 	ack = read_ack();
 
-	if (ack)
-		return (0);
+	if (!ack) {
+		/* And if nothing came back this code hangs here */
+		loop_until_bit_is_set(SHT11_PIN, SHT11_DATA);
+		loop_until_bit_is_clear(SHT11_PIN, SHT11_DATA);
 
-	/* And if nothing came back this code hangs here */
-	loop_until_bit_is_set(SHT11_PIN, SHT11_DATA);
-	loop_until_bit_is_clear(SHT11_PIN, SHT11_DATA);
+		/* inizio la lettura dal MSB del primo byte */
+		result = read_byte() << 8;
 
-	/* inizio la lettura dal MSB del primo byte */
-	result = read_byte() << 8;
+		/* Send ack */
+		send_ack();
 
-	/* Send ack */
-	send_ack();
+		/* inizio la lettura dal MSB del secondo byte */
+		result |= read_byte();
 
-	/* inizio la lettura dal MSB del secondo byte */
-	result |= read_byte();
+		send_ack();
 
-	send_ack();
+		/* inizio la lettura del CRC-8 */
+		crc8 = read_byte();
 
-	/* inizio la lettura del CRC-8 */
-	crc8 = read_byte();
-
-	/* do not Send ack */
-	set_data_high();
-	_delay_ms(SHT11_SCK_DELAY);
-	set_sck_high();
-	_delay_ms(SHT11_SCK_DELAY);
-	set_sck_low();
-	set_data_in();
+		/* do not Send ack */
+		set_data_high();
+		_delay_ms(SHT11_SCK_DELAY);
+		set_sck_high();
+		_delay_ms(SHT11_SCK_DELAY);
+		set_sck_low();
+		set_data_in();
+	}
 
 	return (result);
 }

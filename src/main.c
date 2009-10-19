@@ -139,8 +139,10 @@ void run_free(struct sht11_t *temperature, char *message)
 
 			if (phone_valid_msg(message, "RING")) {
 				phone_answer();
+				cli(); /* disable interrupt */
 				sht11_read_all(temperature);
 				synth_play_message(wind, temperature);
+				sei(); /* re-enable interrupt */
 				phone_hangup();
 			}
 		}
