@@ -25,12 +25,21 @@
 #include "lacrosse.h"
 #include "anemometer.h"
 
-void anemometer_adjust(struct wind_array *wind)
+/*
+   TRUE - data is valid
+   FALSE - wrong data
+ */
+uint8_t anemometer_adjust(struct wind_array *wind)
 {
+	uint8_t i;
+
+	i = 0;
 	if (wind->sensor)
-		davis_adjust();
+		i = davis_adjust();
 	else
-		lacrosse_adjust();
+		i = lacrosse_adjust();
+
+	return(i);
 }
 
 void anemometer_init(struct wind_array *wind)

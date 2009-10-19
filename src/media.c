@@ -127,7 +127,7 @@ void media(struct wind_array *wind)
 	   after this point wind->speed_rt and wind->angle_rt
 	   must contain real km/h and degrees.
 	 */
-	/* Ignoring wrong data (lacrosse checksum TOBEFIXED) */
+	/* TOBEFIXED Ignoring wrong data */
 	anemometer_adjust(wind);
 
 	/*

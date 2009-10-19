@@ -18,7 +18,7 @@
 #ifndef ANEMOMETER_H_
 #define ANEMOMETER_H_
 
-void anemometer_adjust(struct wind_array *wind);
+uint8_t anemometer_adjust(struct wind_array *wind);
 void anemometer_init(struct wind_array *wind);
 enum wind_dir get_wind_direction(int direction);
 

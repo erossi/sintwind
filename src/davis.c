@@ -142,7 +142,7 @@ void davis_init(void)
 	davis_timer_setup();
 }
 
-void davis_adjust(void)
+uint8_t davis_adjust(void)
 {
 	/*
 	   Any time the main find it has a wind speed flag active, it means
@@ -150,7 +150,9 @@ void davis_adjust(void)
 	   This routine is used to trasform
 	   ticks per cycle in (?? m/s) (?? km/h).
 	   REMEMBER: clear media_rt the first time (init)
-	   speed_rt and angle_rt are set by interrupt routine
+	   speed_rt and angle_rt are set by interrupt routine.
+	   TOBEFIXED: This routine should also check the validity of these
+	   value someway.
 	 */
 
 	/*
@@ -158,4 +160,5 @@ void davis_adjust(void)
 	   See spreadsheet.
 	 */
 	wind->speed_rt /= 1.35;
+	return(1); /* always ok, please fix */
 }

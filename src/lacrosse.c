@@ -179,7 +179,12 @@ uint8_t lacrosse_is_connected(void)
 	return(j);
 }
 
-/* Extract and store correct value from lacrosse stream */
+/* 
+   Extract and store correct value from lacrosse stream.
+   It also check the validity of the data and return:
+   TRUE - data is valid
+   FALSE - wrong data
+ */
 uint8_t lacrosse_adjust(void)
 {
 	if (header_ok()) {

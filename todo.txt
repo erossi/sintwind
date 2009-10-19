@@ -1,3 +1,10 @@
+17.10.2009
+- spostare il lampeggio led dentro all'anemometro nel caso lacrosse
+- controllare l'attivazione dell'interrupt durante la lettura sht11 e la 
+  riproduzione audio.
+- attivare i CRC se possibile dell'lacrosse e sht11
+
+vecchi
 - reset synth con PD CE a 1
 
 - frase finale:
