@@ -22,6 +22,8 @@
 #define DAVIS_CUTOFF 5
 
 void davis_init(void);
+void davis_start(void);
+void davis_stop(void);
 uint8_t davis_adjust(void);
 
 #endif

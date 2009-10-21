@@ -128,6 +128,8 @@ void run_free(struct sht11_t *temperature, char *message)
 		}
 	}
 
+	anemometer_start(wind);
+
 	for (;;) {
 		if (wind->flag) {
 			led_blink(1);
@@ -139,18 +141,20 @@ void run_free(struct sht11_t *temperature, char *message)
 
 			if (phone_valid_msg(message, "RING")) {
 				phone_answer();
-				cli(); /* disable interrupt */
+				anemometer_stop(wind);
 				sht11_read_all(temperature);
 				synth_play_message(wind, temperature);
-				sei(); /* re-enable interrupt */
+				anemometer_start(wind);
 				phone_hangup();
 			}
 		}
 
 		if (check_for_click()) {
 			led_blink(3);
+			/* stop anemomenter */
 			sht11_read_all(temperature);
 			synth_play_message(wind, temperature);
+			/* restart anemometer */
 		}
 	}
 }

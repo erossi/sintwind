@@ -21,5 +21,7 @@
 uint8_t anemometer_adjust(struct wind_array *wind);
 void anemometer_init(struct wind_array *wind);
 enum wind_dir get_wind_direction(int direction);
+void anemometer_start(struct wind_array *wind);
+void anemometer_stop(struct wind_array *wind);
 
 #endif

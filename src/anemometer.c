@@ -42,15 +42,24 @@ uint8_t anemometer_adjust(struct wind_array *wind)
 	return(i);
 }
 
+void anemometer_start(struct wind_array *wind)
+{
+	if (wind->sensor)
+		davis_start();
+	else
+		lacrosse_start();
+}
+
+void anemometer_stop(struct wind_array *wind)
+{
+	if (wind->sensor)
+		davis_stop();
+	else
+		lacrosse_stop();
+}
+
 void anemometer_init(struct wind_array *wind)
 {
-	/*
-	if (wind->sensor)
-		davis_init();
-	else
-		lacrosse_init();
-	 */
-
 	if (lacrosse_is_connected()) {
 		wind->sensor = 0; /* lacrosse */
 		lacrosse_init();

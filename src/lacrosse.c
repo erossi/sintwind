@@ -158,6 +158,7 @@ uint8_t header_ok(void)
 		return (0);
 }
 
+/* IMPORTANT - never use this routine with interrupt enable */
 uint8_t lacrosse_is_connected(void)
 {
 	uint8_t i, j;

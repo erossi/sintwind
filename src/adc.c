@@ -43,11 +43,7 @@ uint8_t adc_read(void)
 	return (ADCH);
 }
 
-/*
-  Return the value converted
-  between 0-255 to 0-360 degrees
-*/
-
+/* Convert between 0-255 to 0-360 degrees */
 int adc_wind_position(void)
 {
 	int i;

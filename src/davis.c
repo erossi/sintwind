@@ -136,6 +136,9 @@ void davis_timer_setup(void)
 	TIMSK = _BV(TICIE1) | _BV(TOIE1);
 }
 
+void davis_start(void) {} /* fix me */
+void davis_stop(void) {} /* fix me */
+
 void davis_init(void)
 {
 	adc_init();
