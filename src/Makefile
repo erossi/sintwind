@@ -7,6 +7,7 @@ CFLAGS = $(INC) -Wall -Wstrict-prototypes -pedantic -mmcu=$(MCU) -O$(OPTLEV) -D 
 LFLAGS = -l$(LIBS)
 CC = avr-gcc
 
+PRGNAME = sint
 REMOVE = rm -f
 
 init_obj = init.o
@@ -22,28 +23,28 @@ objects += $(anemometer_obj)
 .SUFFIXES: .c, .o
 
 all: $(objects)
-	$(CC) $(CFLAGS) -o ../sint.elf main.c $(objects) $(LFLAGS)
+	$(CC) $(CFLAGS) -o ../$(PRGNAME).elf main.c $(objects) $(LFLAGS)
 
 uart.o:
 	$(CC) $(CFLAGS) -D TXRXI -c uart.c
 	 
 test_sht11: $(objects)
-	$(CC) $(CFLAGS) -o ../sint.elf test_sht11.c $(objects) $(LFLAGS)
+	$(CC) $(CFLAGS) -o ../$(PRGNAME).elf test_sht11.c $(objects) $(LFLAGS)
 
 test_media: $(objects)
-	$(CC) $(CFLAGS) -o ../sint.elf test_media.c $(objects) $(LFLAGS)
+	$(CC) $(CFLAGS) -o ../$(PRGNAME).elf test_media.c $(objects) $(LFLAGS)
 
 test_anemometer: $(anemometer_obj) init.o
-	$(CC) $(CFLAGS) -o ../sint.elf test_anemometer.c $(anemometer_obj) init.o $(LFLAGS)
+	$(CC) $(CFLAGS) -o ../$(PRGNAME).elf test_anemometer.c $(anemometer_obj) init.o $(LFLAGS)
 
 test_adc: $(adc_obj)
-	$(CC) $(CFLAGS) -o ../sint.elf test_adc.c $(adc_obj) $(LFLAGS)
+	$(CC) $(CFLAGS) -o ../$(PRGNAME).elf test_adc.c $(adc_obj) $(LFLAGS)
 
 test_synth: $(synth_obj)
-	$(CC) $(CFLAGS) -o ../sint.elf test_synth.c $(synth_obj) $(LFLAGS)
+	$(CC) $(CFLAGS) -o ../$(PRGNAME).elf test_synth.c $(synth_obj) $(LFLAGS)
 
 test_uart: $(objects)
-	$(CC) $(CFLAGS) -o ../sint.elf test_uart.c $(objects) $(LFLAGS)
+	$(CC) $(CFLAGS) -o ../$(PRGNAME).elf test_uart.c $(objects) $(LFLAGS)
 
 clean: $(SUBDIRS)
 	$(REMOVE) $(objects)
