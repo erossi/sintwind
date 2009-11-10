@@ -69,6 +69,8 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 		eeprom_write_byte(&EE_chkpoint, chkpoint);
 	}
 
+	anemometer_start(wind);
+
 	for (;;) {
 		if (wind->flag) {
 			led_blink(1);
@@ -81,12 +83,14 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 			led_blink(2);
 
 			if (phone_valid_msg(message, "RING")) {
+				anemometer_stop(wind);
 				phone_answer();
 				sht11_read_all(temperature);
 				/* passing message to avoid malloc */
 				debug_temperature(temperature, message);
 				debug_synth(wind, temperature, message);
 				phone_hangup();
+				anemometer_start(wind);
 			}
 
 			if (phone_valid_msg(message, "sensor")) {
@@ -140,12 +144,12 @@ void run_free(struct sht11_t *temperature, char *message)
 			led_blink(2);
 
 			if (phone_valid_msg(message, "RING")) {
-				phone_answer();
 				anemometer_stop(wind);
+				phone_answer();
 				sht11_read_all(temperature);
 				synth_play_message(wind, temperature);
-				anemometer_start(wind);
 				phone_hangup();
+				anemometer_start(wind);
 			}
 		}
 
