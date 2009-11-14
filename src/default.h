@@ -110,6 +110,7 @@ struct wind_array {
 	uint8_t lacrosse_bearing, lacrosse_nbearing;
 	uint16_t lacrosse_speed, lacrosse_nspeed;
 	uint8_t lacrosse_chkok; /* calculated checksum*/
+	uint8_t lacrosse_loop; /* max number of failed reading */
 };
 
 

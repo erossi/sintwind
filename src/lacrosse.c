@@ -47,6 +47,26 @@
 
 extern struct wind_array *wind;
 
+/* check if header is 00100 */
+uint8_t header_ok(void) {
+	if (wind->lacrosse_head == 4)
+		return (1);
+	else
+		return (0);
+}
+
+uint8_t lacrosse_checksum(void) {
+	wind->lacrosse_chkok = wind->lacrosse_bearing;
+	wind->lacrosse_chkok ^= (wind->lacrosse_speed & 0x0f);
+	wind->lacrosse_chkok ^= ((wind->lacrosse_speed >> 4) & 0x0f);
+	wind->lacrosse_chkok ^= ((wind->lacrosse_speed >> 8) & 0x0f);
+
+	if (wind->lacrosse_chkok == wind->lacrosse_chksum)
+		return(1);
+	else
+		return(0);
+}
+
 ISR(INT0_vect) {
 	uint8_t i;
 
@@ -113,18 +133,24 @@ ISR(INT0_vect) {
 		_delay_us(LACROSSE_RX_DELAY);
 	}
 
-	lacrosse_stop(); /* need to reset the sensor with new protocol */
-	wind->flag = 1;
+	if (header_ok()) {
+		if (lacrosse_checksum() || (!wind->lacrosse_loop--)) {
+			lacrosse_stop(); /* need to reset the sensor with new protocol */
+			wind->flag = 1;
+		}
+	}
 }
 
-void lacrosse_stop(void)
-{
+void lacrosse_stop(void) {
 	/* Clear \CE */
 	LACROSSE_CE_PORT &= ~(_BV(LACROSSE_CE));
 }
 
-void lacrosse_start(void)
-{
+void lacrosse_start(void) {
+	/* untrust any present value */
+	wind->flag = 0;
+	wind->lacrosse_loop = LACROSSE_LOOP; /* reset the counter */
+
 	/* Set \CE */
 	LACROSSE_CE_PORT |= _BV(LACROSSE_CE);
 }
@@ -149,15 +175,6 @@ void lacrosse_shutdown(void)
 	GICR &= ~(_BV(INT0));
 }
 
-/* check if header is 00100 */
-uint8_t header_ok(void)
-{
-	if (wind->lacrosse_head == 4)
-		return (1);
-	else
-		return (0);
-}
-
 /* IMPORTANT - never use this routine with interrupt enable */
 uint8_t lacrosse_is_connected(void)
 {
@@ -180,25 +197,8 @@ uint8_t lacrosse_is_connected(void)
 	return(j);
 }
 
-/* 
-   Extract and store correct value from lacrosse stream.
-   It also check the validity of the data and return:
-   TRUE - data is valid
-   FALSE - wrong data
- */
-uint8_t lacrosse_adjust(void)
-{
-	if (header_ok()) {
-		wind->angle_rt = wind->lacrosse_bearing * 22.5;
-		wind->speed_rt = wind->lacrosse_speed * LACROSSE_RATIO;
-		wind->lacrosse_chkok = wind->lacrosse_bearing;
-		wind->lacrosse_chkok ^= (wind->lacrosse_speed & 0x0f);
-		wind->lacrosse_chkok ^= ((wind->lacrosse_speed >> 4) & 0x0f);
-		wind->lacrosse_chkok ^= ((wind->lacrosse_speed >> 8) & 0x0f);
-
-		if (wind->lacrosse_chkok == wind->lacrosse_chksum)
-			return(1);
-	}
-
+uint8_t lacrosse_adjust(void) {
+	wind->angle_rt = wind->lacrosse_bearing * 22.5;
+	wind->speed_rt = wind->lacrosse_speed * LACROSSE_RATIO;
 	return(0);
 }

@@ -23,6 +23,9 @@
  programming delay */
 #define LACROSSE_RX_DELAY 1200
 
+/* loop for unvalid data reed */
+#define LACROSSE_LOOP 3
+
 void lacrosse_init(void);
 void lacrosse_start(void);
 void lacrosse_stop(void);
