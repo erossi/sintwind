@@ -142,6 +142,10 @@ void run_free(struct sht11_t *temperature, char *message)
 		if (wind->flag) {
 			led_blink(1);
 			media(wind);
+			/* patch to recover from buggy lacrosse */
+			/* Please FIX */
+			if (!wind->sensor)
+				anemometer_start(wind);
 		}
 
 		if (phone_msg(message)) {
