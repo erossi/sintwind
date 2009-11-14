@@ -77,6 +77,10 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 			/* passing message to avoid malloc */
 			debug_wind_status(wind, message);
 			media(wind);
+			/* patch to recover from buggy lacrosse */
+			/* Please FIX */
+			if (!wind->sensor)
+				anemometer_start(wind);
 		}
 
 		if (phone_msg(message)) {

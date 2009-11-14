@@ -47,8 +47,7 @@
 
 extern struct wind_array *wind;
 
-ISR(INT0_vect)
-{
+ISR(INT0_vect) {
 	uint8_t i;
 
 	/* Maybe neccessary ~500us delay to read bits not near up/down front */
@@ -114,6 +113,7 @@ ISR(INT0_vect)
 		_delay_us(LACROSSE_RX_DELAY);
 	}
 
+	lacrosse_stop(); /* need to reset the sensor with new protocol */
 	wind->flag = 1;
 }
 
