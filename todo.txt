@@ -1,7 +1,13 @@
+10.11.2009
+- Modifica dei MEDIA_MINUTES se si usa Davis o Lacrosse, davis cicla ogni 4 sec, mentre il lacrosse ogni 2.5 sec.
+
 17.10.2009
+Solo se continua il problema dell'interrupt
 - spostare il lampeggio led dentro all'anemometro nel caso lacrosse
 - controllare l'attivazione dell'interrupt durante la lettura sht11 e la 
   riproduzione audio.
+
+17.10.2009
 - attivare i CRC se possibile dell'lacrosse e sht11
 
 vecchi
