@@ -170,13 +170,4 @@ struct uartStruct {
 #define SHT11_DATA	PB1
 #define SHT11_SCK	PB2
 
-struct sht11_t {
-	uint16_t raw_temperature;
-	uint16_t raw_humidity;
-	double temperature;
-	double humidity_linear;
-	double humidity_compensated;
-	double dewpoint;
-};
-
 #endif

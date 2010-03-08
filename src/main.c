@@ -23,8 +23,8 @@
 #include <avr/pgmspace.h>
 #include "default.h"
 #include "init.h"
-#include "synth.h"
 #include "sht11.h"
+#include "synth.h"
 #include "anemometer.h"
 #include "media.h"
 #include "cell.h"

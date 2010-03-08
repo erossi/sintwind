@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2009 Enrico Rossi
+ * Copyright (C) 2005-2010 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,6 +32,27 @@
 
 /* clock delay in ms */
 #define SHT11_SCK_DELAY 1
+
+struct sht11_t {
+	uint16_t raw_temperature;
+	uint16_t raw_humidity;
+	double temperature;
+	double humidity_linear;
+	double humidity_compensated;
+	double dewpoint;
+	uint8_t cmd; /* command to send */
+	uint16_t result; /* result of the command */
+	uint8_t crc8; /* crc8 returned */
+};
+
+/* stuff that can be configured on default.h */
+#ifndef SHT11_HAVE_DEFAULT
+#define SHT11_DDR	DDRC
+#define SHT11_PORT	PORTC
+#define SHT11_PIN	PINC
+#define SHT11_DATA	PB0
+#define SHT11_SCK	PB1
+#endif
 
 void sht11_init(void);
 void sht11_read_all(struct sht11_t *dataset);
