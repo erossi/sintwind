@@ -3,7 +3,8 @@ INC = -I/usr/avr/include/
 LIBS = m
 OPTLEV = 2
 FCPU = 4000000UL
-CFLAGS = $(INC) -Wall -Wstrict-prototypes -pedantic -mmcu=$(MCU) -O$(OPTLEV) -D F_CPU=$(FCPU)
+DFLAGS = -D F_CPU=$(FCPU) -D HAVE_DEFAULT
+CFLAGS = $(INC) -Wall -Wstrict-prototypes -pedantic -mmcu=$(MCU) -O$(OPTLEV) $(DFLAGS)
 LFLAGS = -l$(LIBS)
 CC = avr-gcc
 
@@ -14,9 +15,10 @@ init_obj = init.o
 anemometer_obj = davis.o lacrosse.o anemometer.o adc.o
 phone_obj = cell.o uart_isr.o uart.o 
 synth_obj = sht11.o init.o adc.o anemometer.o synth.o davis.o
-objects = sht11.o cell.o init.o synth.o 
+sht11_obj = sht11_avr_io.o sht11.o
+objects = cell.o init.o synth.o
 objects += media.o uart_isr.o uart.o utils.o debug.o
-objects += $(anemometer_obj)
+objects += $(anemometer_obj) $(sht11_obj)
 
 .PHONY: clean indent
 .SILENT: help

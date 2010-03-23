@@ -1,12 +1,12 @@
-/* This file is part of OpenSint
+/* This file is part of sht11
  * Copyright (C) 2005-2010 Enrico Rossi
  * 
- * OpenSint is free software: you can redistribute it and/or modify
+ * Sht11 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
  * the Free Software Foundation, either version 3 of the License, or
  * (at your option) any later version.
  *
- * OpenSint is distributed in the hope that it will be useful,
+ * Sht11 is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
@@ -30,12 +30,13 @@
 #define SHT11_T1  0.01		/* for 14 Bit @ 5V */
 #define SHT11_T2  0.00008	/* for 14 Bit @ 5V */
 
-/* clock delay in ms */
-#define SHT11_SCK_DELAY 1
-
 struct sht11_t {
 	uint16_t raw_temperature;
+        uint8_t raw_temperature_crc8; /* read */
+        uint8_t raw_temperature_crc8c; /* calculated */
 	uint16_t raw_humidity;
+        uint8_t raw_humidity_crc8;
+        uint8_t raw_humidity_crc8c;
 	double temperature;
 	double humidity_linear;
 	double humidity_compensated;
@@ -43,18 +44,10 @@ struct sht11_t {
 	uint8_t cmd; /* command to send */
 	uint16_t result; /* result of the command */
 	uint8_t crc8; /* crc8 returned */
+	uint8_t crc8c; /* crc8 calculated */
 };
 
-/* stuff that can be configured on default.h */
-#ifndef SHT11_HAVE_DEFAULT
-#define SHT11_DDR	DDRC
-#define SHT11_PORT	PORTC
-#define SHT11_PIN	PINC
-#define SHT11_DATA	PB0
-#define SHT11_SCK	PB1
-#endif
-
 void sht11_init(void);
-void sht11_read_all(struct sht11_t *dataset);
+void sht11_read_all(struct sht11_t *sht11);
 
 #endif
