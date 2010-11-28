@@ -91,7 +91,7 @@
 #define _SYNTH_S_DNA 105
 
 void synth_init (void);
-void synth_play_message (struct wind_array *wind);
+void synth_play_message (struct wind_array *wind, struct sht11_t *temp);
 
 /* Use under test only */
 void say_it (uint8_t position);

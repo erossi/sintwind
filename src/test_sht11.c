@@ -35,6 +35,7 @@ int main (void)
   /* Global VARS */
   struct wind_array why_not_use_malloc;
   struct sht11_t why_not_use_malloc2;
+  struct sht11_t *temperature;
 
   /*
    * allocating variables

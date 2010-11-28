@@ -8,7 +8,7 @@ export CC = avr-gcc
 
 REMOVE = rm -f
 
-objects = cell.o init.o adc.o anemometer.o synth.o media.o isr.o
+objects = sht11.o cell.o init.o adc.o anemometer.o synth.o media.o isr.o
 SUBDIRS =
 
 .PHONY: clean indent $(SUBDIRS)
@@ -17,6 +17,9 @@ SUBDIRS =
 
 all: $(objects)
 	$(CC) $(CFLAGS) -o ../sint.elf main.c $(objects) $(LFLAGS)
+
+test_sht11: $(objects)
+	$(CC) $(CFLAGS) -o ../sint.elf test_sht11.c $(objects) $(LFLAGS)
 
 test_media: $(objects)
 	$(CC) $(CFLAGS) -o ../sint.elf test_media.c $(objects) $(LFLAGS)

@@ -28,6 +28,9 @@ $(SUBDIRS):
 	@echo $(MAKECMDGOALS)
 	$(MAKE) -C $@ $(MAKECMDGOALS)
 
+test_sht11: $(SUBDIRS)
+	$(OBJCOPY) sint.elf sint.hex
+
 test_media: $(SUBDIRS)
 	$(OBJCOPY) sint.elf sint.hex
 

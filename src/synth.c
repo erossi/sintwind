@@ -20,6 +20,7 @@
 #include "default.h"
 /* put this after default because we have to set F_CPU */
 #include <util/delay.h>
+#include "sht11.h"
 #include "synth.h"
 
 void synth_pause (void)
@@ -203,7 +204,7 @@ void synth_say_wind_direction (enum wind_dir direction)
     }
 }
 
-void synth_play_message (struct wind_array *wind)
+void synth_play_message (struct wind_array *wind, struct sht11_t *temp)
 {
 
 /*       say_it (_SYNTH_S_ABSENT); */
@@ -238,5 +239,10 @@ void synth_play_message (struct wind_array *wind)
   else
     say_it (_SYNTH_S_DNA);
 
+  say_it (_SYNTH_S_TEMP);
+  say_int ((int) temp->temperature);
+  say_it (_SYNTH_S_CELSIUS);
+  say_it (_SYNTH_S_UMIDITY);
+  say_int ((int) temp->humidity_compensated);
+  say_it (_SYNTH_S_PERC);
 /*   synth_reset (); */
-}
