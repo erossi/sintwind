@@ -96,6 +96,10 @@ int phone_on(void)
 	_delay_ms(10000);
 	phone_send("AT&FE0&C0&D0\n");
 	i = phone_waitfor("OK", 0);
+#ifdef CELL_FIXED_OPERATOR
+	phone_send(CELL_FIXED_OPERATOR);
+	i = phone_waitfor("OK", 0);
+#endif
 	phone_send("AT^SNFS=5\n");
 	return (i | phone_waitfor("OK", 0));
 }

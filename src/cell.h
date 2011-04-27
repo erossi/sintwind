@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2009 Enrico Rossi
+ * Copyright (C) 2005-2011 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,15 @@
 
 #ifndef CELL_H_
 #define CELL_H_
+
+/*! if a fixed cellular operator must be used then
+ * uncomment below and change the operator's code
+ * example with I_WIND code: 22288
+ * "at+cops=1,2,22288\n"
+ */
+/*
+#define CELL_FIXED_OPERATOR "at+cops=1,2,<op-code>\n"
+*/
 
 void phone_send(const char *s);
 void phone_init(void);
