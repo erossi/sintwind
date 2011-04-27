@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2009 Enrico Rossi
+ * Copyright (C) 2005-2011 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,11 +19,13 @@
  * do media etc.
 */
 
+#include <stdlib.h>
 #include <inttypes.h>
-#include "default.h"
-#include "davis.h"
-#include "lacrosse.h"
+#include <avr/eeprom.h>
 #include "anemometer.h"
+
+/*! type of wind sensor (GLOBAL) */
+uint8_t EEMEM EE_sensor;
 
 /*
    TRUE - data is valid
@@ -31,20 +33,15 @@
  */
 uint8_t anemometer_adjust(struct wind_array *wind)
 {
-	uint8_t i;
-
-	i = 0;
-	if (wind->sensor)
-		i = davis_adjust();
+	if (wind->sensor == ANE_DAVIS)
+		return(davis_adjust());
 	else
-		i = lacrosse_adjust();
-
-	return(i);
+		return(lacrosse_adjust());
 }
 
 void anemometer_start(struct wind_array *wind)
 {
-	if (wind->sensor)
+	if (wind->sensor == ANE_DAVIS)
 		davis_start();
 	else
 		lacrosse_start();
@@ -52,20 +49,75 @@ void anemometer_start(struct wind_array *wind)
 
 void anemometer_stop(struct wind_array *wind)
 {
-	if (wind->sensor)
+	if (wind->sensor == ANE_DAVIS)
 		davis_stop();
 	else
 		lacrosse_stop();
 }
 
-void anemometer_init(struct wind_array *wind)
+void array_init(struct wind_array *wind)
 {
-	if (lacrosse_is_connected()) {
-		wind->sensor = 0; /* lacrosse */
-		lacrosse_init();
-	} else {
-		davis_init();
+	wind->flag = 0;		/* 0=ok take value 1=value taken */
+	wind->speed_rt = 0;
+	wind->angle_rt = 0;
+	wind->speed = 0;
+	wind->vmin = 255;
+	wind->vmax = 0;
+	wind->angle = 0;
+	wind->direction = NORTH;
+	wind->tendency = STABLE;
+	wind->vmin_rt = 255;
+	wind->vmax_rt = 0;
+	wind->vector_rt.x = 0;
+	wind->vector_rt.y = 0;
+	wind->media_rt.x = 0;
+	wind->media_rt.y = 0;
+	wind->counter_rt = 0;
+	wind->lacrosse_head=0;
+	wind->lacrosse_bearing=0;
+	wind->lacrosse_speed=0;
+	wind->lacrosse_chksum=0;
+}
+
+/*! Read which wind sensor is stored into the EEPROM */
+uint8_t anemometer_eeread(void)
+{
+	return(eeprom_read_byte(&EE_sensor));
+}
+
+void anemometer_eesave(uint8_t sensor)
+{
+	eeprom_write_byte(&EE_sensor, sensor);
+}
+
+struct wind_array *anemometer_init(struct wind_array *wind)
+{
+	uint8_t eesensor;
+
+	eesensor = anemometer_eeread();
+	wind = malloc(sizeof(struct wind_array));
+	array_init(wind);
+
+	switch (eesensor) {
+		case ANE_LACROSSE:
+			lacrosse_init();
+			wind->sensor = ANE_LACROSSE;
+			break;
+		case ANE_DAVIS:
+			davis_init();
+			wind->sensor = ANE_DAVIS;
+			break;
+		default:
+			if (lacrosse_is_connected()) {
+				lacrosse_init();
+				wind->sensor = ANE_LACROSSE;
+			} else {
+				davis_init();
+				wind->sensor = ANE_DAVIS;
+			}
 	}
+
+	return(wind);
 }
 
 /*

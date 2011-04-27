@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2009 Enrico Rossi
+ * Copyright (C) 2005-2011 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,6 +21,5 @@
 /* void init_port (void); */
 /* void init_counter (void); */
 void port_init(void);
-void array_init(struct wind_array *wind);
 
 #endif

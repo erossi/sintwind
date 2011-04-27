@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2009 Enrico Rossi
+ * Copyright (C) 2005-2011 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -32,9 +32,8 @@
 #include "utils.h"
 #include "debug.h"
 
-/* EEPROM Area really have to be global? */
+/* EEPROM Area */
 uint8_t EEMEM EE_chkpoint;
-uint8_t EEMEM EE_sensor; /* Lacrosse = 1, default Davis */
 
 /* Globals */
 struct wind_array *wind;
@@ -77,9 +76,11 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 			/* passing message to avoid malloc */
 			debug_wind_status(wind, message);
 			media(wind);
-			/* patch to recover from buggy lacrosse */
+			/* patch to recover from buggy lacrosse:
+			 * at any IRQ lacrosse is stopped and
+			 * reset, so it is restarted here */
 			/* Please FIX */
-			if (!wind->sensor)
+			if (wind->sensor == ANE_LACROSSE)
 				anemometer_start(wind);
 		}
 
@@ -97,16 +98,11 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 				anemometer_start(wind);
 			}
 
-			if (phone_valid_msg(message, "sensor")) {
-				/* passing message to avoid malloc */
+			if (phone_valid_msg(message, "sensor"))
 				debug_sensor(wind, message);
-				eeprom_write_byte(&EE_sensor, wind->sensor);
-			}
 
-			if (phone_valid_msg(message, "help")) {
-				/* passing message to avoid malloc */
+			if (phone_valid_msg(message, "help"))
 				debug_help();
-			}
 		}
 	}
 }
@@ -142,9 +138,11 @@ void run_free(struct sht11_t *temperature, char *message)
 		if (wind->flag) {
 			led_blink(1);
 			media(wind);
-			/* patch to recover from buggy lacrosse */
+			/* patch to recover from buggy lacrosse:
+			 * at any IRQ lacrosse is stopped and
+			 * reset, so it is restarted here */
 			/* Please FIX */
-			if (!wind->sensor)
+			if (wind->sensor == ANE_LACROSSE)
 				anemometer_start(wind);
 		}
 
@@ -179,22 +177,19 @@ int main(void)
 
 	/* Init globals */
 	loop = 0;
-	wind = malloc(sizeof(struct wind_array));
 
 	/* Init locals */
 	temperature = malloc(sizeof(struct sht11_t));
 	message = malloc(UART_RXBUF_SIZE);
 
-	/* reading sensor to be used */
-	wind->sensor = eeprom_read_byte(&EE_sensor);
-
 	/* initializing parts */
 	port_init();
 	/* 1 sec if click, else no delay */
 	debug = check_for_click();
-	array_init(wind);
-	/* if lacrosse is not present, the check will take 10 sec */
-	anemometer_init(wind);
+	/* if auto search and lacrosse is not present, 
+	 * this check will take 10 sec
+	 */
+	wind = anemometer_init(wind);
 	sht11_init();
 	phone_init();		/* activate uart comm only, no delay */
 	sei();			/* Enable interrupt */

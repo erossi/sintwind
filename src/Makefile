@@ -8,7 +8,12 @@ CFLAGS = $(INC) -Wall -Wstrict-prototypes -pedantic -mmcu=$(MCU) -O$(OPTLEV) $(D
 LFLAGS = -l$(LIBS)
 CC = avr-gcc
 
-PRGNAME = sint
+PRG_NAME = sint
+GIT_TAG = "Unknown"
+# Uncomment if git tag is in use
+GIT_TAG = "$(shell git describe --tags)"
+PRGNAME = $(PRG_NAME)_$(GIT_TAG)
+
 REMOVE = rm -f
 
 init_obj = init.o
@@ -26,6 +31,9 @@ objects += $(anemometer_obj) $(sht11_obj)
 
 all: $(objects)
 	$(CC) $(CFLAGS) -o ../$(PRGNAME).elf main.c $(objects) $(LFLAGS)
+
+debug.o:
+	$(CC) $(CFLAGS) -D GITREL=\"$(GIT_TAG)\" -c debug.c
 
 uart.o:
 	$(CC) $(CFLAGS) -D TXRXI -c uart.c
@@ -53,3 +61,6 @@ clean: $(SUBDIRS)
 
 indent:
 	indent *.c *.h
+
+version:
+	# Last Git tag: $(GIT_TAG)

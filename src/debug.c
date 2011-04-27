@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2010 Enrico Rossi
+ * Copyright (C) 2005-2011 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,11 +19,6 @@
 #include <stdlib.h>
 #include <util/delay.h>
 #include <avr/pgmspace.h>
-#include "default.h"
-#include "sht11.h"
-#include "synth.h"
-#include "cell.h"
-#include "utils.h"
 #include "debug.h"
 
 extern struct uartStruct *uartPtr;
@@ -44,17 +39,13 @@ void debug_write_P(PGM_P s)
 
 void debug_hello(void)
 {
-	debug_write_P (PSTR("\n"));
-	debug_write_P (PSTR("\n"));
-	debug_write_P (PSTR("\n"));
-	debug_write_P (PSTR("*****************************************\n"));
-	debug_write_P (PSTR("* Open Sint Project - Sint Wind v3      *\n"));
-	debug_write_P (PSTR("*               By                      *\n"));
-	debug_write_P (PSTR("* Andrea Marabini (info@marabo.it)      *\n"));
-	debug_write_P (PSTR("* Enrico Rossi (e.rossi@tecnobrain.com) *\n"));
-	debug_write_P (PSTR("* http://tecnobrain.com/OpenSint/       *\n"));
-	debug_write_P (PSTR("*            GNU GPL v3                 *\n"));
-	debug_write_P (PSTR("*****************************************\n"));
+	debug_write_P (PSTR("\n\n\n"));
+	debug_write_P (PSTR("Open Sint Project Rel: "));
+	debug_write_P (PSTR(GITREL));
+	debug_write_P (PSTR("\n\n Andrea Marabini <info@marabo.it>\n"));
+	debug_write_P (PSTR(" Enrico Rossi <e.rossi@tecnobrain.com>\n"));
+	debug_write_P (PSTR(" http://tecnobrain.com/OpenSint/\n"));
+	debug_write_P (PSTR(" GNU GPL v3 - use at your own risk!\n"));
 	debug_write_P (PSTR("\n"));
 }
 
@@ -146,7 +137,7 @@ void debug_wind_status(struct wind_array *wind, char *string)
 	debug_write(string);
 	debug_write_P (PSTR("\n"));
 
-	if (!wind->sensor)
+	if (wind->sensor == ANE_LACROSSE)
 		debug_lacrosse(wind, string);
 }
 
@@ -222,31 +213,56 @@ void debug_synth(struct wind_array *wind, struct sht11_t *temp, char *msg)
 
 void debug_which_sensor(struct wind_array *wind)
 {
-	/* Which sensor are we using */
-	if (!wind->sensor)
-		debug_write_P(PSTR("Sensor set to: LaCrosse.\n"));
+	uint8_t eesensor;
+
+	eesensor = anemometer_eeread();
+	debug_write_P(PSTR("EEprom wind sensor set to: "));
+
+	switch (eesensor) {
+		case ANE_LACROSSE:
+			debug_write_P(PSTR("lacrosse"));
+			break;
+		case ANE_DAVIS:
+			debug_write_P(PSTR("davis"));
+			break;
+		default:
+			debug_write_P(PSTR("auto"));
+	}
+
+	debug_write_P(PSTR("\nRunning sensor set to: "));
+
+	if (wind->sensor == ANE_LACROSSE)
+		debug_write_P(PSTR("LaCrosse.\n"));
 	else
-		debug_write_P(PSTR("Sensor set to: Davis.\n"));
+		debug_write_P(PSTR("Davis.\n"));
 }
 
 void debug_sensor(struct wind_array *wind, char *msg)
 {
 	debug_which_sensor(wind);
-	debug_write_P (PSTR("Do you want to change it? (yes/[no]) "));
+	debug_write_P (PSTR("Choose sensor setup? (L/D/A): "));
 
 	while (!(phone_msg(msg)))
 		led_blink(1);
 
 	debug_write(msg);
-	debug_write("\n");
+	debug_write_P(PSTR("\n"));
 
-	if (phone_valid_msg(msg, "yes")) {
-		debug_write_P (PSTR("YOU MUST RESET!!!\n"));
-
-		if (!wind->sensor)
-			wind->sensor = 1;
-		else
-			wind->sensor = 0;
+	switch (*msg) {
+		case 'L':
+			anemometer_eesave(ANE_LACROSSE);
+			debug_write_P(PSTR("LaCrosse saved.\n"));
+			break;
+		case 'D':
+			anemometer_eesave(ANE_DAVIS);
+			debug_write_P(PSTR("Davis saved.\n"));
+			break;
+		case 'A':
+			anemometer_eesave(ANE_AUTO);
+			debug_write_P(PSTR("Auto saved.\n"));
+			break;
+		default:
+			debug_write_P(PSTR("Error, wrong selection.\n"));
 	}
 
 	debug_which_sensor(wind);
@@ -254,8 +270,7 @@ void debug_sensor(struct wind_array *wind, char *msg)
 
 void debug_help(void)
 {
-	debug_write_P (PSTR("\n"));
-	debug_write_P (PSTR("Help:\n"));
+	debug_write_P (PSTR("\nHelp:\n"));
 	debug_write_P (PSTR(" RING   Start phone answer and playback\n"));
 	debug_write_P (PSTR(" sensor Change sensor(MUST RESET) "));
 	debug_write_P (PSTR(" * autodetected now. Useless option\n"));
