@@ -53,7 +53,7 @@ int debug_phone_on(char *msg)
 {
 	int i;
 
-	debug_write_P (PSTR("Do you want to clean checkpoint EEPROM (yes/NO)? "));
+	debug_write_P (PSTR("Do you want to erase checkpoint EEPROM (yes/NO)? "));
 
 	while (!(phone_msg(msg)))
 		led_blink(1);
@@ -64,7 +64,7 @@ int debug_phone_on(char *msg)
 
 	if (phone_valid_msg(msg, "yes")) {
 		i = 1;
-		debug_write_P (PSTR("Clearing EEPROM checkpoint\n"));
+		debug_write_P (PSTR("EEPROM checkpoint erased.\n"));
 	} else {
 		debug_write_P (PSTR("OK\n"));
 		i = 0;
@@ -145,32 +145,32 @@ void debug_wind_status(struct wind_array *wind, char *string)
 void debug_temperature(struct sht11_t *temp, char *string)
 {
 	string = ultoa(temp->raw_temperature, string, 10);
-	debug_write_P (PSTR("Raw temperature value: ----------> "));
+	debug_write_P (PSTR("Raw temperature value: "));
 	debug_write(string);
 	debug_write("\n");
 
 	string = ultoa(temp->raw_humidity, string, 10);
-	debug_write_P (PSTR("Raw humidity value: -------------> "));
+	debug_write_P (PSTR("Raw humidity value: "));
 	debug_write(string);
 	debug_write("\n");
 
 	string = dtostrf((double)temp->temperature, 6, 3, string);
-	debug_write_P (PSTR("Temperature (C): ----------------> "));
+	debug_write_P (PSTR("Temperature (C): "));
 	debug_write(string);
 	debug_write("\n");
 
 	string = dtostrf((double)temp->humidity_linear, 6, 3, string);
-	debug_write_P (PSTR("Linear Humidity (%): ------------> "));
+	debug_write_P (PSTR("Linear Humidity (%): "));
 	debug_write(string);
 	debug_write("\n");
 
 	string = dtostrf((double)temp->humidity_compensated, 6, 3, string);
-	debug_write_P (PSTR("Temp-compensated Humidity (%): --> "));
+	debug_write_P (PSTR("Temp-compensated Humidity (%): "));
 	debug_write(string);
 	debug_write("\n");
 
 	string = dtostrf((double)temp->dewpoint, 6, 3, string);
-	debug_write_P (PSTR("Temperature dewpoint (C): -------> "));
+	debug_write_P (PSTR("Temperature dewpoint (C): "));
 	debug_write(string);
 	debug_write("\n");
 
@@ -240,7 +240,7 @@ void debug_which_sensor(struct wind_array *wind)
 void debug_sensor(struct wind_array *wind, char *msg)
 {
 	debug_which_sensor(wind);
-	debug_write_P (PSTR("Choose sensor setup? (L/D/A): "));
+	debug_write_P (PSTR("Choose sensor setup? (lac/dav/auto): "));
 
 	while (!(phone_msg(msg)))
 		led_blink(1);
@@ -249,15 +249,15 @@ void debug_sensor(struct wind_array *wind, char *msg)
 	debug_write_P(PSTR("\n"));
 
 	switch (*msg) {
-		case 'L':
+		case 'l':
 			anemometer_eesave(ANE_LACROSSE);
 			debug_write_P(PSTR("LaCrosse saved.\n"));
 			break;
-		case 'D':
+		case 'd':
 			anemometer_eesave(ANE_DAVIS);
 			debug_write_P(PSTR("Davis saved.\n"));
 			break;
-		case 'A':
+		case 'a':
 			anemometer_eesave(ANE_AUTO);
 			debug_write_P(PSTR("Auto saved.\n"));
 			break;
@@ -271,18 +271,18 @@ void debug_sensor(struct wind_array *wind, char *msg)
 void debug_help(void)
 {
 	debug_write_P (PSTR("\nHelp:\n"));
-	debug_write_P (PSTR(" RING   Start phone answer and playback\n"));
-	debug_write_P (PSTR(" sensor Change sensor(MUST RESET) "));
-	debug_write_P (PSTR(" * autodetected now. Useless option\n"));
-	debug_write_P (PSTR("\n"));
-	debug_write_P (PSTR("rt []: Real Time elements\n"));
-	debug_write_P (PSTR("S = Speed in real time\n"));
-	debug_write_P (PSTR("A = Angle in degrees\n"));
-	debug_write_P (PSTR("vm = Minimum speed\n"));
-	debug_write_P (PSTR("Vx = Maximum speed\n"));
-	debug_write_P (PSTR("mX = complex media real part X\n"));
-	debug_write_P (PSTR("mY = complex media immaginary part Y\n"));
-	debug_write_P (PSTR("V = Medium speed in the last cycle\n"));
-	debug_write_P (PSTR("Deg. = Medium angle in degrees in the last cycle\n"));
+	debug_write_P (PSTR("help   This menu.\n"));
+	debug_write_P (PSTR("RING   Start phone answer and playback\n"));
+	debug_write_P (PSTR("sensor Change sensor.\n "));
+	debug_write_P (PSTR("Output legend:\n"));
+	debug_write_P (PSTR(" rt []: Real Time elements\n"));
+	debug_write_P (PSTR(" S = Speed in real time\n"));
+	debug_write_P (PSTR(" A = Angle in degrees\n"));
+	debug_write_P (PSTR(" vm = Minimum speed\n"));
+	debug_write_P (PSTR(" Vx = Maximum speed\n"));
+	debug_write_P (PSTR(" mX = complex media real part X\n"));
+	debug_write_P (PSTR(" mY = complex media immaginary part Y\n"));
+	debug_write_P (PSTR(" V = Medium speed in the last cycle\n"));
+	debug_write_P (PSTR(" Deg. = Medium angle in degrees in the last cycle\n"));
 	debug_write_P (PSTR("\n"));
 }

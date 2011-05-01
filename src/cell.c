@@ -41,18 +41,14 @@ int phone_valid_msg(const char *s1, const char *s2)
 
 int phone_msg(char *s)
 {
-	int i;
-
-	i = 0;
-
 	if (uartPtr->rx_flag) {
 		uart_get_msg(s);
 
 		if (strlen(s) > 2)
-			i = 1;
+			return(1);
 	}
 
-	return (i);
+	return (0);
 }
 
 /* Wait for string from rs232, if locked, wait forever */
