@@ -20,7 +20,6 @@
 #ifndef ANEMOMETER_H_
 #define ANEMOMETER_H_
 
-#include "default.h"
 #include "davis.h"
 #include "lacrosse.h"
 

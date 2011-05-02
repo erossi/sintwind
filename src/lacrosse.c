@@ -18,7 +18,6 @@
 #include <inttypes.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
-#include "default.h"
 #include "lacrosse.h"
 
 /*

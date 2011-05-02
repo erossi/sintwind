@@ -21,7 +21,6 @@
 #include <avr/interrupt.h>
 #include <avr/eeprom.h>
 #include <avr/pgmspace.h>
-#include "default.h"
 #include "init.h"
 #include "sht11.h"
 #include "synth.h"

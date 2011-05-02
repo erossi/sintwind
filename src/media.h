@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2009 Enrico Rossi
+ * Copyright (C) 2005-2011 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
 
 #ifndef MEDIA_H_
 #define MEDIA_H_
+
+#include "anemometer.h"
 
 /*
   Minutes to use to calculate media

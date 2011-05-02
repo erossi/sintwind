@@ -17,8 +17,6 @@
 
 #include <inttypes.h>
 #include <math.h>
-#include "default.h"
-#include "anemometer.h"
 #include "media.h"
 
 /*
@@ -42,8 +40,7 @@ from a clean situation.
     - set the counter to 1.
     - set vmin and vmax to vmedia.
 
- to switch between a and b, use the MEDIA_NEXT_CYCLE set into
- default.h
+ to switch between a and b, change the MEDIA_NEXT_CYCLE
  */
 
 /* Standard deviation sd = sqrt(sum(Xi^2)/n - Xmed^2) */

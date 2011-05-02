@@ -22,8 +22,10 @@
 #ifndef CELL_H_
 #define CELL_H_
 
-#include "default.h"
 #include "uart.h"
+
+#define PHONE_PORT PORTB
+#define PHONE_ON PB0
 
 /*! if a fixed cellular operator must be used then
  * uncomment below and change the operator's code

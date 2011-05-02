@@ -21,7 +21,6 @@
 /*! \file davis.h
  * \brief davis specific functions */
 
-#include "default.h"
 #include "adc.h"
 #include "anemometer.h"
 

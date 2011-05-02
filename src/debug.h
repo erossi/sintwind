@@ -18,7 +18,6 @@
 #ifndef DEBUG_H_
 #define DEBUG_H_
 
-#include "default.h"
 #include "sht11.h"
 #include "synth.h"
 #include "cell.h"
