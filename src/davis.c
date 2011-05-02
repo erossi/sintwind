@@ -109,20 +109,8 @@ void davis_timer_setup(void)
 	TCCR1A = 0;
 	/* ICES1 = 0 trigger edge on negative */
 
-	/* counter prescaler/1024 */
-#ifdef TIMER_PRESCALER_1024
-	TCCR1B = _BV(ICNC1) | _BV(CS12) | _BV(CS10);
-#endif
-
 	/* counter prescaler/256 */
-#ifdef TIMER_PRESCALER_256
 	TCCR1B = _BV(ICNC1) | _BV(CS12);
-#endif
-
-	/* counter prescaler/64 */
-#ifdef TIMER_PRESCALER_64
-	TCCR1B = _BV(ICNC1) | _BV(CS11) | _BV(CS10);
-#endif
 
 	/* enable interrupt on timer 0 interrupt
 	   use include deprecated.h to use the function */

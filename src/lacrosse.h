@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2009 Enrico Rossi
+ * Copyright (C) 2005-2011 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,15 @@
 
 #ifndef LACROSSE_H_
 #define LACROSSE_H_
+
+#include "anemometer.h"
+
+#define LACROSSE_CE_PORT PORTA
+#define LACROSSE_CE PA1
+#define LACROSSE_RX_PORT PIND
+#define LACROSSE_RX PIND2
+/* Conversion factor */
+#define LACROSSE_RATIO 0.3
 
 /* delay in usec from rx bit */
 /* should be 1250 us, but considering some delay due to 

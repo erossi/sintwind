@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2009 Enrico Rossi
+ * Copyright (C) 2005-2011 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +15,9 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*! \file default.h
+ * \brief default definition for all functions.
+ */
 #ifndef DEFAULT_WIND_H_
 #define DEFAULT_WIND_H_
 
@@ -31,88 +34,6 @@
  so we have 4Mhz CPU, maximum is 65ms. (65.535 actually).
  Over this range you loose precision.
 */
-
-/* ---- Anemometer ---- */
-
-#define LACROSSE_CE_PORT PORTA
-#define LACROSSE_CE PA1
-#define LACROSSE_RX_PORT PIND
-#define LACROSSE_RX PIND2
-/* Conversion factor */
-#define LACROSSE_RATIO 0.3
-
-/* Set the prescaler used for the timer. */
-
-/* #define TIMER_PRESCALER_1024 */
-#define TIMER_PRESCALER_256
-/* #define TIMER_PRESCALER_64 */
-
-/*
-  If We want to use the media value at run (x) as 
-  the first element of run (x+1).
-  This lead to a wrong value into the 2 first run from the 
-  power up.
- */
-
-#define MEDIA_NEXT_CYCLE
-
-enum wind_dir {
-	NORTH,
-	NORTH_EAST,
-	EAST,
-	SOUTH_EAST,
-	SOUTH,
-	SOUTH_WEST,
-	WEST,
-	NORTH_WEST
-};
-
-enum wind_tendency {
-	INCREASE,
-	DECREASE,
-	STABLE
-};
-
-struct complex {
-	double x;
-	double y;
-};
-
-struct wind_array {
-	/*
-	   Volatile stuff, used into ISR
-	   flag: boolean used by ISR to tell to main there is a new
-	   data (speed and direction) to be elaborated.
-	   speed_rt: number of pulse x round detected.
-	   angle_rt: 0-359 degrees detected
-	 */
-	volatile uint8_t flag;
-	volatile int speed_rt;
-	volatile int angle_rt;
-
-	/* wind elements speed 0-359 degrees */
-	int speed, vmin, vmax, angle;
-	enum wind_dir direction;
-	enum wind_tendency tendency;
-
-	/* real time elements */
-	int vmin_rt, vmax_rt;
-	struct complex vector_rt, media_rt;
-	uint8_t counter_rt;
-
-	/* Type of anemometer: 0 for lacrosse */
-	uint8_t sensor;
-
-	/* LaCrosse data
- 	   [00000100][0000bbbb][000vvvvvvvvvvvv][0000cccc]
-	 */
-	uint8_t lacrosse_head, lacrosse_chksum;
-	uint8_t lacrosse_bearing, lacrosse_nbearing;
-	uint16_t lacrosse_speed, lacrosse_nspeed;
-	uint8_t lacrosse_chkok; /* calculated checksum*/
-	uint8_t lacrosse_loop; /* max number of failed reading */
-};
-
 
 /* ---- Cell and modem ---- */
 

@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2009 Enrico Rossi
+ * Copyright (C) 2005-2011 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,10 @@
 
 #ifndef SYNTH_H_
 #define SYNTH_H_
+
+#include "default.h"
+#include "sht11.h"
+#include "anemometer.h"
 
 /* club di volo */
 #define SYNTH_S_CLUB 112

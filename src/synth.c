@@ -18,8 +18,6 @@
 #include <inttypes.h>
 #include <avr/io.h>
 #include <util/delay.h>
-#include "default.h"
-#include "sht11.h"
 #include "synth.h"
 
 void synth_reset(void)

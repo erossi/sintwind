@@ -18,6 +18,8 @@
 #ifndef INIT_H_
 #define INIT_H_
 
+#include "anemometer.h"
+
 /* void init_port (void); */
 /* void init_counter (void); */
 void port_init(void);

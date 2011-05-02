@@ -17,7 +17,6 @@
 
 #include <inttypes.h>
 #include <avr/io.h>
-#include "default.h"
 #include "init.h"
 
 void port_a_init(void)
