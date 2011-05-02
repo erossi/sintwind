@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2009 Enrico Rossi
+ * Copyright (C) 2005-2011 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,11 @@
 
 #ifndef UTILS_H
 #define UTILS_H
+
+#define UTILS_LED_PORT PORTB
+#define UTILS_LED_PIN PB6
+#define UTILS_SWITCH_PORT PINB
+#define UTILS_SWITCH_PIN PINB7
 
 void led_blink(int num);
 void wait_for_click(void);

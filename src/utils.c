@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2009 Enrico Rossi
+ * Copyright (C) 2005-2011 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,7 +17,6 @@
 
 #include <avr/io.h>
 #include <util/delay.h>
-#include "default.h"
 #include "utils.h"
 
 void led_blink(int num)

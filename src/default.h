@@ -61,13 +61,4 @@ struct uartStruct {
 #define PHONE_PORT PORTB
 #define PHONE_ON PB0
 
-
-/* ---- Utils setup ----- */
-
-#define UTILS_HAVE_DEFAULT
-#define UTILS_LED_PORT PORTB
-#define UTILS_LED_PIN PB6
-#define UTILS_SWITCH_PORT PINB
-#define UTILS_SWITCH_PIN PINB7
-
 #endif
