@@ -42,18 +42,14 @@ uint8_t anemometer_adjust(struct wind_array *wind)
 /*! \brief enable the anemometer and start storing value. */
 void anemometer_start(struct wind_array *wind)
 {
-	if (wind->sensor == ANE_DAVIS)
-		davis_start();
-	else
+	if (wind->sensor == ANE_LACROSSE)
 		lacrosse_start();
 }
 
 /*! \brief disable the anemometer. */
 void anemometer_stop(struct wind_array *wind)
 {
-	if (wind->sensor == ANE_DAVIS)
-		davis_stop();
-	else
+	if (wind->sensor == ANE_LACROSSE)
 		lacrosse_stop();
 }
 

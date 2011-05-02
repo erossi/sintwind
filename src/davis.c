@@ -129,11 +129,6 @@ void davis_timer_setup(void)
 	TIMSK = _BV(TICIE1) | _BV(TOIE1);
 }
 
-/*! \bug unused */
-void davis_start(void) {}
-/*! \bug unused */
-void davis_stop(void) {}
-
 /*! \brief initialize the davis anemometer. */
 void davis_init(void)
 {

@@ -40,6 +40,10 @@ int phone_valid_msg(const char *s1, const char *s2)
 		return (0);
 }
 
+/*! \brief check for a message from the phone.
+ * \param s pre-allocated string space.
+ * \return 1 - ok message is presente, 0 - no message.
+ */
 int phone_msg(char *s)
 {
 	if (uartPtr->rx_flag) {
@@ -52,7 +56,11 @@ int phone_msg(char *s)
 	return (0);
 }
 
-/* Wait for string from rs232, if locked, wait forever */
+/*! \brief Wait for string from rs232.
+ * \param s the string to wait for.
+ * \param locked if locked, wait forever.
+ * \return true - ok, false - error
+ */
 int phone_waitfor(const char *s, const int locked)
 {
 	int i, j;
@@ -76,12 +84,15 @@ int phone_waitfor(const char *s, const int locked)
 	return (j);
 }
 
+/*! \brief initialize the serial port connected to the phone */
 void phone_init(void)
 {
 	uartPtr = uart_init();
 }
 
-/* Turning on the modem will take from 11sec to 16sec */
+/*! \brief power up the phone.
+ * \note turning on the modem will take from 11sec to 16 seconds
+ */
 int phone_on(void)
 {
 	int i;
@@ -101,12 +112,14 @@ int phone_on(void)
 	return (i | phone_waitfor("OK", 0));
 }
 
+/*! \brief answer the call */
 void phone_answer(void)
 {
 	phone_send("ATA\n");
 	phone_waitfor("OK", 0);
 }
 
+/*! \brief drop the call */
 void phone_hangup(void)
 {
 	phone_send("ATH0\n");
