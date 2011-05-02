@@ -17,6 +17,7 @@
 
 #include <inttypes.h>
 #include <stdlib.h>
+#include <string.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include <avr/eeprom.h>
@@ -84,7 +85,7 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 		if (phone_msg(message)) {
 			led_blink(2);
 
-			if (phone_valid_msg(message, "RING")) {
+			if (!strcmp(message, "RING")) {
 				anemometer_stop(wind);
 				phone_answer();
 				sht11_read_all(temperature);
@@ -95,10 +96,10 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 				anemometer_start(wind);
 			}
 
-			if (phone_valid_msg(message, "sensor"))
+			if (!strcmp(message, "sensor"))
 				debug_sensor(wind, message);
 
-			if (phone_valid_msg(message, "help"))
+			if (!strcmp(message, "help"))
 				debug_help();
 		}
 	}
@@ -146,7 +147,7 @@ void run_free(struct sht11_t *temperature, char *message)
 		if (phone_msg(message)) {
 			led_blink(2);
 
-			if (phone_valid_msg(message, "RING")) {
+			if (!strcmp(message, "RING")) {
 				anemometer_stop(wind);
 				phone_answer();
 				sht11_read_all(temperature);

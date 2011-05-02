@@ -17,6 +17,7 @@
 
 #include <stdint.h>
 #include <stdlib.h>
+#include <string.h>
 #include <util/delay.h>
 #include <avr/pgmspace.h>
 #include "debug.h"
@@ -62,7 +63,7 @@ int debug_phone_on(char *msg)
 	debug_write("\n");
 	led_blink(2);
 
-	if (phone_valid_msg(msg, "yes")) {
+	if (!strcmp(msg, "yes")) {
 		i = 1;
 		debug_write_P (PSTR("EEPROM checkpoint erased.\n"));
 	} else {
@@ -187,7 +188,7 @@ void debug_synth(struct wind_array *wind, struct sht11_t *temp, char *msg)
 	debug_write(msg);
 	debug_write("\n");
 
-	if (phone_valid_msg(msg, "yes")) {
+	if (!strcmp(msg, "yes")) {
 		debug_write_P (PSTR("Ok. Playing data...\n"));
 		synth_play_message(wind, temp);
 		debug_write_P (PSTR("Done!\n"));
@@ -202,7 +203,7 @@ void debug_synth(struct wind_array *wind, struct sht11_t *temp, char *msg)
 	debug_write(msg);
 	debug_write("\n");
 
-	if (phone_valid_msg(msg, "yes")) {
+	if (!strcmp(msg, "yes")) {
 		debug_write_P (PSTR("Ok. Playing all synth memory...\n"));
 		synth_play_memory();
 		debug_write_P (PSTR("Done!\n"));

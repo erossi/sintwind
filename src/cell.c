@@ -31,15 +31,6 @@ void phone_send(const char *s)
 	uart_printstr(s);
 }
 
-/*! compare the 2 strings */
-int phone_valid_msg(const char *s1, const char *s2)
-{
-	if (strstr(s1, s2))
-		return (1);
-	else
-		return (0);
-}
-
 /*! \brief check for a message from the phone.
  * \param s pre-allocated string space.
  * \return 1 - ok message is presente, 0 - no message.
@@ -70,11 +61,11 @@ int phone_waitfor(const char *s, const int locked)
 	j = 1;
 
 	if (locked)
-		while (!(phone_msg(msg) && phone_valid_msg(msg, s)))
+		while (!(phone_msg(msg) && (!strcmp(msg, s))))
 			_delay_ms(100);
 	else
 		for (i = 0; i < 50; i++)
-			if (phone_msg(msg) && phone_valid_msg(msg, s)) {
+			if (phone_msg(msg) && (!strcmp(msg, s))) {
 				j = 0;
 				i = 50;
 			} else
