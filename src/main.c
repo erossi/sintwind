@@ -37,7 +37,6 @@ uint8_t EEMEM EE_chkpoint;
 /* Globals */
 struct wind_array *wind;
 volatile int loop;
-struct uartStruct *uartPtr;
 
 /* Better 2 main with and without debug since only one will run */
 void run_with_debug(struct sht11_t *temperature, char *message)
