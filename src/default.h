@@ -71,17 +71,6 @@ struct uartStruct {
 #define UTILS_SWITCH_PIN PINB7
 
 
-/* ---- Synth ---- */
-
-#define SYNTH_HAVE_DEFAULT
-#define SYNTH_ADDR PORTC
-#define SYNTH_CTRL_OUT PORTB
-#define SYNTH_CTRL_IN  PINB
-#define SYNTH_EOM PINB3
-#define SYNTH_PD PB4
-#define SYNTH_CE PB5
-
-
 /* ---- sht11 ----- */
 
 #define SHT11_HAVE_DEFAULT

@@ -18,9 +18,16 @@
 #ifndef SYNTH_H_
 #define SYNTH_H_
 
-#include "default.h"
 #include "sht11.h"
 #include "anemometer.h"
+
+#define SYNTH_ADDR PORTC
+#define SYNTH_CTRL_OUT PORTB
+#define SYNTH_CTRL_IN  PINB
+#define SYNTH_EOM PINB3
+#define SYNTH_PD PB4
+#define SYNTH_CE PB5
+
 
 /* club di volo */
 #define SYNTH_S_CLUB 112
