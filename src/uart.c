@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2009 Enrico Rossi
+ * Copyright (C) 2005-2011 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,12 +17,36 @@
 
 #include <stdlib.h>
 #include <string.h>
+#include <avr/interrupt.h>
 #include <avr/io.h>
-#include "default.h"
-#include "uart_isr.h"
 #include "uart.h"
 
-extern struct uartStruct *uartPtr;
+/* Global variable and pointer to be used */
+/* inside the ISR routine */
+struct uartStruct *uartPtr;
+
+ISR(USART_RXC_vect)
+{
+	char tmp;
+
+	tmp = UDR;
+
+	if ((uartPtr->rxIdx + 1) & UART_RXBUF_MASK) {
+		uartPtr->rx_buffer[uartPtr->rxIdx] = tmp;
+		uartPtr->rxIdx++;
+		uartPtr->rx_buffer[uartPtr->rxIdx] = 0;
+
+		if (tmp == UART_EOL)
+			uartPtr->rx_flag++;
+	} else {
+		uartPtr->rxIdx = 0;
+		uartPtr->rx_buffer[0] = 0;
+	}
+}
+
+ISR(USART_TXC_vect)
+{
+}
 
 /*
  * Initialize the UART to 9600 Bd, tx/rx, 8N1.

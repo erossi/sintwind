@@ -35,28 +35,6 @@
  Over this range you loose precision.
 */
 
-/* ---- Cell and modem ---- */
-
-#define UART_HAVE_DEFAULT
-#define UART_BAUD 9600
-/* Keep in mind that you don't have enought RAM */
-#define UART_RXBUF_SIZE 64
-#define UART_TXBUF_SIZE 64
-#define UART_RXBUF_MASK ( UART_RXBUF_SIZE - 1 )
-#define UART_TXBUF_MASK ( UART_TXBUF_SIZE - 1 )
-#if ( UART_RXBUF_SIZE & UART_RXBUF_MASK )
-#error RX buffer size is not a power of 2
-#endif
-#if ( UART_TXBUF_SIZE & UART_TXBUF_MASK )
-#error TX buffer size is not a power of 2
-#endif
-
-struct uartStruct {
-	char *rx_buffer;
-	char *tx_buffer;
-	volatile uint8_t rx_flag, tx_flag, rxIdx, txIdx;
-};
-
 #define PHONE_HAVE_DEFAULT
 #define PHONE_PORT PORTB
 #define PHONE_ON PB0

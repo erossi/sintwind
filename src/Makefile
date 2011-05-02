@@ -47,11 +47,11 @@ REMOVE = rm -f
 
 init_obj = init.o
 anemometer_obj = davis.o lacrosse.o anemometer.o adc.o
-phone_obj = cell.o uart_isr.o uart.o 
+phone_obj = cell.o uart.o 
 synth_obj = sht11.o init.o adc.o anemometer.o synth.o davis.o
 sht11_obj = sht11_avr_io.o sht11.o
 objects = cell.o init.o synth.o
-objects += media.o uart_isr.o uart.o utils.o debug.o
+objects += media.o uart.o utils.o debug.o
 objects += $(anemometer_obj) $(sht11_obj)
 
 .PHONY: clean indent
