@@ -1,5 +1,5 @@
 /* This file is part of sht11
- * Copyright (C) 2005-2010 Enrico Rossi
+ * Copyright (C) 2005-2011 Enrico Rossi
  * 
  * Sht11 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -17,6 +17,8 @@
 
 #ifndef SHT11_H_
 #define SHT11_H_
+
+#include "sht11_avr_io.h"
 
 #define SHT11_CMD_STATUS_REG_W 6
 #define SHT11_CMD_STATUS_REG_R 7

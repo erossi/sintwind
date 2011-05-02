@@ -1,5 +1,5 @@
 /* This file is part of sht11
- * Copyright (C) 2005-2010 Enrico Rossi
+ * Copyright (C) 2005-2011 Enrico Rossi
  * 
  * Sht11 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -21,14 +21,11 @@
 /* clock delay in ms */
 #define SHT11_SCK_DELAY 1
 
-/* stuff that can be configured on default.h */
-#ifndef SHT11_HAVE_DEFAULT
 #define SHT11_DDR	DDRC
 #define SHT11_PORT	PORTC
 #define SHT11_PIN	PINC
 #define SHT11_DATA	PC1
 #define SHT11_SCK	PC0
-#endif
 
 void set_sck_high(void);
 void set_sck_low(void);

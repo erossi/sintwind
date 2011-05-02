@@ -1,5 +1,5 @@
 /* This file is part of sht11
- * Copyright (C) 2005-2010 Enrico Rossi
+ * Copyright (C) 2005-2011 Enrico Rossi
  * 
  * Sht11 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,12 +20,6 @@
 #include <avr/io.h>
 #include <util/crc16.h>
 #include <util/delay.h>
-
-#ifdef HAVE_DEFAULT
-#include "default.h"
-#endif
-
-#include "sht11_avr_io.h"
 #include "sht11.h"
 
 void send_byte(uint8_t byte)

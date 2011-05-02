@@ -70,14 +70,4 @@ struct uartStruct {
 #define UTILS_SWITCH_PORT PINB
 #define UTILS_SWITCH_PIN PINB7
 
-
-/* ---- sht11 ----- */
-
-#define SHT11_HAVE_DEFAULT
-#define SHT11_DDR	DDRB
-#define SHT11_PORT	PORTB
-#define SHT11_PIN	PINB
-#define SHT11_DATA	PB1
-#define SHT11_SCK	PB2
-
 #endif
