@@ -22,8 +22,6 @@
 #include <avr/pgmspace.h>
 #include "debug.h"
 
-extern struct uartStruct *uartPtr;
-
 void debug_write(const char *s)
 {
 	phone_send(s);

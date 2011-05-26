@@ -23,3 +23,14 @@ How to set LFUSE bit for external Ceramic OSC at 4Mhz:
  dump hfuse
  write hfuse 0 0xd9
 
+Remember 1 means UNPROGRAMMED
+From datasheet pag.260 HFUSE
+ d = 1101 = OCDEN + JTAGEN + CKOPT are UNPROGRAMMED (default 9 = 1001)
+ 9 = 1001 = EESAVE + BOOTRST are UNPROGRAMMED (default)
+ only JTAGEN has been changed.
+
+pag. 261 LFUSE
+ e = 1110 = BODLEVEL + BODEN + SUT1 are UNPROGRAMMED (default)
+ e = 1110 = CLKSEL3 + CLKSEL2 + CLKSEL1 are UNPROGRAMMED (default 1 = 0001)
+ only CLKSEL3, 2, 1, 0 has been changed.
+
