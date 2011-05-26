@@ -90,22 +90,17 @@ void anemometer_eesave(uint8_t sensor)
 	eeprom_write_byte(&EE_sensor, sensor);
 }
 
-struct wind_array *anemometer_init(struct wind_array *wind)
+void anemometer_init(struct wind_array *wind)
 {
-	uint8_t eesensor;
-
-	eesensor = anemometer_eeread();
-	wind = malloc(sizeof(struct wind_array));
 	array_init(wind);
+	wind->sensor = anemometer_eeread();
 
-	switch (eesensor) {
+	switch (wind->sensor) {
 		case ANE_LACROSSE:
 			lacrosse_init();
-			wind->sensor = ANE_LACROSSE;
 			break;
 		case ANE_DAVIS:
 			davis_init();
-			wind->sensor = ANE_DAVIS;
 			break;
 		default:
 			if (lacrosse_is_connected()) {
@@ -116,8 +111,6 @@ struct wind_array *anemometer_init(struct wind_array *wind)
 				wind->sensor = ANE_DAVIS;
 			}
 	}
-
-	return(wind);
 }
 
 /*

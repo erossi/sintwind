@@ -176,25 +176,30 @@ void lacrosse_shutdown(void)
 }
 
 /* IMPORTANT - never use this routine with interrupt enable */
+/*! \bug _delay_ms not working properly, this function should be
+ * wait 15 sec, if wind->flag is present then a lacrosse is
+ * connected.
+ */
 uint8_t lacrosse_is_connected(void)
 {
-	uint8_t i, j;
+	uint8_t i;
 
-	j = 0;
 	lacrosse_init();
 	sei();
 
 	for (i=0; i<50; i++)
-		if (wind->flag) {
-			j = header_ok();
-			i = 100;
-		} else {
-			_delay_ms(200);
-		}
+		if (wind->flag)
+			i=99;
+		else
+			_delay_ms(300);
 
 	cli();
 	lacrosse_shutdown();
-	return(j);
+
+	if (i == 100)
+		return(1);
+	else
+		return(0);
 }
 
 uint8_t lacrosse_adjust(void) {

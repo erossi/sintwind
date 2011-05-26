@@ -177,6 +177,7 @@ int main(void)
 
 	/* Init globals */
 	loop = 0;
+	wind = malloc(sizeof(struct wind_array));
 
 	/* Init locals */
 	temperature = malloc(sizeof(struct sht11_t));
@@ -189,7 +190,7 @@ int main(void)
 	/* if auto search and lacrosse is not present, 
 	 * this check will take 10 sec
 	 */
-	wind = anemometer_init(wind);
+	anemometer_init(wind);
 	sht11_init();
 	phone_init();		/* activate uart comm only, no delay */
 	sei();			/* Enable interrupt */
