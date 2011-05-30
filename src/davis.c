@@ -25,7 +25,7 @@
 #include "davis.h"
 
 /*! Global variable and pointer to be used inside the ISR routine */
-extern volatile int loop;
+volatile int loop;
 extern struct wind_array *wind;
 
 /*! \brief wind speed counter ISR
@@ -120,6 +120,7 @@ void davis_timer_setup(void)
 /*! \brief initialize the davis anemometer. */
 void davis_init(void)
 {
+	loop = 0;
 	adc_init();
 	davis_timer_setup();
 }

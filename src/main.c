@@ -36,7 +36,6 @@ uint8_t EEMEM EE_chkpoint;
 
 /* Globals */
 struct wind_array *wind;
-volatile int loop;
 
 /* Better 2 main with and without debug since only one will run */
 void run_with_debug(struct sht11_t *temperature, char *message)
@@ -174,7 +173,6 @@ int main(void)
 	char *message;
 
 	/* Init globals */
-	loop = 0;
 	wind = malloc(sizeof(struct wind_array));
 
 	/* Init locals */
