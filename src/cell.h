@@ -15,8 +15,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*! \file cell.h
+ * \brief cellular phone functions
+ */
+
 #ifndef CELL_H_
 #define CELL_H_
+
+#include "default.h"
+#include "uart.h"
 
 /*! if a fixed cellular operator must be used then
  * uncomment below and change the operator's code

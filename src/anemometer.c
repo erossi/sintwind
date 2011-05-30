@@ -15,7 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* These routines are used to read the wind speed and direction,
+/*! \file anemometer.c
+ * \brief These routines are used to read the wind speed and direction,
  * do media etc.
 */
 
@@ -27,9 +28,8 @@
 /*! type of wind sensor (GLOBAL) */
 uint8_t EEMEM EE_sensor;
 
-/*
-   TRUE - data is valid
-   FALSE - wrong data
+/*! \brief apply correction to wind value if needed.
+ * \return 1 - data is valid, 0 - wrong data.
  */
 uint8_t anemometer_adjust(struct wind_array *wind)
 {
@@ -39,6 +39,7 @@ uint8_t anemometer_adjust(struct wind_array *wind)
 		return(lacrosse_adjust());
 }
 
+/*! \brief enable the anemometer and start storing value. */
 void anemometer_start(struct wind_array *wind)
 {
 	if (wind->sensor == ANE_DAVIS)
@@ -47,6 +48,7 @@ void anemometer_start(struct wind_array *wind)
 		lacrosse_start();
 }
 
+/*! \brief disable the anemometer. */
 void anemometer_stop(struct wind_array *wind)
 {
 	if (wind->sensor == ANE_DAVIS)
@@ -55,6 +57,7 @@ void anemometer_stop(struct wind_array *wind)
 		lacrosse_stop();
 }
 
+/*! \brief initialize the wind struct */
 void array_init(struct wind_array *wind)
 {
 	wind->flag = 0;		/* 0=ok take value 1=value taken */
@@ -79,17 +82,25 @@ void array_init(struct wind_array *wind)
 	wind->lacrosse_chksum=0;
 }
 
-/*! Read which wind sensor is stored into the EEPROM */
+/*! \brief Read which wind sensor is stored into the EEPROM */
 uint8_t anemometer_eeread(void)
 {
 	return(eeprom_read_byte(&EE_sensor));
 }
 
+/* \brief store which wind sensor to use in the eeprom */
 void anemometer_eesave(uint8_t sensor)
 {
 	eeprom_write_byte(&EE_sensor, sensor);
 }
 
+/*! \brief initialize the anemometer.
+ * allocate the memory for the wind struct,
+ * read from eeprom which wind sensor to use and, in case
+ * of auto wind sensor, try to locate which one.
+ *
+ * \return allocated wind structure.
+ */
 void anemometer_init(struct wind_array *wind)
 {
 	array_init(wind);
@@ -113,19 +124,16 @@ void anemometer_init(struct wind_array *wind)
 	}
 }
 
-/*
-  return standard direction
-  from encoder 0-359
-*/
+/*! \brief return standard direction from encoder.
+ * \param direction degrees wind direction to convert (0-359).
+ * \return converted value.
+ */
 enum wind_dir get_wind_direction(int direction)
 {
 	enum wind_dir wind;
 
+	/* default */
 	wind = NORTH;
-
-	/* Default case */
-/*   if ((direction < 23) || (direction >= 338)) */
-/*     wind = NORTH; */
 
 	if ((direction >= 23) && (direction < 68))
 		wind = NORTH_EAST;

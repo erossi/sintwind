@@ -15,6 +15,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*! \file anemometer.h */
+
 #ifndef ANEMOMETER_H_
 #define ANEMOMETER_H_
 

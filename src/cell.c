@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2009 Enrico Rossi
+ * Copyright (C) 2005-2011 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -20,17 +20,18 @@
 #include <string.h>
 #include <avr/io.h>
 #include <util/delay.h>
-#include "default.h"
-#include "uart.h"
 #include "cell.h"
 
+/*! \bug define this in its files */
 extern struct uartStruct *uartPtr;
 
+/*! \brief send the string to the phone */
 void phone_send(const char *s)
 {
 	uart_printstr(s);
 }
 
+/*! compare the 2 strings */
 int phone_valid_msg(const char *s1, const char *s2)
 {
 	if (strstr(s1, s2))

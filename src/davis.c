@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2009 Enrico Rossi
+ * Copyright (C) 2005-2011 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,63 +15,58 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* These routines are used to read the wind speed and direction,
+/*! \file davis.c
+ * \brief These routines are used to read the wind speed and direction,
  * do media etc.
  */
 
 #include <inttypes.h>
 #include <avr/interrupt.h>
-#include "default.h"
-#include "adc.h"
-#include "anemometer.h"
 #include "davis.h"
 
-/* Global variable and pointer to be used */
-/* inside the ISR routine */
-
+/*! Global variable and pointer to be used inside the ISR routine */
 extern volatile int loop;
 extern struct wind_array *wind;
 
+/*! \brief wind speed counter ISR
+   Different kind of anemometer may have different way of reading data.
+   Any half turn we have a signal from the anemometer, so we trigger an
+   interrupt to increment a counter.
+   Any trigger simply increment by 1 a counter any
+   half-turn of the anenom.
+   In the meantime any minute we count how many half-turn we did so
+   we learn the wind speed.
+   A low-pass filter is implemented to filter spikes,
+   we do this by looking
+   to the timers increment since the last time this routine has been
+   triggered.
+   If this difference is to low (less than 10 ticks) I consider
+   this time
+   the routine has been triggere by a spike, not by a pulse form
+   the anemometer.
+   \var loop is the external common variable used to count the
+   pulse per second.
+   \note Anemometer specific function.
+   \note this has to be a very quick routine because
+   in a strong wind we may have impulses many times per
+   second, keep also in
+   mind that there are spikes also, which means that we may
+   have a real huge
+   qty of interrupt per second (this may be considered a bug).
+   */
 ISR(TIMER1_CAPT_vect)
 {
 	static uint16_t timer = 0;
-	/* only to implement low pass filter */
+	/*! only to implement low pass filter */
 	uint16_t diff;
-
-	/*
-	   Be care: Anemometer specific function.
-	   Different kind of anemometer may have different way of reading data.
-	   Any half turn we have a signal from the anemometer, so we trigger an
-	   interrupt to increment a counter. Note: this has to be a very quick
-	   routine because in a strong wind we may have impulses many times per
-	   second, keep also in
-	   mind that there are spikes also, which means that we may
-	   have a real huge
-	   qty of interrupt per second (this may be considered a bug).
-	   Any trigger simply increment by 1 a counter any
-	   half-turn of the anenom.
-	   in the meantime any minute we count how many half-turn we did so
-	   we learn the wind speed.
-	   A low-pass filter is implemented to filter spikes,
-	   we do this by looking
-	   to the timers increment since the last time this routine has been
-	   triggered.
-	   If this difference is to low (less than 10 ticks) I consider
-	   this time
-	   the routine has been triggere by a spike, not by a pulse form
-	   the anemometer.
-
-	   loop is the external common variable used to count the
-	   pulse per second.
-	 */
 
 	/* How much time is passed? */
 	diff = ICR1 - timer;
 
 	/*
 	   if the difference between this front and the previous
-	   is less than DAVIS_CUTOFF count prescaled, we have a spike,
-	   ignoring it.
+	   is more than DAVIS_CUTOFF, we have a valid pulse, else
+	   it is a spike and ignore it.
 	 */
 	if (diff > DAVIS_CUTOFF) {
 		++loop;
@@ -79,21 +74,20 @@ ISR(TIMER1_CAPT_vect)
 	}
 }
 
+/*! \brief calulate wind speed with collected pulse value.
+   Any time the system trigger an overflow interrupt.
+   The wind pointer must be present as global variables.
+   wind flag is a boolean flag we enable to signal to
+   main that there is a time to be elaborated.
+   Once the main take care of the new value, it
+   switch off the flag, so if we find the flag on, it means that
+   the main didn't take care of the last value (maybe it was too busy)
+   so we simply do nothing.
+   Wind->direction is supposed to be a media, not a single shot, this is
+   why it will not be converted in here.
+   */
 ISR(TIMER1_OVF_vect)
 {
-	/*
-	   Any time the system trigger an overflow interrupt.
-	   The wind pointer must be present as global variables.
-	   wind flag is a boolean flag we enable to signal to
-	   main that there is a time to be elaborated.
-	   Once the main take care of the new value, it
-	   switch off the flag, so if we find the flag on, it means that
-	   the main didn't take care of the last value (maybe it was too busy)
-	   so we simply do nothing.
-	   Wind->direction is supposed to be a media, not a single shot, this is
-	   why it will not be converted in here.
-	 */
-
 	/* for now 1 to 1 conversion */
 	wind->speed_rt = loop;
 
@@ -103,18 +97,17 @@ ISR(TIMER1_OVF_vect)
 	loop = 0;
 }
 
+/*! \brief setup counters and timers */
+/*! Time ellapsed every cycle is 4.19424 sec.
+  4Mhz / 256 = 15625 Hz (clock pre-scaled of 256)
+  1/15625 Hz = 0.000064 sec (every counter's step)
+  Number of step per cycle is 65535 (16bit)
+  0.000064 sec * 65535 = 4.19424 sec every cycle
+  */
 void davis_timer_setup(void)
 {
 	TCCR1A = 0;
 	/* ICES1 = 0 trigger edge on negative */
-
-	/*
-	   Time ellapsed every cycle is 4.19424 sec.
-	   4Mhz / 256 = 15625 Hz (clock pre-scaled of 256)
-	   1/15625 Hz = 0.000064 sec (every counter's step)
-	   Number of step per cycle is 65535 (16bit)
-	   0.000064 sec * 65535 = 4.19424 sec every cycle
-	 */
 
 	/* counter prescaler/1024 */
 #ifdef TIMER_PRESCALER_1024
@@ -136,32 +129,34 @@ void davis_timer_setup(void)
 	TIMSK = _BV(TICIE1) | _BV(TOIE1);
 }
 
-void davis_start(void) {} /* fix me */
-void davis_stop(void) {} /* fix me */
+/*! \bug unused */
+void davis_start(void) {}
+/*! \bug unused */
+void davis_stop(void) {}
 
+/*! \brief initialize the davis anemometer. */
 void davis_init(void)
 {
 	adc_init();
 	davis_timer_setup();
 }
 
+/*! \brief anemometer value fine tuning and error correction.
+ * Any time the main find it has a wind speed flag active, it means
+ * we have a tick per cycle to elaborate.
+ * This routine is used to trasform
+ * ticks per cycle in (?? m/s) (?? km/h).
+ * \note clear media_rt the first time (init).
+ * \note speed_rt and angle_rt are set by interrupt routine.
+ * \todo This routine should also check the validity of these value someway.
+ * \return TRUE - ok the value has been corrected, FALSE - error.
+ * \bug return is always TRUE, please fix.
+ */
 uint8_t davis_adjust(void)
 {
-	/*
-	   Any time the main find it has a wind speed flag active, it means
-	   we have a tick per cycle to elaborate.
-	   This routine is used to trasform
-	   ticks per cycle in (?? m/s) (?? km/h).
-	   REMEMBER: clear media_rt the first time (init)
-	   speed_rt and angle_rt are set by interrupt routine.
-	   TOBEFIXED: This routine should also check the validity of these
-	   value someway.
-	 */
-
-	/*
-	   Adjust wind speed, these value are hardware dependant.
+	/*! Adjust wind speed, these value are hardware dependant.
 	   See spreadsheet.
 	 */
 	wind->speed_rt /= 1.35;
-	return(1); /* always ok, please fix */
+	return(1);
 }

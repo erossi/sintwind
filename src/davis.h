@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2009 Enrico Rossi
+ * Copyright (C) 2005-2011 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,7 +18,14 @@
 #ifndef DAVIS_H_
 #define DAVIS_H_
 
-/* Filter cutoff to eliminate spike */
+/*! \file davis.h
+ * \brief davis specific functions */
+
+#include "default.h"
+#include "adc.h"
+#include "anemometer.h"
+
+/*! Filter cutoff to eliminate spike */
 #define DAVIS_CUTOFF 5
 
 void davis_init(void);

@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2009 Enrico Rossi
+ * Copyright (C) 2005-2011 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,10 +15,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*! \file adc.h */
+
 #ifndef ADC_H_
 #define ADC_H_
 
-/*
+/*!
  * Ratio to convert 0-255 to 0-360 degrees (mostly)
  * From the Davis sensor we have a range 0 ~ 4V, then
  * we read 0 - (4/5)*255 value from the adc.
