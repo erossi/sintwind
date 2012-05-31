@@ -1,4 +1,4 @@
-# Copyright (C) 2011 Enrico Rossi
+# Copyright (C) 2012 Enrico Rossi
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
@@ -27,17 +27,17 @@ PRGNAME = $(PRG_NAME)
 GIT_TAG = "Unknown"
 # Uncomment if git tag is in use
 GIT_TAG = "$(shell git describe --tags)"
-PRGNAME = $(PRG_NAME)_$(GIT_TAG)
+PRGNAME = $(PRG_NAME)_$(GIT_TAG)_$(MCU)
 
 AR = avr-ar
 CC = avr-gcc
 
-DUDEPORT = /dev/ttyUSB0
-DUDEDEV = stk500v2
-DUDEPORT = usb
-DUDEDEV = avrispmkII
+DUDESPORT = /dev/ttyUSB0
+DUDESDEV = stk500v2
+DUDEUPORT = usb
+DUDEUDEV = avrispmkII
 # Use sudo for USB avrispmkII
-DUDE = sudo avrdude -c $(DUDEDEV) -p $(MCU) -P $(DUDEPORT) -e -U flash:w:$(PRGNAME).hex
+DUDE = sudo avrdude -p $(MCU) -e -U flash:w:$(PRGNAME).hex
 
 OBJCOPY = avr-objcopy -j .text -j .data -O ihex
 OBJDUMP = avr-objdump
@@ -68,25 +68,6 @@ debug.o:
 uart.o:
 	$(CC) $(CFLAGS) -D TXRXI -c uart.c
 	 
-program:
-	$(DUDE)
-
-clean:
-	$(REMOVE) *.elf *.hex $(objects)
-
-version:
-	# Last Git tag: $(GIT_TAG)
-
-doc:
-	cd .. && ( cat Doxyfile ; echo "PROJECT_NUMBER=$(GIT_TAG)" ) | doxygen -
-
-docinstall: doc
-	cd .. && myremotedox.sh $(PRG_NAME)
-
-size:
-	$(SIZE)
-
-# Not sure these are still working
 test_sht11: $(objects)
 	$(CC) $(CFLAGS) -o ../$(PRGNAME).elf test_sht11.c $(objects) $(LFLAGS)
 
@@ -104,3 +85,25 @@ test_synth: $(synth_obj)
 
 test_uart: $(objects)
 	$(CC) $(CFLAGS) -o ../$(PRGNAME).elf test_uart.c $(objects) $(LFLAGS)
+
+programstk:
+	$(DUDE) -c $(DUDESDEV) -P $(DUDESPORT)
+
+program:
+	$(DUDE) -c $(DUDEUDEV) -P $(DUDEUPORT)
+
+clean:
+	$(REMOVE) *.elf *.hex $(objects)
+
+version:
+	# Last Git tag: $(GIT_TAG)
+
+doc:
+	cd ../ && ( cat dox/Doxyfile ; echo "PROJECT_NUMBER=$(GIT_TAG)" ) | doxygen -
+
+docinstall: doc
+	cd .. && myremotedox.sh $(PRG_NAME)
+
+size:
+	$(SIZE)
+

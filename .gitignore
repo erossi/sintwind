@@ -1,4 +1,7 @@
-doc/html
-*.swp
+.todo
 *.elf
 *.hex
+*.o
+*.swp
+doc/html/
+tmp/
