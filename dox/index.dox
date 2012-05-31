@@ -1,0 +1,15 @@
+/*!
+  \mainpage Main page.
+
+This is a working in progress.
+
+  \section audio Audio Programming.
+  Everything related to the audio programming please get to
+  \ref audio_programming
+
+  \subsection subsection1 The first subsection
+  Text.
+
+  \subsection subsection2 The second subsection
+  More text.
+ */

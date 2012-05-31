@@ -1,0 +1,118 @@
+/*!
+\page audio_programming Audio programming.
+
+\section audio_note NOTE PER SINTETIZZATORE VOCALE SINT WIND SW3.
+
+Di seguito si riportano le frasi (wave) da memorizzare sul sintetizzatore
+vocale per la riproduzione durante una chiamata telefonica al sint wind.
+
+Per ogni frase è indicata la durata massima ammessa (in secondi) per ogni
+singola frase.
+
+La risposta, da parte del sint wind, ad una chiamata telefonica, sarà la
+seguente: <<Stazione meteo club aa decollo di bb. Vento proveniente da xx con
+una intensità media da yy a yy chilometri orari. Temperatura yy gradi
+centigradi. Umidità relativa yy percento.>>
+
+Dove: aa indica il nome del club di volo proprietario del sint wind bb indica
+il nome del decollo e/o la direzione sul quale è installato il sint wind xx
+indica la direzione di provenienza del vento (N, NE, E, SE, S, SW, W, NW) yy
+indica il valore numerico della velocità/temperatura/umidità.
+
+I files da fornire, per la memorizzazione del sintetizzatore vocale che
+equipaggia il sint wind, dovranno, possibilmente, essere uno per ogni singola
+frase, in formato MP3 o WAV, a bassa risoluzione (monofonico 128Kbps).
+
+La durata massima dei suddetti files deve rispettare il tempo riportato in
+tabella. Eventuali eccessi di durata, verranno ripresi in fase di
+memorizzazione del sintetizzatore accelerando la riproduzione della frase (ciò
+può comportare una leggera alterazione della tonalità durante la riproduzione).
+
+La frase di "saluto", attualmente indicata come <b>"Stazione meteo club aa
+decollo di bb."</b> può essere modificata a piacere purchè la sua durata
+massima non ecceda i 20,0 secondi.
+
+Durante la memorizzazione delle frasi sul sintetizzatore vocale, verranno
+eliminati (nel limite del possibile) i tempi di pausa tra le varie frasi, in
+modo da ottenere una riproduzione della risposta da parte del sint wind la più
+omogenea possibile. Saranno comunque possibili lievi imperfezioni dovute alla
+fase di memorizzazione.
+
+\section audio_binaddress Tabel of synth addresses.
+
+This is the table to program the synth chip.
+\version 08.09.2008
+
+<table>
+<tr>
+<td>Wave synth</td>
+<td>Lenght (sec)</td>
+<td>Binary Address (A9...A0)</td>
+</tr>
+<tr><td>0 </td> <td>1,8</td> <td>0000000000</td></tr>
+<tr><td>1 </td> <td>1,8</td> <td>0000001000</td></tr>
+<tr><td>2 </td> <td>1,8</td> <td>0000010000</td></tr>
+<tr><td>3 </td> <td>1,8</td> <td>0000011000</td></tr>
+<tr><td>4 </td> <td>1,8</td> <td>0000100000</td></tr>
+<tr><td>5 </td> <td>1,8</td> <td>0000101000</td></tr>
+<tr><td>6 </td> <td>1,8</td> <td>0000110000</td></tr>
+<tr><td>7 </td> <td>1,8</td> <td>0000111000</td></tr>
+<tr><td>8 </td> <td>1,8</td> <td>0001000000</td></tr>
+<tr><td>9 </td> <td>1,8</td> <td>0001001000</td></tr>
+<tr><td>10</td> <td>1,8</td> <td>0001010000</td></tr>
+<tr><td>11</td> <td>1,8</td> <td>0001011000</td></tr>
+<tr><td>12</td> <td>1,8</td> <td>0001100000</td></tr>
+<tr><td>13</td> <td>1,8</td> <td>0001101000</td></tr>
+<tr><td>14</td> <td>1,8</td> <td>0001110000</td></tr>
+<tr><td>15</td> <td>1,8</td> <td>0001111000</td></tr>
+<tr><td>16</td> <td>1,8</td> <td>0010000000</td></tr>
+<tr><td>17</td> <td>1,8</td> <td>0010001000</td></tr>
+<tr><td>18</td> <td>1,8</td> <td>0010010000</td></tr>
+<tr><td>19</td> <td>1,8</td> <td>0010011000</td></tr>
+<tr><td>20</td> <td>1,8</td> <td>0010100000</td></tr>
+<tr><td>21</td> <td>1,8</td> <td>0010101000</td></tr>
+<tr><td>30</td> <td>1,8</td> <td>0010110000</td></tr>
+<tr><td>31</td> <td>1,8</td> <td>0010111000</td></tr>
+<tr><td>40</td> <td>1,8</td> <td>0011000000</td></tr>
+<tr><td>41</td> <td>1,8</td> <td>0011001000</td></tr>
+<tr><td>50</td> <td>1,8</td> <td>0011010000</td></tr>
+<tr><td>51</td> <td>1,8</td> <td>0011011000</td></tr>
+<tr><td>60</td> <td>1,8</td> <td>0011100000</td></tr>
+<tr><td>61</td> <td>1,8</td> <td>0011101000</td></tr>
+<tr><td>70</td> <td>1,8</td> <td>0011110000</td></tr>
+<tr><td>71</td> <td>1,8</td> <td>0011111000</td></tr>
+<tr><td>80</td> <td>1,8</td> <td>0100000000</td></tr>
+<tr><td>81</td> <td>1,8</td> <td>0100001000</td></tr>
+<tr><td>90</td> <td>1,8</td> <td>0100010000</td></tr>
+<tr><td>91</td> <td>1,8</td> <td>0100011000</td></tr>
+<tr><td>100        </td> <td>1,8</td> <td>0100100000</td></tr>
+<tr><td>assente    </td> <td>1,8</td> <td>0100101000</td></tr>
+<tr><td>est        </td> <td>1,8</td> <td>0100110000</td></tr>
+<tr><td>sud        </td> <td>1,8</td> <td>0100111000</td></tr>
+<tr><td>ovest      </td> <td>1,8</td> <td>0101000000</td></tr>
+<tr><td>nord       </td> <td>1,8</td> <td>0101001000</td></tr>
+<tr><td>Km/h       </td> <td>1,8</td> <td>0101010000</td></tr>
+<tr><td>a          </td> <td>1,8</td> <td>0101011000</td></tr>
+<tr><td>temperatura</td> <td>1,8</td> <td>0101100000</td></tr>
+<tr><td>meno       </td> <td>1,8</td> <td>0101101000</td></tr>
+<tr><td>virgola    </td> <td>1,8</td> <td>0101110000</td></tr>
+<tr><td>%          </td> <td>1,8</td> <td>0101111000</td></tr>
+<tr><td>vento proveniente da</td> <td>2,4</td> <td>0110000000</td></tr>
+<tr><td>gradi centigradi    </td> <td>2,4</td> <td>0110001100</td></tr>
+<tr><td>umidità relativa    </td> <td>2,4</td> <td>0110011000</td></tr>
+<tr><td>dati non disponibili</td> <td>2,4</td> <td>0110100100</td></tr>
+<tr>
+ <td> con una intensità media da</td>
+ <td>3,0</td> <td>0110110000</td>
+</tr>
+<tr>
+ <td>stazione meteo club aa decollo di bb</td>
+ <td>Max 20,0</td> <td>0111000000</td>
+</tr>
+</table>
+
+\section audio_schema Electrical schema.
+  \image html audio_programmer_sch.png "Programmer Schema"
+
+*/
+
