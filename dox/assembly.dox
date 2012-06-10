@@ -1,0 +1,27 @@
+/*!
+\page assembly How to assemble the device.
+
+\tableofcontents
+
+\section note Assembly note (02 Sept. 2011)
+
+ - TAPPO PG7 per fotoresistenza: forare diam. 2,75:3mm. Inserire dischetto plastica trasparente ricavandolo da stecca porta IC. Fissare il tutto con colla a caldo. Avvitare a scatola.
+ - SENS TEMP/HUM = fare collegamento con cavo flat 4 poli. Aggiungere cond. by pass. Fissare con colla a caldo dentro a supporto IP67. Incollare a scatola con loctite o colla vinilica.
+ - CAVO BATTERIA = cavo rosso/nero 0,5mm lungh. 300mm. Mettere faston 6,3mm + coprifaston.
+ - CAVO ALIM MODEM = cavo 6xawg20-22 + sch. lungh. 100mm. Crimpare conn. RJ11 6/6 spina (1=giallo-V+; 2=bianco-NU; 3=blu-GND; 4=arancio-P_ON; 5=verde-NU; 6=rosso-GND)
+ - CAVO AUDIO MODEM = cavo 2xawg20-22 + sch. lungh. 200mm. Crimpare conn. RJ 4/4 spina (1=giallo-MIC-; 2=NU-AP-; 3=NU-AP+; 4=verde-MIC+)
+ - CAVO SERIALE 232 = cavo 2x0,5mm + sch. lung. 160mm. Collegare pin 2 DB9M con pin 2 DB9F; pin 3 con 3 e pin 5 con 5.
+
+	1          6     1         4
+	  -- -- --         -- - --
+	  |      |         |     | (vista da lato entrata cavo)
+	  |      |         |     |
+	  --    --         --   --
+	    |__|             |_|
+
+	RJ11 6/6 SPINA    RJ 4/4 SPINA
+
+ - Con cutter, tagliare la parte inferiore del rinforzo laterale dx alto, in corrispondenza della base scatola GW44208.
+
+\todo change the ugly text with pictures.
+*/

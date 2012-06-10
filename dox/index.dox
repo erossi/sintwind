@@ -18,13 +18,14 @@ dell’attività di volo libero in parapendio.
 \subsection main_links Link to the other pages.
 
 This manual is divided in the following sections:
-- \subpage sint_schema The electrical schematic.
-- \subpage components The list of components to buy.
-- \subpage audio_programming Everything related to the audio.
-- \subpage firmware Writing firmware to the micro.
-- \subpage assembly How to assemble the device.
-- \subpage usage General usage and maintenance.
-- \subpage advanced _Advanced usage and diagnostic_ Not yet implemented.
+ - \subpage sint_schema The electrical schematic.
+ - \subpage box_setup Box setup.
+ - \subpage components The list of components to buy.
+ - \subpage audio_programming Everything related to the audio.
+ - \subpage firmware Writing firmware to the micro.
+ - \subpage assembly How to assemble the device.
+ - \subpage usage General usage and maintenance.
+ - \subpage advanced _Advanced usage and diagnostic_ Not yet implemented.
 
 \subsection main_specs Caratteristiche
 
