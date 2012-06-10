@@ -1,15 +1,177 @@
 /*!
-  \mainpage Main page.
+\mainpage Main page.
 
-This is a working in progress.
+\note ** WORKING IN PROGRESS **
 
-  \section audio Audio Programming.
-  Everything related to the audio programming please get to
-  \ref audio_programming
+\author Andrea Marabini.
+\copyright GNU Public License.
 
-  \subsection subsection1 The first subsection
-  Text.
+\note These pages are mixed up Italian/English, fix to English only.
 
-  \subsection subsection2 The second subsection
-  More text.
- */
+\section main_intro Introduzione
+
+Il sint wind SW3 è un dispositivo in grado di comunicare, mediante modem
+telefonico GSM bual band, i dati di direzione ed intensità vento, di
+temperatura ed umidità relativa dell’aria, per l’uso specifico
+dell’attività di volo libero in parapendio.
+
+\subsection main_links Link to the other pages.
+
+This manual is divided in the following sections:
+- \subpage sint_schema The electrical schematic.
+- \subpage components The list of components to buy.
+- \subpage audio_programming Everything related to the audio.
+- \subpage firmware Writing firmware to the micro.
+- \subpage assembly How to assemble the device.
+- \subpage usage General usage and maintenance.
+- \subpage advanced _Advanced usage and diagnostic_ Not yet implemented.
+
+\subsection main_specs Caratteristiche
+
+ Viene puntualizzato ciò in quanto i dati di direzione e velocità
+dell’aria, comunicati durante una chiamata telefonica, non sono quelli
+istantanei bensì sono frutto di una media di dati calcolata nell’arco
+dell’ultimo minuto. Tale gestione è stata elaborata tenendo conto che
+l’aria è caratterizzata da una componente vettoriale (cioè direzione ed
+intensità) e non solo dalla componente intensità. Molto spesso, infatti,
+in decollo si presentano situazioni di “difficile lettura”, come nel
+caso di presenza di debole (o quasi assente) brezza che è in contrasto
+(in fatto di intensità e direzione) con cicli di termica anche intensi.
+
+Si chiarisce il concetto con un esempio:
+
+Si è in decollo con una leggera brezza, di intensità da 0 a 2 Km/h
+proveniente da sud.
+
+Ad intervalli di circa 5’ si presentano raffiche di 15:20 Km/h da nord
+della durata di poche decine di secondi. Se il sint wind non tenesse
+conto della componente vettoriale e “del peso” delle letture,
+effettuando la chiamata telefonica si rischierebbe di sentirsi
+comunicare “vento proveniente da sud con una intensità da 0 a 2 Km/h”.
+
+Invece, l’acquisizione dei dati effettuati ogni 4” per un periodo di 1’,
+permette di rilevare e comunicare la presenza di raffiche aventi
+intensità e direzione diverse dalla brezza principale.
+
+I dati di temperatura e umidità dell’aria comunicati sono, invece,
+quelli presenti nel momento in cui il dispositivo riceve la chiamata
+telefonica.
+
+\note Check the changelog and look at the code for updated infos
+regarding sample timing.
+
+\section main_operation Funzionamento
+
+Dal momento in cui si alimenta il sint wind, il dispositivo inizia ad
+acquisire i dati dai sensori (direzione, intensità, temperatura,
+umidità). Se si effettua una chiamata prima che sia trascorso 1’
+dall’accensione del dispositivo e/o se il/i sensore/i di direzione ed
+intensità vento non funzionano, si ottiene la seguente risposta da parte
+del dispositivo:
+
+"Stazione meteo club _aa_ decollo di _bb_. Vento proveniente da: dati non
+disponibili.  Temperatura _yy_ gradi centigradi. Umidità relativa _yy_
+percento."
+
+Dove:
+
+ - _aa_ indica il nome del club di volo proprietario del sint wind
+ - _bb_ indica il nome del decollo e/o la direzione sul quale è installato il sint wind
+ - _yy_ indica il valore numerico della temperatura e umidità.
+
+Dopo 1’ dall’accensione e con aggiornamenti ogni 1’ per la direzione e
+l’intensità dell’aria, si ottiene la seguente risposta da parte del
+dispositivo:
+
+"Stazione meteo club _aa_ decollo di _bb_. Vento proveniente da _xx_ con una
+intensità media da _yy_ a _yy_ chilometri orari. Temperatura _yy_ gradi
+centigradi. Umidità relativa _yy_ percento."
+
+Dove:
+
+ - _aa_ indica il nome del club di volo proprietario del sint wind
+ - _bb_ indica il nome del decollo e/o la direzione sul quale è installato il sint wind
+ - _xx_ indica la direzione di provenienza del vento (N, NE, E, SE, S, SW, W, NW)
+ - _yy_ indica il valore numerico della velocità/temperatura/umidità.
+
+Al termine della comunicazione dei dati, il sint wind interrompe il
+collegamento telefonico.
+
+Durante la fase di comunicazione dei dati, il sint wind interrompe
+l’acquisizione degli stessi per poi riprenderla a fine collegamento
+telefonico.
+
+\note La mancanza di alimentazione elettrica, anche se momentanea, comporta
+l’azzeramento dei dati acquisiti.
+
+\subsection nowind Funzionamento in assenza di vento.
+
+L’assenza di vento, per un periodo superiore o uguale a 1’, determina la
+risposta:
+
+"Stazione meteo club _aa_ decollo di _bb_. Vento proveniente da:
+assente."
+
+Dove:
+
+ - _aa_ indica il nome del club di volo proprietario del sint wind.
+ - _bb_ indica il nome del decollo e/o la direzione sul quale è installato il sint wind.
+
+\subsection notemp Problemi nel sensore di temperatura.
+
+Analogamente, nel caso in cui sia il sensore di temperatura/umidità a
+non funzionare, la risposta sarà:
+
+"Stazione meteo club _aa_ decollo di _bb_. Vento proveniente da _xx_
+con una intensità media da _yy_ a _yy_ chilometri orari. Temperatura:
+dati non disponibili."
+
+Dove:
+
+ - _aa_ indica il nome del club di volo proprietario del sint wind
+ - _bb_ indica il nome del decollo e/o la direzione sul quale è installato il sint wind
+ - _xx_ indica la direzione di provenienza del vento (N, NE, E, SE, S, SW, W, NW)
+ - _yy_ indica il valore numerico della velocità.
+
+
+\subsection solar_panel Pannello solare.
+
+Nella versione con pannello solare, il sint wind è dotato del
+dispositivo di spegnimento automatico nel caso di illuminazione
+insufficiente (notte) e/o di batteria scarica (tensione inferiore a
+10V). La riaccensione del dispositivo avverrà, in modo automatico, nel
+momento in cui il pannello solare sarà sufficientemente illuminato e/o
+la batteria si sarà ricaricata (tensione superiore a 10,2V).
+
+Dati comunicati:
+
+ - Intensità: da 0 a 120 Km/h con risoluzione di 1 Km/h.
+ - Direzione: Nord, Nord/Est, Est, Sud/Est, Sud, Sud/Ovest, Ovest, Nord/Ovest.
+ - Temperatura: da -40 a +120°C con risoluzione di 0,5°C.
+ - Umidità relativa: da 0 a 100% con risoluzione di 1%.
+
+\subsection temperature Temperatura di funzionamento.
+
+Il sint wind funziona con temperatura ambiente compresa tra -20°C e
++55°C (umidità relativa 0:100% con temperatura fino a +30°C; 0:80% con
+temperatura fino a +55°C).
+
+\subsection sincard Sim card.
+
+Il sint wind funziona con sim card a 3V conformi alla direttiva GSM
+11.12 fase 2.
+
+\subsection powerusage Consumo.
+
+ - In stand-by (versione alimentata a 220Vac): 1W.
+ - In stand-by (versione alimentata con pannello solare): 0,35W.
+ - In trasmissione (900 MHz): 3W.
+ - In trasmissione (1800 MHz): 2W.
+
+\subsection case Contenitore.
+
+Il contenitore è in tecnopolimero, a tenuta IP56, resistente ai raggi
+ultravioletti ed utilizzabile con temperatura ambiente nel range
+-25°C:+60°C.
+
+*/

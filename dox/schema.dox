@@ -1,0 +1,10 @@
+/*!
+\page sint_schema Sint circuit.
+
+\tableofcontents
+
+\section general_schema Main schematics.
+
+  \image html main_schema.png "Sint Schema"
+
+*/

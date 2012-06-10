@@ -1,6 +1,8 @@
 /*!
 \page audio_programming Audio programming.
 
+\tableofcontents
+
 \section audio_note NOTE PER SINTETIZZATORE VOCALE SINT WIND SW3.
 
 Di seguito si riportano le frasi (wave) da memorizzare sul sintetizzatore
@@ -10,9 +12,9 @@ Per ogni frase è indicata la durata massima ammessa (in secondi) per ogni
 singola frase.
 
 La risposta, da parte del sint wind, ad una chiamata telefonica, sarà la
-seguente: <<Stazione meteo club aa decollo di bb. Vento proveniente da xx con
-una intensità media da yy a yy chilometri orari. Temperatura yy gradi
-centigradi. Umidità relativa yy percento.>>
+seguente: <<Stazione meteo club aa decollo di bb. Vento proveniente da
+xx con una intensità media da yy a yy chilometri orari. Temperatura yy
+gradi centigradi. Umidità relativa yy percento.>>
 
 Dove: aa indica il nome del club di volo proprietario del sint wind bb indica
 il nome del decollo e/o la direzione sul quale è installato il sint wind xx
@@ -42,6 +44,8 @@ fase di memorizzazione.
 
 This is the table to program the synth chip.
 \version 08.09.2008
+\note These are based on italian speaking sint, other languages
+may require more hacking code.
 
 <table>
 <tr>
@@ -115,4 +119,3 @@ This is the table to program the synth chip.
   \image html audio_programmer_sch.png "Programmer Schema"
 
 */
-

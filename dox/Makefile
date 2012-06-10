@@ -17,10 +17,8 @@ PRG_NAME = osint
 PRGNAME = $(PRG_NAME)
 GIT_TAG = "Unknown"
 # Uncomment if git tag is in use
-GIT_TAG = "$(shell git describe --tags)"
+GIT_TAG = $(shell git describe --tags|sed -e "s/^\(.*\)-.*/\1/")
 PRGNAME = $(PRG_NAME)_$(GIT_TAG)_$(MCU)
-
-REMOVE = rm -f
 
 .PHONY: clean indent
 .SILENT: help
@@ -29,6 +27,7 @@ REMOVE = rm -f
 all: doc
 
 clean:
+	rm -rf ../doc/html
 
 version:
 	# Last Git tag: $(GIT_TAG)
