@@ -1,0 +1,100 @@
+/*!
+\page usage Usage and Maintenance.
+\author Andrea Marabini.
+\copyright GNU Public License.
+\version 09 Jun. 2009
+
+\section general_schema Main schema.
+\image html usage.png "Image"
+
+\section offon Accensione.
+
+Una volta effettuati tutti i collegamenti, per accendere il SW3 si
+consiglia di procedere come segue:
+
+- Nel modem telefonico, estrarre il contenitore per la scheda telefonica
+  SIM premendo sul piccolo pulsante plastico giallo (1).
+
+- Inserire la scheda (2) ed alloggiarla all’interno del modem
+  telefonico.
+
+- Portare in posizione ON l’interruttore di alimentazione (3).
+
+\note usare schede SIM senza che sia stato abilitato l’uso di password
+di autentificazione (codice PIN).
+
+Dopo una decina di secondi, il led verde sul modem (4) e quello rosso
+sulla scheda (5) inizieranno a lampeggiare (verde = un lampeggio di
+0,075sec ogni 3sec; rosso = un lampeggio di 0,25sec ogni 4sec).
+
+Una volta acceso, il SW3 risponderà in modo automatico alle chiamate che
+giungeranno. Ad ogni chiamata verranno indicati i dati di direzione,
+velocità minima e velocità massima del vento, temperatura ed umidità
+relativa dell’aria.
+
+Al termine della comunicazione, il SW3 interromperà in modo automatico
+la chiamata telefonica e si predisporrà nuovamente nello stato di attesa
+chiamata.
+
+I dati di direzione e velocità vento vengono aggiornati ogni 2 minuti.
+
+ I dati di temperatura ed umidità relativa, sono quelli presenti nel
+momento della chiamata telefonica.
+
+\section sintled Indicazione lampeggio led scheda.
+
+Il led rosso della scheda (5) indica, a seconda del tipo di lampeggio,
+la modalità di funzionamento del SW3 come di seguito riportato:
+
+- un lampeggio di 0,25sec ogni 4sec = funzionamento normale, tutto
+  regolare.
+
+- cinque lampeggi di 0,25sec ogni 6sec = funzionamento attesa. Il modem
+  telefonico non è funzionante (spento, senza campo, scheda SIM non
+valida, ecc). Il microprocessore si trova nella situazione di attesa. Il
+SW3 rimarrà in modalità attesa per un tempo di circa 75’ dopo di che
+proverà nuovamente ad accendere il modem telefonico. Se questo si
+accenderà, si ripristinerà la condizione di funzionamento normale,
+altrimenti resterà nello stato di attesa.
+
+- sempre spento = spento.
+
+\note lo stato di attesa NON è eliminabile spegnendo e riaccendendo il
+SW3.
+
+\section modemled Indicazione lampeggio led modem telefonico.
+
+Il led verde del modem telefonico (4) indica, a seconda del tipo di lampeggio, la modalità di
+funzionamento come di seguito riportato:
+
+- un lampeggio di 0,075sec ogni 3sec = funzionamento normale. Il modem telefonico è
+collegato alla rete ed è pronto per ricevere le chiamate.
+
+- un lampeggio di 0,6sec ogni 0,6sec = mancanza rete. Il modem telefonico non è collegato (o
+è in attesa di collegamento) alla rete telefonica per mancanza di campo e/o SIM non valida
+e/o SIM scaduta.
+
+- sempre acceso = trasmissione in atto. Il modem telefonico sta rispondendo ad una chiamata.
+
+- sempre spento = spento.
+
+\section maintenance Manutenzione.
+
+Il SW3 non necessita di nessuna manutenzione ordinaria. E’ comunque
+buona norma verificare periodicamente lo stato di funzionamento
+dell’anemometro e dell’anemostato.
+
+- verifica dell’integrità meccanica;
+
+- verifica dell’assenza di corpi estranei che possano rallentare e/o
+  bloccare la rotazione.
+
+- Controllare periodicamente anche la pulizia del sensore di
+  temperatura/umidità.
+
+- Pulire tutte le parti in plastica senza usare prodotti chimici e/o
+  sgrassanti. Al contrario, mantenerne le superfici leggermente
+inumidite con prodotti a base oleosa per proteggerle dal sole e dagli
+agenti atmosferici.
+
+*/

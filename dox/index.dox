@@ -23,7 +23,7 @@ This manual is divided in the following sections:
  - \subpage audio_programming Everything related to the audio.
  - \subpage firmware Writing firmware to the micro.
  - \subpage assembly
- - \subpage usage General usage and maintenance.
+ - \subpage usage
  - \subpage advanced _Advanced usage and diagnostic_ Not yet implemented.
  - \subpage troubleshoot
 

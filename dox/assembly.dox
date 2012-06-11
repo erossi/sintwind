@@ -2,11 +2,145 @@
 \page assembly How to assemble the device.
 \author Andrea Marabini.
 \copyright GNU Public License.
-\version 02 Sept. 2011
+\version 02 Sept. 2009
 
 \tableofcontents
 
+Di seguito le istruzioni per l’assemblaggio e l’installazione del sint wind SW3.
+
+\section box Contenitore.
+\image html assemble_1.png "Box"
+
+Per il fissaggio del contenitore, utilizzare le apposite predisposte
+sedi (1) aventi interasse 140 x 194 mm. Montare il contenitore in
+posizione verticale come indicato in figura. Una volta fissato il
+contenitore, rendere impermeabili i fori utilizzati per il fissaggio.
+
+\section antenna Antenna.
+\image html assemble_2.png "Antenna"
+
+Per il fissaggio dell’antenna, procedere come indicato di seguito:
+
+- Svitare lo stilo (1)
+
+- Svitare il coperchio nero (2)
+
+- Svitare il controdado (3)
+
+- Svitare il dado con le guarnizioni (4)
+
+- Estrarre la rondella di tenuta (5)
+
+- Inserire il perno (6) all’interno del foro (diametro 10,5mm) del
+  supporto metallico sul quale si vuole fissare l’antenna.
+
+- Procedere al fissaggio inserendo la rondella (5), avvitando il dado
+  con le guarnizioni (4), il controdado (3), il coperchio nero (2) e lo
+stilo (1).
+
+- Inserire il cavo schermato e fissarlo avvitando la ghiera (7).
+
+__Si consiglia il montaggio in posizione verticale.__
+
+- Collegare l’altro capo del cavo schermato al modem
+telefonico (8) facendolo passare attraverso il pressacavo
+di destra della scatola (9).
+
+\note al fine di ridurre gli effetti del sole e degli agenti
+atmosferici, si consiglia di pulire periodicamente le parti in plastica
+dell’antenna (stilo, coperchio e cavo schermato) con un panno inumidito
+di olio in modo da formare una patina protettiva.
+
+\section wind Wind sensor.
+\image html assemble_3.png "Wind sensor."
+
+- Assemblare il sensore seguendo le istruzioni del costruttore allegate
+  nella confezione.
+
+- Fissare la banderuola della direzione facendo coincidere la punta (1)
+  con il segno nero presente sul perno del sensore (2). In questo modo
+la punta del sensore indicherà il nord quando sarà puntata verso il
+braccetto di sostegno e la relativa staffa di fissaggio (valore
+resistivo tra i fili giallo e verde = 0 ohm).
+
+- Nel caso si effettui il fissaggio del sensore di direzione/velocità
+  con la staffa non rivolta verso nord, adeguare di conseguenza la
+posizione della banderuola della direzione rispetto al relativo perno
+del sensore.
+
+ - staffa di fissaggio rivolta a est banderuola fissata in posizione 90°
+   in senso antiorario rispetto al segno nero presente sul perno del
+sensore (valore resistivo tra i fili giallo e verde = 5 Kohm);
+
+ - staffa di fissaggio rivolta a sud banderuola fissata in posizione
+   180° in senso antiorario rispetto al segno nero presente sul perno
+del sensore (valore resistivo tra i fili giallo e verde = 10 Kohm);
+
+ - staffa di fissaggio rivolta a ovest banderuola fissata in posizione
+   270° in senso antiorario rispetto al segno nero presente sul perno
+del sensore (valore resistivo tra i fili giallo e verde = 7 15 Kohm).
+
+\image html assemble_4.png "Wind sensor cable passtrough."
+
+- Collegare il cavo al morsetto della scheda (filo nero nel primo
+  morsetto (3); filo rosso nel secondo morsetto (4); filo verde nel
+terzo morsetto (5); filo giallo nel quarto morsetto (6)) facendolo
+passare attraverso il secondo pressacavo di sinistra della scatola (7).
+
+\section solarpanel Solar Panel.
+\image html assemble_5.png "Solar panel."
+
+\warning Evitare torsioni del pannello fotovoltaico in fase di fissaggio.
+
+\warning Il cortocircuito tra i fili di uscita del pannello fotovoltaico
+lo potrebbe danneggiare irreparabilmente.
+
+Per il fissaggio del pannello fotovoltaico, utilizzare i 6 fori diametro
+3mm, predisposti dal costruttore, presenti sulla cornice nel lato (1).
+
+E’ importante installare il pannello fotovoltaico in modo tale che non
+risulti in ombra in nessun momento del giorno e dell’anno.
+
+\note La presenza di ombre, anche se di piccole dimensioni, riducono
+notevolmente la resa.
+
+_Per ottenere il miglior rendimento energetico durante tutto il periodo
+dell’anno, si consiglia di installare il pannello fotovoltaico con
+un’inclinazione di circa 40° rispetto all’orizzonte ed orientato
+perfettamente a sud. Orientamenti e/o inclinazioni differenti possono
+ridurre la capacità di ricarica della batteria presente all’interno del
+sint wind, provocandone lo spegnimento per mancanza di alimentazione
+anche durante il giorno._
+
+\note pulire periodicamente il vetro del pannello fotovoltaico per
+garantire la migliore resa energetica possibile.
+
+\image html assemble_6.png "Solar panel."
+
+- Posizionare gli interruttori della scheda (2) in posizione off
+  (levetta verso i morsetti).
+
+- Collegare il cavo del pannello fotovoltaico al morsetto della scheda
+  (filo nero nel terzo morsetto (3); filo bianco nel quarto morsetto
+(4)) facendolo passare attraverso il primo pressacavo di sinistra della
+scatola (5).
+
+\section battery Battery.
+\image html assemble_7.png "Battery."
+
+\warning Il cortocircuito tra i poli della batteria può danneggiarla
+irreparabilmente.
+
+- Alloggiare la batteria all’interno del contenitore appoggiandola sui
+  bordi rinforzati (1).
+
+- Collegarne i morsetti ai fili presenti all’interno del contenitore (2)
+  rispettando la polarità: filo rosso al morsetto rosso della batteria
+(3); filo nero al morsetto nero della batteria.
+
+
 \section note Assembly note.
+\version 02 Sept. 2011
 
  - TAPPO PG7 per fotoresistenza: forare diam. 2,75:3mm. Inserire dischetto plastica trasparente ricavandolo da stecca porta IC. Fissare il tutto con colla a caldo. Avvitare a scatola.
  - SENS TEMP/HUM = fare collegamento con cavo flat 4 poli. Aggiungere cond. by pass. Fissare con colla a caldo dentro a supporto IP67. Incollare a scatola con loctite o colla vinilica.
@@ -27,4 +161,5 @@
  - Con cutter, tagliare la parte inferiore del rinforzo laterale dx alto, in corrispondenza della base scatola GW44208.
 
 \todo change the ugly text with pictures.
+
 */
