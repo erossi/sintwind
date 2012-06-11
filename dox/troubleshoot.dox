@@ -1,0 +1,95 @@
+/*!
+\page troubleshoot Troubleshoot.
+\author Andrea Marabini.
+\copyright GNU Public License.
+\version 09 Jun. 2009
+
+\section tools BANCO DI COLLAUDO STRUMENTI.
+Multimetro digitale
+
+\section image Immagini.
+\image html troubleshooting.png "Troubleshooting"
+
+\section problems Problemi riscontrati.
+
+- __Il sw3 rimane sempre spento.__
+
+  + L’alimentatore riceva l’alimentazione di rete (90:260Vac 50Hz);
+
+  + Il fusibile non sia interrotto (2).
+
+- __Il sw3 interrompe la telefonata prima che sia stata terminata la
+  riproduzione vocale.__
+
+  + Il modem telefonico non abbia campo o campo insufficiente (verifica
+lampeggio led; verifica collegamento antenna).
+
+- __Il sw3 riporta valori d’intensità vento (min e max) uguali a zero
+  anche in presenza di vento e dopo più di 5’ dall’accensione del
+dispositivo.__
+
+  + Dopo aver posizionato su OFF (levetta verso il morsetto)
+l’interruttore dell’alimentatore (3), il cavo dell’anemometro non sia
+scollegato o mal collegato;
+
+  + Le pale dell’anemometro non siano bloccate e/o danneggiate.
+
+- __Il sw3 riporta un solo valore di direzione vento errato o diverso
+  dal reale anche dopo più di 5’ dall’accensione del dispositivo.__
+
+  + Dopo aver posizionato su OFF (levetta verso il morsetto)
+l’interruttore dell’alimentatore (3), il cavo dell’anemostato non sia
+scollegato o mal collegato;
+
+  + L’anemostato non sia bloccato.
+
+- __Il sw3 riporta valori di temperatura e umidità errati rispetto al
+  reale.__
+
+  + Il sensore di temperatura non sia sporco e/o coperto da corpi
+estranei (1).
+
+- __Il sw3 non risponde alla telefonata.__
+
+  + Lo stato di accensione del led della scheda (4) e del modem
+telefonico (5);
+
+  + La scheda SIM (6) non sia scaduta e/o fuori validità.
+
+\section sintleds Indicazione lampeggio led scheda.
+
+Il led rosso della scheda (4) indica, a seconda del tipo di lampeggio, la
+modalità di funzionamento del SW3 come di seguito riportato:
+
+- un lampeggio di 0,25sec ogni 4sec = funzionamento normale, tutto regolare.
+
+- cinque lampeggi di 0,25sec ogni 6sec = funzionamento attesa. Il modem
+telefonico non è funzionante (spento, senza campo, scheda SIM non valida, ecc).
+
+Il microprocessore si trova nella situazione di attesa.  Il SW3 rimarrà in
+modalità attesa per un tempo di circa 75’ dopo di che proverà nuovamente ad
+accendere il modem telefonico. Se questo si accenderà, si ripristinerà la
+condizione di funzionamento normale, altrimenti resterà nello stato di attesa.
+
+\note lo stato di attesa NON è eliminabile spegnendo e riaccendendo il SW3.
+
+- sempre spento = spento.
+
+\section modemled Indicazione lampeggio led modem telefonico.
+
+Il led verde del modem telefonico (5) indica, a seconda del tipo di
+lampeggio, la modalità di funzionamento come di seguito riportato:
+
+- un lampeggio di 0,075sec ogni 3sec = funzionamento normale. Il modem
+telefonico è collegato alla rete ed è pronto per ricevere le chiamate.
+
+- un lampeggio di 0,6sec ogni 0,6sec = mancanza rete. Il modem
+telefonico non è collegato (o è in attesa di collegamento) alla rete
+telefonica per mancanza di campo e/o SIM non valida e/o SIM scaduta.
+
+- sempre acceso = trasmissione in atto. Il modem telefonico sta
+rispondendo ad una chiamata.
+
+- sempre spento = spento.
+
+*/
