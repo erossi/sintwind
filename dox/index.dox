@@ -1,12 +1,11 @@
 /*!
 \mainpage Main page.
-
-\note ** WORKING IN PROGRESS **
-
 \author Andrea Marabini.
 \copyright GNU Public License.
+\version UnKnown
 
-\note These pages are mixed up Italian/English, fix to English only.
+\note ** WORKING IN PROGRESS **
+These pages are mixed up Italian/English, fix to English only.
 
 \section main_intro Introduzione
 
@@ -18,14 +17,15 @@ dell’attività di volo libero in parapendio.
 \subsection main_links Link to the other pages.
 
 This manual is divided in the following sections:
- - \subpage sint_schema The electrical schematic.
- - \subpage box_setup Box setup.
+ - \subpage sint_schema
+ - \subpage box_setup
  - \subpage components The list of components to buy.
  - \subpage audio_programming Everything related to the audio.
  - \subpage firmware Writing firmware to the micro.
- - \subpage assembly How to assemble the device.
+ - \subpage assembly
  - \subpage usage General usage and maintenance.
  - \subpage advanced _Advanced usage and diagnostic_ Not yet implemented.
+ - \subpage troubleshoot
 
 \subsection main_specs Caratteristiche
 

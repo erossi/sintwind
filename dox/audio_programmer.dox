@@ -1,5 +1,8 @@
 /*!
 \page audio_programming Audio programming.
+\author Andrea Marabini.
+\copyright GNU Public License.
+\version 08 Sept. 2008
 
 \tableofcontents
 
@@ -43,7 +46,6 @@ fase di memorizzazione.
 \section audio_binaddress Tabel of synth addresses.
 
 This is the table to program the synth chip.
-\version 08.09.2008
 \note These are based on italian speaking sint, other languages
 may require more hacking code.
 
@@ -116,6 +118,7 @@ may require more hacking code.
 </table>
 
 \section audio_schema Electrical schema.
+\version 11 Nov. 2007
   \image html audio_programmer_sch.png "Programmer Schema (11 Nov. 2007)"
 
 */

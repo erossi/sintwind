@@ -1,13 +1,18 @@
 /*!
 \page box_setup Box Setup.
+\version Multiple
+\author Andrea Marabini.
+\copyright GNU Public License.
 
 \tableofcontents
 
 \section support Support metal sheet.
+\version 09 Apr. 2010
 
  \image html internal_support.png "Metal support."
 
 \section drilling Box drilling.
+\version 24 Feb. 2009
 
  \image html box_drilling.png "Box drilling."
 

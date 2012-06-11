@@ -1,9 +1,12 @@
 /*!
 \page sint_schema Sint circuit.
+\author Andrea Marabini.
+\copyright GNU Public License.
+\version 03 Mar. 2009
 
 \tableofcontents
 
-\section general_schema Main schematics.
+\section general_schema Main schema.
 
   \image html main_schema.png "Sint Schema"
 
