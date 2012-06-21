@@ -1,0 +1,87 @@
+/*!
+\page bom List of components.
+\author Andrea Marabini.
+\copyright GNU Public License.
+\version 19 Feb. 2009
+
+\note This list is NOT updated, a fix will follow soon.
+
+| Q.tà | Descrizione | Cad. | Prezzo <br /> (iva esclusa) | Note |
+|-----:|-------------|-----:|----------------------------:|------|
+|1|Cassetta IP56 par. Lisce 240x190x90|€ 11.14|€ 11.14||
+|2|Skintop ST PG7 RAL7001 GY|€ 0.34|€ 0.69||
+|1|Skintop ST PG9 RAL7001 GY||€ 0.00||
+|1|Skintop GMP-GL PG9 RAL7001 GY||€ 0.00||
+|1|Tappo PG7||€ 0.00||
+|1|Lamiera supporto scheda + modem Al 50/100 (100/100) 175x152mm||€ 0.00||
+|4|Vite inox autofil. 3,2x10||€ 0.00||
+|2|Vite inox TC3x40||€ 0.00||
+|6|Vite inox TC3x8||€ 0.00||
+|1|Vite inox TC3x10||€ 0.00||
+|11|Rondella piana inox diam. 3||€ 0.00||
+|9|Dado inox autob. 3MA||€ 0.00||
+|4|Diodo 1N4007 sfusi|€ 0.01|€ 0.02|min 50pz|
+|2|Filtro antid. A T 10KpF/100V|€ 0.15|€ 0.30||
+|5|Morsettiera a carrello MSM0200-001 2V|€ 0.29|€ 1.45||
+|1|Connettore vasc. Masc. 9p 90° xcs|€ 0.17|€ 0.17|min 5pz|
+|23|Cond. cer Y5V 100nF p5 SH|€ 0.01|€ 0.21|min 50pz|
+|7|Cond. elett. Vert. 85° 100uF 35V 6,3x11 JGH|€ 0.01|€ 0.07|min 50pz|
+|1|Cond. Cer. Multi 10nF 50V X7R P5|€ 0.03|€ 0.03|min 5pz|
+|1|Cond. Elett. Vert. 85° 10uF 35V 5x11 JGH|€ 0.01|€ 0.01|min 50pz|
+|2|Fuse W 5x20 T630mA|€ 0.04|€ 0.09|min 10pz|
+|2|Portafuse C1010 C.S. 5x20 6A-250V|€ 0.16|€ 0.32||
+|1|LM317T three terminal adjust TO220|€ 0.34|€ 0.34||
+|2|Integrato TO220 MA7805|€ 0.11|€ 0.22|min 10pz|
+|1|LM339N comparator quad bipolar dil14|€ 0.20|€ 0.20||
+|1|LM336Z-2.5 precision temperature TO92|€ 0.63|€ 0.63||
+|1|LM336Z-5.0 precision temperature TO92|€ 0.62|€ 0.62||
+|1|LMC6062IN op amp dual cmos dip8|€ 2.89|€ 2.89||
+|1|ATmega16-16PU dil40|€ 6.00|€ 6.00||
+|1|Zoccolo tornito 40P 15,24|€ 0.83|€ 0.83||
+|1|SHT11 sensor humidity & temp V4|€ 25.67|€ 25.67||
+|1|SF1 Filter cap|€ 3.63|€ 3.63||
+|1|STRIP FEMM. 1x40 POLISEZIONABILE|€ 1.58|€ 1.58||
+|1|STRIP MAS 1x40|€ 0.21|€ 0.21||
+|1|ISD25120|€ 3.00|€ 3.00||
+|1|Zoccolo tornito 28P 15,24|€ 0.48|€ 0.48||
+|1|HIN202CPZ|€ 0.94|€ 0.94||
+|1|TLP504A FTA TR 2CH 55V ISO2.5KV dip8|€ 0.53|€ 0.53||
+|10|Filt. BL02RN2-R62|€ 0.05|€ 0.52|min 5pz|
+|1|Led rosso 3mm||€ 0.00||
+|1|IRF9540 ch-p 100V 19A 125W 0,2R TO220|€ 0.85|€ 0.85||
+|1|BC337-25 npn 500mA 45V 625mW TO92|€ 0.35|€ 0.35|min 5pz|
+|1|Rete resistiva 9R-10pin 22Kohm|€ 0.10|€ 0.10||
+|1|Fotoresistenza WT83N2 diam. 7,01mm|€ 0.70|€ 0.70||
+|1|Trim elektr 3386P (72P) 50K|€ 0.19|€ 0.19|min 5pz|
+|2|Res metaloxide 2W 5% 2R2|€ 0.01|€ 0.02|min 10pz|
+|3|Res carb 1/4W 8K2 5%|€ 0.02|€ 0.05|min 10pz|
+|9|Res carb 1/4W 22K 5%|€ 0.02|€ 0.15|min 10pz|
+|2|Res carb 1/4W 1K2 5%|€ 0.02|€ 0.03|min 10pz|
+|5|Res carb 1/4W 1K 5%|€ 0.02|€ 0.09|min 10pz|
+|2|Res carb 1/4W 560R 5%|€ 0.02|€ 0.03|min 10pz|
+|3|Res carb 1/4W 2K7 5%|€ 0.02|€ 0.05|min 10pz|
+|4|Res carb 1/4W 100K 5%|€ 0.02|€ 0.07|min 10pz|
+|5|Res carb 1/4W 10K 5%|€ 0.02|€ 0.09|min 10pz|
+|2|Res carb 1/4W 120K 5%|€ 0.02|€ 0.03|min 10pz|
+|2|Deviatore miniatura unip. On-on 1A 250V T|€ 0.74|€ 1.48||
+|1|Risonatore ceramico 4MHz 3pin Murata|€ 0.20|€ 0.20||
+|1|Dissipatore ML6|€ 0.30|€ 0.30|min 5pz|
+|4|Dist. M+F ott. N ic. Ch5 3ma 10mm|€ 0.13|€ 0.50||
+|1|Pannello solare 12V 5W (JMP-5W-M6-G)|€ 33.00|€ 33.00||
+|1|Batteria piombo 12V 2,2Ah|€ 9.08|€ 9.08||
+|2|Faston femmina 6,3mm|€ 0.08|€ 0.16||
+|2|Coprifaston femmima 6,3mm|€ 0.13|€ 0.25||
+|1|Modem GSM Cinterion MC55i|€ 130.00|€ 130.00||
+|1|Cavo seriale DB9M-DB9F||€ 0.00||
+|1|Antenna HWPANT573 dual band + 5m cavo connettori FME/F|€ 11.20|€ 11.20||
+|1|Circuito stampato SW3|€ 20.00|€ 20.00||
+|1|Sensore direzione/velocità|€ 106.25|€ 106.25||
+|1|Connettore RJ11 spina 6/6|€ 0.17|€ 0.17||
+|1|Connettore RJ spina 4/4|€ 0.17|€ 0.17||
+|0.3|Cavo rosso/nero 0,5mm||€ 0.00||
+|0.2|Cavo 2xawg20-22 + sch||€ 0.00||
+|0.1|Cavo 6xawg20-22 + sch||€ 0.00||
+||||||
+||TOTALE||€ 378.33||
+||TOTALE CON IVA 21%||€ 457.78||
+*/
