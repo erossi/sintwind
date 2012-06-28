@@ -1,0 +1,33 @@
+/*!
+\page layout Circuit board layout.
+\author Andrea Marabini.
+\copyright GNU Public License.
+\version 25 Jan. 2009
+
+\tableofcontents
+
+\section param Parameters.
+
+ - Dimension (mm) 113.0 x 102.9
+ - Support thickness 1.6 mm
+ - Copper thickness 35mm/1000
+
+\section topl Top layer.
+  \image html layout_top.png "Layer top"
+
+\section botl Bottom layer.
+  \image html layout_bottom.png "Layer bottom"
+
+\section smt SMT.
+  \image html layout_smt.png "Layer SMT"
+
+\section sst SST.
+  \image html layout_sst.png "Layer SST"
+
+\section ast AST.
+  \image html layout_ast.png "Layer AST"
+
+\section drd DRD.
+  \image html layout_drd.png "Layer DRD"
+
+*/

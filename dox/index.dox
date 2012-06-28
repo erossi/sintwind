@@ -18,6 +18,7 @@ dell’attività di volo libero in parapendio.
 
 This manual is divided in the following sections:
  - \subpage sint_schema
+ - \subpage layout
  - \subpage box_setup
  - \subpage bom
  - \subpage audio_programming Everything related to the audio.
