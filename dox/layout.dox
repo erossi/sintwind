@@ -12,6 +12,8 @@
  - Support thickness 1.6 mm
  - Copper thickness 35mm/1000
 
+\note Please see also the FIXING layout which correct some bugs.
+
 \section topl Top layer.
   \image html layout_top.png "Layer top"
 
@@ -29,5 +31,11 @@
 
 \section drd DRD.
   \image html layout_drd.png "Layer DRD"
+
+\section fix1 FIX_1
+  \image html layout_top_up_1.png "Top FIX 1"
+
+\section fix2 FIX_2
+  \image html layout_top_up_2.png "Top FIX 2"
 
 */
