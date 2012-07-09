@@ -94,6 +94,9 @@ struct wind_array {
 	uint8_t lacrosse_loop; /* max number of failed reading */
 };
 
+/*! global wind array struct used into ISR. */
+struct wind_array *wind;
+
 uint8_t anemometer_adjust(struct wind_array *wind);
 void anemometer_init(struct wind_array *wind);
 enum wind_dir get_wind_direction(int direction);

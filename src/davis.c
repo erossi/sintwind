@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2011 Enrico Rossi
+ * Copyright (C) 2005-2012 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,6 +18,8 @@
 /*! \file davis.c
  * \brief These routines are used to read the wind speed and direction,
  * do media etc.
+ *
+ * \note the wind struct is global.
  */
 
 #include <inttypes.h>
@@ -26,7 +28,6 @@
 
 /*! Global variable and pointer to be used inside the ISR routine */
 volatile int loop;
-extern struct wind_array *wind;
 
 /*! \brief wind speed counter ISR
    Different kind of anemometer may have different way of reading data.
@@ -85,6 +86,8 @@ ISR(TIMER1_CAPT_vect)
    so we simply do nothing.
    Wind->direction is supposed to be a media, not a single shot, this is
    why it will not be converted in here.
+
+   \note the wind struct is global.
    */
 ISR(TIMER1_OVF_vect)
 {
@@ -97,24 +100,31 @@ ISR(TIMER1_OVF_vect)
 	loop = 0;
 }
 
-/*! \brief setup counters and timers */
-/*! Time ellapsed every cycle is 4.19424 sec.
-  4Mhz / 256 = 15625 Hz (clock pre-scaled of 256)
-  1/15625 Hz = 0.000064 sec (every counter's step)
-  Number of step per cycle is 65535 (16bit)
-  0.000064 sec * 65535 = 4.19424 sec every cycle
-  */
+/*! \brief setup counters and timers.
+ * Time ellapsed every cycle is 4.19424 sec.
+ * 4Mhz / 256 = 15625 Hz (clock pre-scaled of 256)
+ * 1/15625 Hz = 0.000064 sec (every counter's step)
+ * Number of step per cycle is 65535 (16bit)
+ * 0.000064 sec * 65535 = 4.19424 sec every cycle.
+ *
+ * \note this example is based on 4Mhz cpu clock. Adjust to
+ * your settings.
+ */
 void davis_timer_setup(void)
 {
 	TCCR1A = 0;
+
 	/* ICES1 = 0 trigger edge on negative */
 
-	/* counter prescaler/256 */
+	/*! The counter is prescaler/256 the
+	 * noise canceller is enable and the trigger edge is on
+	 * positive.
+	 */
 	TCCR1B = _BV(ICNC1) | _BV(CS12);
 
-	/* enable interrupt on timer 0 interrupt
-	   use include deprecated.h to use the function */
-	TIMSK = _BV(TICIE1) | _BV(TOIE1);
+	/*! enable interrupt on timer 0 event and overflow.
+	 */
+	TIMSK1 = _BV(ICIE1) | _BV(TOIE1);
 }
 
 /*! \brief initialize the davis anemometer. */

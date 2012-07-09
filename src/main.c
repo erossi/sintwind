@@ -35,9 +35,6 @@
 /* EEPROM Area */
 uint8_t EEMEM EE_chkpoint;
 
-/* Globals */
-struct wind_array *wind;
-
 /* Better 2 main with and without debug since only one will run */
 void run_with_debug(struct sht11_t *temperature, char *message)
 {
@@ -173,12 +170,9 @@ int main(void)
 	struct sht11_t *temperature;
 	char *message;
 
-	/* Init globals */
-	wind = malloc(sizeof(struct wind_array));
-
 	/* Init locals */
 	temperature = malloc(sizeof(struct sht11_t));
-	message = malloc(UART_RXBUF_SIZE);
+	message = malloc(UART0_RXBUF_SIZE);
 
 	/* initializing parts */
 	port_init();

@@ -96,9 +96,11 @@ void anemometer_eesave(uint8_t sensor)
  * of auto wind sensor, try to locate which one.
  *
  * \return allocated wind structure.
+ * \note the wind struct is global, no need to pass it.
  */
-void anemometer_init(struct wind_array *wind)
+void anemometer_init(void)
 {
+	wind = malloc(sizeof(struct wind_array));
 	array_init(wind);
 	wind->sensor = anemometer_eeread();
 
