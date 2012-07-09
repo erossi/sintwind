@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2011 Enrico Rossi
+ * Copyright (C) 2005-2012 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -34,6 +34,11 @@
 
 /* loop for unvalid data reed */
 #define LACROSSE_LOOP 3
+
+#ifndef TRUE
+#define TRUE 1
+#define FALSE 0
+#endif
 
 void lacrosse_init(void);
 void lacrosse_start(void);

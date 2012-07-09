@@ -181,7 +181,7 @@ int main(void)
 	/* if auto search and lacrosse is not present, 
 	 * this check will take 10 sec
 	 */
-	anemometer_init(wind);
+	anemometer_init();
 	sht11_init();
 	phone_init();		/* activate uart comm only, no delay */
 	sei();			/* Enable interrupt */

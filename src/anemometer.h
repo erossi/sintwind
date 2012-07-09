@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2011 Enrico Rossi
+ * Copyright (C) 2005-2012 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -98,7 +98,7 @@ struct wind_array {
 struct wind_array *wind;
 
 uint8_t anemometer_adjust(struct wind_array *wind);
-void anemometer_init(struct wind_array *wind);
+void anemometer_init(void);
 enum wind_dir get_wind_direction(int direction);
 void anemometer_start(struct wind_array *wind);
 void anemometer_stop(struct wind_array *wind);

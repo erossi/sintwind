@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2011 Enrico Rossi
+ * Copyright (C) 2005-2012 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -43,7 +43,7 @@ void debug_hello(void)
 	debug_write_P (PSTR(GITREL));
 	debug_write_P (PSTR("\n\n Andrea Marabini <info@marabo.it>\n"));
 	debug_write_P (PSTR(" Enrico Rossi <e.rossi@tecnobrain.com>\n"));
-	debug_write_P (PSTR(" http://tecnobrain.com/OpenSint/\n"));
+	debug_write_P (PSTR(" http://enricorossi.org/sintwind/\n"));
 	debug_write_P (PSTR(" GNU GPL v3 - use at your own risk!\n"));
 	debug_write_P (PSTR("\n"));
 }

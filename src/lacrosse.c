@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2009 Enrico Rossi
+ * Copyright (C) 2005-2012 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,12 +15,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*! \file lacrosse.c
+ * \brief larosse tx20 interface.
+ */
+
 #include <inttypes.h>
 #include <util/delay.h>
 #include <avr/interrupt.h>
 #include "lacrosse.h"
 
-/*
+/*!
    The serial protocol is as follows-
    a.. Approx 1.2mS bit time >> 833 bps
    b.. inverted data - 0V = logic 1, +3.3V = logic 0
@@ -41,19 +45,17 @@
    nibbles
  */
 
-/* Global variable and pointer to be used */
-/* inside the ISR routine */
-
-extern struct wind_array *wind;
-
-/* check if header is 00100 */
+/*! \brief check if header is 00100 */
 uint8_t header_ok(void) {
 	if (wind->lacrosse_head == 4)
-		return (1);
+		return (TRUE);
 	else
-		return (0);
+		return (FALSE);
 }
 
+/*! Check the checksum of the message.
+ * \return true or false.
+ */
 uint8_t lacrosse_checksum(void) {
 	wind->lacrosse_chkok = wind->lacrosse_bearing;
 	wind->lacrosse_chkok ^= (wind->lacrosse_speed & 0x0f);
@@ -61,15 +63,23 @@ uint8_t lacrosse_checksum(void) {
 	wind->lacrosse_chkok ^= ((wind->lacrosse_speed >> 8) & 0x0f);
 
 	if (wind->lacrosse_chkok == wind->lacrosse_chksum)
-		return(1);
+		return(TRUE);
 	else
-		return(0);
+		return(FALSE);
 }
 
+/*! The interrupt function to get the lacrosse string.
+ *
+ * \bug if the message is non-valid and there is no more
+ * reading left to be used, then the message is considered valid
+ * anyway.
+ */
 ISR(INT0_vect) {
 	uint8_t i;
 
-	/* Maybe neccessary ~500us delay to read bits not near up/down front */
+	/*! \note Maybe neccessary ~500us delay to read bits
+	 * not near up/down front.
+	 */
 	_delay_us(500);
 
 	/* header */
@@ -132,21 +142,33 @@ ISR(INT0_vect) {
 		_delay_us(LACROSSE_RX_DELAY);
 	}
 
+	/* if the header is ok, */
 	if (header_ok()) {
+		/* if the checksum is ok or we can not read more
+		 * messages.
+		 */
 		if (lacrosse_checksum() || (!wind->lacrosse_loop--)) {
-			lacrosse_stop(); /* need to reset the sensor with new protocol */
+			lacrosse_stop();
 			wind->flag = 1;
 		}
 	}
 }
 
+/*! \brief stop the lacrosse reading.
+ */
 void lacrosse_stop(void) {
 	/* Clear \CE */
 	LACROSSE_CE_PORT &= ~(_BV(LACROSSE_CE));
 }
 
+/* \brief start the lacrosse reading.
+ *
+ * Restart the lacrosse loop counter and reset any reading
+ * present in the struct.
+ *
+ * \note don't trust any present value in the wind structure.
+ */
 void lacrosse_start(void) {
-	/* untrust any present value */
 	wind->flag = 0;
 	wind->lacrosse_loop = LACROSSE_LOOP; /* reset the counter */
 
@@ -154,28 +176,46 @@ void lacrosse_start(void) {
 	LACROSSE_CE_PORT |= _BV(LACROSSE_CE);
 }
 
+/* \brief initialize the lacrosse anemometer.
+ *
+ * Setup the interrupt register to activate the ISR function
+ * when the INT0 pin is low.
+ *
+ * \note the interrupt keep being generated until the pin is
+ * released, which should happen when the data is received.
+ */
 void lacrosse_init(void)
 {
-	/* datasheet pag67 on INT0 register setup */
-	/* INT0 low level only generates int. */
-	MCUCR &= ~(_BV(ISC01) | _BV(ISC00));
+	/* INT0 ISR on low pin. This should be the default. */
+	EICRA &= ~(_BV(ISC01) | _BV(ISC00));
 
 	/* enable INT0 */
-	GICR |= _BV(INT0);
+	EIMSK |= _BV(INT0);
 
 	lacrosse_start();
 }
 
+/*! \brief shutdown lacrosse operations.
+ * \note the default EICRA settings no need to change.
+ */
 void lacrosse_shutdown(void)
 {
 	lacrosse_stop();
 
 	/* disable INT0 */
-	GICR &= ~(_BV(INT0));
+	EIMSK &= ~_BV(INT0);
 }
 
-/* IMPORTANT - never use this routine with interrupt enable */
-/*! \bug _delay_ms not working properly, this function should be
+/*! \brief check if the lacrosse is connected.
+ *
+ * This function should be used to try to autosetup which
+ * anemometer is present.
+ *
+ * \todo Remove this functions, when happens the lacrosse isn't
+ * detected correctly at the startup, the sint remains without
+ * anemometer until someone reset it.
+ * \important never use this routine with interrupt enable.
+ * \bug _delay_ms not working properly, this function should be
  * wait 15 sec, if wind->flag is present then a lacrosse is
  * connected.
  */
@@ -196,11 +236,14 @@ uint8_t lacrosse_is_connected(void)
 	lacrosse_shutdown();
 
 	if (i == 100)
-		return(1);
+		return(TRUE);
 	else
-		return(0);
+		return(FALSE);
 }
 
+/*! \brief correct the lacrosse readings.
+ * \bug return WHAT?!?
+ */
 uint8_t lacrosse_adjust(void) {
 	wind->angle_rt = wind->lacrosse_bearing * 22.5;
 	wind->speed_rt = wind->lacrosse_speed * LACROSSE_RATIO;
