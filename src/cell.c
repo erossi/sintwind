@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2011 Enrico Rossi
+ * Copyright (C) 2005-2012 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,6 +15,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+/*! file cell.c
+ * \brief the cellular phone.
+ */
+
 #include <inttypes.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,23 +26,24 @@
 #include <util/delay.h>
 #include "cell.h"
 
-/*! \bug define this in its files */
-extern struct uartStruct *uartPtr;
-
-/*! \brief send the string to the phone */
+/*! \brief send the string to the phone.
+ *
+ * \bug should be implemeted with PGM_P string to spare
+ * some memory.
+ */
 void phone_send(const char *s)
 {
-	uart_printstr(s);
+	uart_printstr(MODEM_USART_PORT, s);
 }
 
 /*! \brief check for a message from the phone.
  * \param s pre-allocated string space.
  * \return 1 - ok message is presente, 0 - no message.
  */
-int phone_msg(char *s)
+uint8_t phone_msg(char *s)
 {
 	if (uartPtr->rx_flag) {
-		uart_get_msg(s);
+		uart_get_msg(MODEM_USART_PORT, s);
 
 		if (strlen(s) > 2)
 			return(1);
@@ -47,18 +52,31 @@ int phone_msg(char *s)
 	return (0);
 }
 
-/*! \brief Wait for string from rs232.
+/*! \brief Wait for string from the modem.
+ *
+ * Used to wait a specific string from the modem in a locked or
+ * tmout way. For example used after sending an AT command to 
+ * the modem and wait for the OK string.
+ * In a non-locked case, the waitfor will be 50*100msec long.
+ *
  * \param s the string to wait for.
  * \param locked if locked, wait forever.
  * \return true - ok, false - error
+ * \bug the string s should be checked not to be larger than the
+ * allocated RX buffer size or this function will always fail.
+ * \bug delay 100msec to wait for a new message should be
+ * releated to the serial speed.
+ *
  */
-int phone_waitfor(const char *s, const int locked)
+uint8_t phone_waitfor(const char *s, const int locked)
 {
-	int i, j;
+	uint8_t i, err;
 	char *msg;
 
-	msg = malloc(UART_RXBUF_SIZE);
-	j = 1;
+	/*! \bug non-multiport ready. works only to port 0.
+	 */
+	msg = malloc(UART0_RXBUF_SIZE);
+	err = TRUE;
 
 	if (locked)
 		while (!(phone_msg(msg) && (!strcmp(msg, s))))
@@ -66,25 +84,28 @@ int phone_waitfor(const char *s, const int locked)
 	else
 		for (i = 0; i < 50; i++)
 			if (phone_msg(msg) && (!strcmp(msg, s))) {
-				j = 0;
+				err = FALSE;
 				i = 50;
 			} else
 				_delay_ms(100);
 
 	free(msg);
-	return (j);
+	return (err);
 }
 
-/*! \brief initialize the serial port connected to the phone */
+/*! \brief initialize the serial port connected to the phone.
+ *
+ * and allocate the RXTX struct buffer.
+ */
 void phone_init(void)
 {
-	uartPtr = uart_init();
+	uartPtr = uart_init(MODEM_USART_PORT);
 }
 
 /*! \brief power up the phone.
  * \note turning on the modem will take from 11sec to 16 seconds
  */
-int phone_on(void)
+uint8_t phone_on(void)
 {
 	int i;
 

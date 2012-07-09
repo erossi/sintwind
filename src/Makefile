@@ -14,9 +14,9 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 PRG_NAME = osint
-MCU = atmega16
-OPTLEV = 2
-FCPU = 4000000UL
+MCU = atmega1284p
+OPTLEV = s
+FCPU = 1000000UL
 PWD = $(shell pwd)
 INC = -I/usr/lib/avr/include/
 

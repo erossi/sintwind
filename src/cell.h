@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2011 Enrico Rossi
+ * Copyright (C) 2005-2012 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -19,13 +19,22 @@
  * \brief cellular phone functions
  */
 
-#ifndef CELL_H_
-#define CELL_H_
+#ifndef _CELL_H_
+#define _CELL_H_
 
 #include "uart.h"
 
+/*! \brief which port has the power ON switch.
+ */
 #define PHONE_PORT PORTB
+
+/*! \brief which pin is the power ON.
+ */
 #define PHONE_ON PB0
+
+/*! \brief on which USART port is the modem connected.
+ */
+#define MODEM_USART_PORT 0
 
 /*! if a fixed cellular operator must be used then
  * uncomment below and change the operator's code
@@ -36,12 +45,17 @@
 #define CELL_FIXED_OPERATOR "at+cops=1,2,<op-code>\n"
 */
 
+#ifndef TRUE
+#define TRUE 1
+#define FALSE 0
+#endif
+
 void phone_send(const char *s);
 void phone_init(void);
-int phone_on(void);
-int phone_msg(char *s);
+uint8_t phone_on(void);
+uint8_t phone_msg(char *s);
 void phone_answer(void);
 void phone_hangup(void);
-int phone_waitfor(const char *s, const int locked);
+uint8_t phone_waitfor(const char *s, const int locked);
 
 #endif
