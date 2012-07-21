@@ -17,6 +17,9 @@
 
 /*! \file cell.h
  * \brief cellular phone functions
+ *
+ * \important Command sent to the modem MUST be terminated with
+ * '\r' char and not '\n'.
  */
 
 #ifndef _CELL_H_
@@ -39,10 +42,10 @@
 /*! if a fixed cellular operator must be used then
  * uncomment below and change the operator's code
  * example with I_WIND code: 22288
- * "at+cops=1,2,22288\n"
+ * "at+cops=1,2,22288\r"
  */
 /*
-#define CELL_FIXED_OPERATOR "at+cops=1,2,<op-code>\n"
+#define CELL_FIXED_OPERATOR "at+cops=1,2,<op-code>\r"
 */
 
 #ifndef TRUE
@@ -56,6 +59,6 @@ uint8_t phone_on(void);
 uint8_t phone_msg(char *s);
 void phone_answer(void);
 void phone_hangup(void);
-uint8_t phone_waitfor(const char *s, const int locked);
+uint8_t phone_waitfor(const char *s, const uint8_t locked);
 
 #endif

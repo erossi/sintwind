@@ -44,12 +44,10 @@ uint8_t phone_msg(char *s)
 {
 	if (uartPtr->rx_flag) {
 		uart_get_msg(MODEM_USART_PORT, s);
-
-		if (strlen(s) > 2)
-			return(1);
+		return(TRUE);
+	} else {
+		return(FALSE);
 	}
-
-	return (0);
 }
 
 /*! \brief Wait for string from the modem.
@@ -68,7 +66,7 @@ uint8_t phone_msg(char *s)
  * releated to the serial speed.
  *
  */
-uint8_t phone_waitfor(const char *s, const int locked)
+uint8_t phone_waitfor(const char *s, const uint8_t locked)
 {
 	uint8_t i, err;
 	char *msg;
@@ -114,26 +112,26 @@ uint8_t phone_on(void)
 	_delay_ms(500);
 	PHONE_PORT &= ~(_BV(PHONE_ON));
 	_delay_ms(10000);
-	phone_send("AT&FE0&C0&D0\n");
-	i = phone_waitfor("OK", 0);
+	phone_send("AT&FE0&C0&D0\r");
+	i = phone_waitfor("OK", FALSE);
 #ifdef CELL_FIXED_OPERATOR
 	phone_send(CELL_FIXED_OPERATOR);
-	i = phone_waitfor("OK", 0);
+	i = phone_waitfor("OK", FALSE);
 #endif
-	phone_send("AT^SNFS=5\n");
-	return (i | phone_waitfor("OK", 0));
+	phone_send("AT^SNFS=5\r");
+	return (i | phone_waitfor("OK", FALSE));
 }
 
 /*! \brief answer the call */
 void phone_answer(void)
 {
-	phone_send("ATA\n");
+	phone_send("ATA\r");
 	phone_waitfor("OK", 0);
 }
 
 /*! \brief drop the call */
 void phone_hangup(void)
 {
-	phone_send("ATH0\n");
+	phone_send("ATH0\r");
 	phone_waitfor("OK", 0);
 }

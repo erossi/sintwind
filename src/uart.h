@@ -43,8 +43,10 @@
 #error TX0 buffer size is not a power of 2
 #endif
 
-/*! The EOL char for the modem string. */
-#define UART0_EOL '\r'
+#ifndef TRUE
+#define TRUE 1
+#define FALSE 0
+#endif
 
 /*! Structure with IO buffers and indexes */
 struct uartStruct {
@@ -54,7 +56,7 @@ struct uartStruct {
 };
 
 /*! Global UART rxtx buffers pointer used inside the ISR routine. */
-struct uartStruct *uartPtr;
+volatile struct uartStruct *uartPtr;
 
 struct uartStruct *uart_init(const uint8_t port);
 void uart_shutdown(const uint8_t port);

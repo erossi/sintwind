@@ -35,38 +35,40 @@
  */
 ISR(USART0_RX_vect)
 {
-	static char tmp;
+	uint8_t tmp;
 
-	/*! First copy the rx char from the device rx buffer to
-	 * a tmp var.
+	/*! First copy the rx char from the device rx buffer.
 	 */
 	tmp = UDR0;
 
-	/*! if we have more space in the preallocated rx buffer */
-	if ((uartPtr->rxIdx + 1) & UART0_RXBUF_MASK) {
-		/*! * copy the rx char in the current rx buffer slot. */
-		uartPtr->rx_buffer[uartPtr->rxIdx] = tmp;
-
-		/*! * increment the pointer to the next slot. */
-		uartPtr->rxIdx++;
-
-		/*! * put a 0 in the next slot to eventually
-		 * terminate the string.
-		 */
+	/*! * if the rx char is an EOL or there is a message
+	 * yet to be processed then flag a new
+	 * message need to be processed by the software and do not
+	 * store the char.
+	 */
+	if ((tmp == '\r') || uartPtr->rx_flag) {
+		uartPtr->rx_flag = TRUE;
 		uartPtr->rx_buffer[uartPtr->rxIdx] = 0;
-
-		/*! * if the rx char is an EOL then flag a new
-		 * message need to be processed by the software.
-		 */
-		if (tmp == UART0_EOL)
-			uartPtr->rx_flag++;
 	} else {
-		/*! else something wrong happened, then clear
-		 * the buffer index, the buffer contents and
-		 * restart.
-		 */
-		uartPtr->rxIdx = 0;
-		uartPtr->rx_buffer[0] = 0;
+		/*! if we have more space in the preallocated rx buffer */
+		if ((uartPtr->rxIdx + 1) & UART0_RXBUF_MASK) {
+			/*! and is a valid char */
+			if ((tmp > 31) && (tmp < 128)) {
+				/*! * copy the rx char to rx buffer */
+				uartPtr->rx_buffer[uartPtr->rxIdx] = tmp;
+
+				/*! * increment the pointer to the next
+				 * slot. */
+				uartPtr->rxIdx++;
+			}
+		} else {
+			/*! else something wrong happened, then clear
+			 * the buffer index, the buffer contents and
+			 * restart.
+			 */
+			uartPtr->rxIdx = 0;
+			uartPtr->rx_buffer[0] = 0;
+		}
 	}
 }
 
@@ -149,6 +151,8 @@ void uart_shutdown(const uint8_t port)
  * \parameters port the serial port.
  * \parameters s the string to copy the message to.
  * \bug multiport not implemented.
+ * \bug this function should be atomic, cannot be interrupted
+ * while resetting the pointer.
  */
 void uart_get_msg(const uint8_t port, char *s)
 {
@@ -166,13 +170,13 @@ void uart_get_msg(const uint8_t port, char *s)
  */
 void uart_putchar(const uint8_t port, const char c)
 {
-  if (port) {
-          loop_until_bit_is_set(UCSR1A, UDRE1);
-          UDR1 = c;
-  } else {
-          loop_until_bit_is_set(UCSR0A, UDRE0);
-          UDR0 = c;
-  }
+	if (port) {
+		loop_until_bit_is_set(UCSR1A, UDRE1);
+		UDR1 = c;
+	} else {
+		loop_until_bit_is_set(UCSR0A, UDRE0);
+		UDR0 = c;
+	}
 }
 
 /*! Send a C (NUL-terminated) string to the serial port.
@@ -182,9 +186,6 @@ void uart_putchar(const uint8_t port, const char c)
  */
 void uart_printstr(const uint8_t port, const char *s)
 {
-	while (*s) {
-		if (*s == '\n')
-			uart_putchar(port, '\r');
+	while (*s)
 		uart_putchar(port, *s++);
-	}
 }
