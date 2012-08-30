@@ -272,8 +272,10 @@ void debug_help(void)
 	debug_write_P (PSTR("\nHelp:\n"));
 	debug_write_P (PSTR("help   This menu.\n"));
 	debug_write_P (PSTR("RING   Start phone answer and playback\n"));
-	debug_write_P (PSTR("sensor Change sensor.\n "));
-	debug_write_P (PSTR("Output legend:\n"));
+	debug_write_P (PSTR("sensor Change sensor.\n"));
+	debug_write_P (PSTR("synth  Play synth messages.\n"));
+	debug_write_P (PSTR("temp   Print the temperature.\n"));
+	debug_write_P (PSTR("- Output legend -\n"));
 	debug_write_P (PSTR(" rt []: Real Time elements\n"));
 	debug_write_P (PSTR(" S = Speed in real time\n"));
 	debug_write_P (PSTR(" A = Angle in degrees\n"));

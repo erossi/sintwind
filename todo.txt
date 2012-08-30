@@ -13,21 +13,6 @@ Solo se continua il problema dell'interrupt
 vecchi
 - reset synth con PD CE a 1
 
-- frase finale:
-
-"club... vento prov. da x con una intensita' da 15 a 21 km/h [PAUSA] temperatura meno x virgola y gradi centigradi [PAUSA] umidita' relativa x percento"
-
-"dati non disponibili" primo ciclo.
-
-- Init debug, se il pIN di debug e' attivo in fase di boot allora switcha sul sistema di debug.
-
-- Sistema anti-bouncing, alla prima accensione setta nella eeprom un flag.
-  1. Se tutto e' ok allora togli il flag e prosegui.
-  2. Se il modem non risponde, ma siamo ancora vivi, allora delay 1H e rirpova (1).
-
-  Se all'accensione c'e' il flag nella eeprom allora:
-  - attando 1H e riprendo dal 1.
-
 - RESET del synth in fase di boot
 - sistemare la routine di EOM per l'attesa e l'antiskpike
 - PD a zero per tutta la durata della frase per non sentire i klick!

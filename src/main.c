@@ -1,5 +1,5 @@
 /* This file is part of OpenSint
- * Copyright (C) 2005-2011 Enrico Rossi
+ * Copyright (C) 2005-2012 Enrico Rossi
  * 
  * OpenSint is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -90,6 +90,20 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 				debug_temperature(temperature, message);
 				debug_synth(wind, temperature, message);
 				phone_hangup();
+				anemometer_start(wind);
+			}
+
+			if (!strcmp(message, "synth")) {
+				anemometer_stop(wind);
+				debug_synth(wind, temperature, message);
+				anemometer_start(wind);
+			}
+
+			if (!strcmp(message, "temp")) {
+				anemometer_stop(wind);
+				sht11_read_all(temperature);
+				/* passing message to avoid malloc */
+				debug_temperature(temperature, message);
 				anemometer_start(wind);
 			}
 
