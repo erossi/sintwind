@@ -19,6 +19,7 @@ GIT_TAG = "Unknown"
 # Uncomment if git tag is in use
 GIT_TAG = $(shell git describe --tags|sed -e "s/^\(.*\)-.*/\1/")
 PRGNAME = $(PRG_NAME)_$(GIT_TAG)_$(MCU)
+MYWEBSERVER = www.mywebserver.fake:/my/path/to/www/
 
 .PHONY: clean indent
 .SILENT: help
@@ -34,4 +35,7 @@ version:
 
 doc:
 	cd ../ && ( cat dox/Doxyfile ; echo "PROJECT_NUMBER=$(GIT_TAG)" ) | doxygen -
+
+install: doc
+	cd ../ && ( rsync -crlvz --delete --whole-file doc/html/ $(MYWEBSERVER) )
 
