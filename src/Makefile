@@ -18,7 +18,7 @@ MCU = atmega1284p
 OPTLEV = s
 FCPU = 1000000UL
 PWD = $(shell pwd)
-INC = -I/usr/lib/avr/include/
+INC = -I/usr/lib/avr/include/ -Isht11/
 
 CFLAGS = $(INC) -Wall -Wstrict-prototypes -pedantic -mmcu=$(MCU) -O$(OPTLEV) -D F_CPU=$(FCPU)
 LFLAGS = -lm
@@ -49,7 +49,7 @@ init_obj = init.o
 anemometer_obj = davis.o lacrosse.o anemometer.o adc.o
 phone_obj = cell.o uart.o 
 synth_obj = sht11.o init.o adc.o anemometer.o synth.o davis.o
-sht11_obj = sht11_io.o sht11.o
+sht11_obj = sht11/sht11_io.o sht11/sht11.o
 objects = cell.o init.o synth.o
 objects += media.o uart.o utils.o debug.o
 objects += $(anemometer_obj) $(sht11_obj)
