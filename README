@@ -34,3 +34,7 @@ pag. 261 LFUSE
  e = 1110 = CLKSEL3 + CLKSEL2 + CLKSEL1 are UNPROGRAMMED (default 1 = 0001)
  only CLKSEL3, 2, 1, 0 has been changed.
 
+ATMEGA1284p
+ LFUSE: default 0x62, -> 
+ HFUSE: default 0x99 -> 0xd9
+

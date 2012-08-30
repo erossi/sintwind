@@ -21,11 +21,11 @@
 /* clock delay in ms */
 #define SHT11_SCK_DELAY 1
 
-#define SHT11_DDR	DDRC
-#define SHT11_PORT	PORTC
-#define SHT11_PIN	PINC
-#define SHT11_DATA	PC1
-#define SHT11_SCK	PC0
+#define SHT11_DDR	DDRB
+#define SHT11_PORT	PORTB
+#define SHT11_PIN	PINB
+#define SHT11_DATA	PB1
+#define SHT11_SCK	PB2
 
 void set_sck_high(void);
 void set_sck_low(void);
