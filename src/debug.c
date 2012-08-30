@@ -141,34 +141,63 @@ void debug_wind_status(struct wind_array *wind, char *string)
 }
 
 /* passing an already malloc string spare RAM */
-void debug_temperature(struct sht11_t *temp, char *string)
+void debug_temperature(struct sht11_t *sht11, char *string)
 {
-	string = ultoa(temp->raw_temperature, string, 10);
-	debug_write_P (PSTR("Raw temperature value: "));
+	string = utoa(sht11->status_reg, string, 10);
+	debug_write_P(PSTR("sht11 Status register: "));
 	debug_write(string);
 	debug_write("\n");
 
-	string = ultoa(temp->raw_humidity, string, 10);
-	debug_write_P (PSTR("Raw humidity value: "));
+	string = utoa(sht11->status_reg_crc8, string, 10);
+	debug_write_P(PSTR("  crc8, crc8c: "));
+	debug_write(string);
+	debug_write(" ,");
+	string = utoa(sht11->status_reg_crc8c, string, 10);
 	debug_write(string);
 	debug_write("\n");
 
-	string = dtostrf((double)temp->temperature, 6, 3, string);
+	string = ultoa(sht11->raw_temperature, string, 10);
+	debug_write_P (PSTR("Raw temperature: "));
+	debug_write(string);
+	debug_write("\n");
+
+	string = utoa(sht11->raw_temperature_crc8, string, 10);
+	debug_write_P(PSTR("  crc8, crc8c: "));
+	debug_write(string);
+	debug_write(" ,");
+	string = utoa(sht11->raw_temperature_crc8c, string, 10);
+	debug_write(string);
+	debug_write("\n");
+
+	string = ultoa(sht11->raw_humidity, string, 10);
+	debug_write_P (PSTR("Raw humidity: "));
+	debug_write(string);
+	debug_write("\n");
+
+	string = utoa(sht11->raw_humidity_crc8, string, 10);
+	debug_write_P(PSTR("  crc8, crc8c: "));
+	debug_write(string);
+	debug_write(" ,");
+	string = utoa(sht11->raw_humidity_crc8c, string, 10);
+	debug_write(string);
+	debug_write("\n");
+
+	string = dtostrf((double)sht11->temperature, 6, 3, string);
 	debug_write_P (PSTR("Temperature (C): "));
 	debug_write(string);
 	debug_write("\n");
 
-	string = dtostrf((double)temp->humidity_linear, 6, 3, string);
+	string = dtostrf((double)sht11->humidity_linear, 6, 3, string);
 	debug_write_P (PSTR("Linear Humidity (%): "));
 	debug_write(string);
 	debug_write("\n");
 
-	string = dtostrf((double)temp->humidity_compensated, 6, 3, string);
+	string = dtostrf((double)sht11->humidity_compensated, 6, 3, string);
 	debug_write_P (PSTR("Temp-compensated Humidity (%): "));
 	debug_write(string);
 	debug_write("\n");
 
-	string = dtostrf((double)temp->dewpoint, 6, 3, string);
+	string = dtostrf((double)sht11->dewpoint, 6, 3, string);
 	debug_write_P (PSTR("Temperature dewpoint (C): "));
 	debug_write(string);
 	debug_write("\n");
