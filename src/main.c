@@ -196,7 +196,7 @@ int main(void)
 	 * this check will take 10 sec
 	 */
 	anemometer_init();
-	sht11_init();
+	sht11_init(temperature);
 	phone_init();		/* activate uart comm only, no delay */
 	sei();			/* Enable interrupt */
 

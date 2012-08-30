@@ -1,5 +1,5 @@
 /* This file is part of sht11
- * Copyright (C) 2005-2011 Enrico Rossi
+ * Copyright (C) 2005-2010 Enrico Rossi
  * 
  * Sht11 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,20 +18,6 @@
 #ifndef SHT11_H_
 #define SHT11_H_
 
-#include "sht11_avr_io.h"
-
-#define SHT11_CMD_STATUS_REG_W 6
-#define SHT11_CMD_STATUS_REG_R 7
-#define SHT11_CMD_MEASURE_TEMP 3
-#define SHT11_CMD_MEASURE_HUMI 5
-#define SHT11_CMD_RESET        15
-
-#define SHT11_C1 -4.0		/* for 12 Bit */
-#define SHT11_C2  0.0405	/* for 12 Bit */
-#define SHT11_C3 -0.0000028	/* for 12 Bit */
-#define SHT11_T1  0.01		/* for 14 Bit @ 5V */
-#define SHT11_T2  0.00008	/* for 14 Bit @ 5V */
-
 struct sht11_t {
 	uint16_t raw_temperature;
         uint8_t raw_temperature_crc8; /* read */
@@ -39,6 +25,9 @@ struct sht11_t {
 	uint16_t raw_humidity;
         uint8_t raw_humidity_crc8;
         uint8_t raw_humidity_crc8c;
+	uint8_t status_reg;
+	uint8_t status_reg_crc8;
+	uint8_t status_reg_crc8c;
 	double temperature;
 	double humidity_linear;
 	double humidity_compensated;
@@ -49,7 +38,8 @@ struct sht11_t {
 	uint8_t crc8c; /* crc8 calculated */
 };
 
-void sht11_init(void);
+void sht11_init(struct sht11_t *sht11);
+void sht11_end(void);
 void sht11_read_all(struct sht11_t *sht11);
 
 #endif

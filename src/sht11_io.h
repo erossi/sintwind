@@ -1,5 +1,5 @@
 /* This file is part of sht11
- * Copyright (C) 2005-2011 Enrico Rossi
+ * Copyright (C) 2005-2010 Enrico Rossi
  * 
  * Sht11 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,24 +15,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef SHT11_AVRIO_H
-#define SHT11_AVRIO_H
+#ifndef SHT11_IO_H
+#define SHT11_IO_H
 
-/* clock delay in ms */
-#define SHT11_SCK_DELAY 1
-
-#define SHT11_DDR	DDRB
-#define SHT11_PORT	PORTB
-#define SHT11_PIN	PINB
-#define SHT11_DATA	PB1
-#define SHT11_SCK	PB2
-
+void set_sck_out(void);
+void set_sck_in(void);
 void set_sck_high(void);
 void set_sck_low(void);
 void set_data_out(void);
 void set_data_in(void);
 void set_data_high(void);
 void set_data_low(void);
+uint8_t read_data_pin(void);
 void sck_delay(void);
+uint8_t wait_until_data_is_ready(void);
+uint8_t sht11_crc8(uint8_t crc, uint8_t data);
+int sht11_io_init(void);
+void sht11_io_end(void);
 
 #endif

@@ -1,5 +1,5 @@
 /* This file is part of sht11
- * Copyright (C) 2005-2011 Enrico Rossi
+ * Copyright (C) 2005-2010 Enrico Rossi
  * 
  * Sht11 is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,9 +18,26 @@
 #include <stdint.h>
 #include <math.h>
 #include <avr/io.h>
-#include <util/crc16.h>
 #include <util/delay.h>
+
+#ifdef HAVE_DEFAULT
+#include "default.h"
+#endif
+
+#include "sht11_io.h"
 #include "sht11.h"
+
+#define SHT11_CMD_STATUS_REG_W 6
+#define SHT11_CMD_STATUS_REG_R 7
+#define SHT11_CMD_MEASURE_TEMP 3
+#define SHT11_CMD_MEASURE_HUMI 5
+#define SHT11_CMD_RESET        15
+
+#define SHT11_C1 -4.0		/* for 12 Bit */
+#define SHT11_C2  0.0405	/* for 12 Bit */
+#define SHT11_C3 -0.0000028	/* for 12 Bit */
+#define SHT11_T1  0.01		/* for 14 Bit @ 5V */
+#define SHT11_T2  0.00008	/* for 14 Bit @ 5V */
 
 void send_byte(uint8_t byte)
 {
@@ -35,18 +52,17 @@ void send_byte(uint8_t byte)
 			set_data_high();
 		else
 			set_data_low();
-		sck_delay();
 
+		sck_delay();
 		set_sck_high();
 		sck_delay();
-
 		set_sck_low();
 	}
 }
 
 uint8_t read_byte(void)
 {
-	uint8_t i, bit, result;
+	uint8_t i, result;
 
 	result = 0;
 	i = 8;
@@ -55,12 +71,13 @@ uint8_t read_byte(void)
 		--i;
 		sck_delay();
 		set_sck_high();
-		bit = SHT11_PIN & (1<<SHT11_DATA);
+
+		if (read_data_pin())
+			result |= (1<<i);
+
 		sck_delay();
 		set_sck_low();
 
-		if (bit)
-			result |= (1<<i);
 	}
 
 	return (result);
@@ -85,11 +102,22 @@ uint8_t read_ack(void)
 	set_data_in();
 	sck_delay();
 	set_sck_high();
-	ack = SHT11_PIN & (1<<SHT11_DATA);
+	ack = read_data_pin();
 	sck_delay();
 	set_sck_low();
 
 	return (ack);
+}
+
+/* terminate a session without sending an ack */
+void terminate_no_ack(void)
+{
+	set_data_high();
+	sck_delay();
+	set_sck_high();
+	sck_delay();
+	set_sck_low();
+	set_data_in();
 }
 
 void send_start_command(void)
@@ -117,62 +145,25 @@ void send_start_command(void)
 	sck_delay();
 }
 
-void sht11_init(void)
+void sht11_read_status_reg(struct sht11_t *sht11)
 {
-	/* sht11 clk pin to output and set high */
-	SHT11_DDR |= (1<<SHT11_SCK);
-	set_sck_high();
-}
+	uint8_t ack;
 
-uint8_t sht11_read_status_reg(void)
-{
-	uint8_t result, crc8, ack;
-
-	result = 0;
-	crc8 = 0;
+	sht11->cmd = 7; /* read status reg cmd */
+	sht11->status_reg_crc8 = 0;
+	sht11->status_reg_crc8c = 0;
 	send_start_command();
-
-	/* send read status register command */
-	send_byte(7);
+	send_byte(sht11->cmd);
 	ack = read_ack();
+	sht11->status_reg_crc8c = sht11_crc8(sht11->status_reg_crc8c, sht11->cmd);
 
-	if (ack)
-		return (0);
-
-	result = read_byte();
-
-	/* Send ack */
-	send_ack();
-
-	/* inizio la lettura del CRC-8 */
-	crc8 = read_byte();
-
-	send_ack();
-	return (result);
-}
-
-/*
-   sensirion has implemented the CRC the wrong way round. We
-   need to swap everything.
-   bit-swap a byte (bit7->bit0, bit6->bit1 ...)
-   code provided by Guido Socher http://www.tuxgraphics.org/
- */
-uint8_t bitswapbyte(uint8_t byte)
-{
-	uint8_t i=8;
-	uint8_t result=0;
-	while(i) {
-		result=(result<<1);
-
-		if (1 & byte) {
-			result=result | 1;
-		}
-
-		i--;
-		byte=(byte>>1);
+	if (!ack) {
+		sht11->status_reg = read_byte();
+		sht11->status_reg_crc8c = sht11_crc8(sht11->status_reg_crc8c, sht11->status_reg);
+		send_ack();
+		sht11->status_reg_crc8 = read_byte();
+		terminate_no_ack();
 	}
-
-	return(result);
 }
 
 /* Disable Interrupt to avoid possible clk problem. */
@@ -189,17 +180,16 @@ void send_cmd(struct sht11_t *sht11)
 	send_start_command();
 	send_byte(sht11->cmd);
 	ack = read_ack();
-	sht11->crc8c = _crc_ibutton_update(sht11->crc8c, bitswapbyte(sht11->cmd));
+	sht11->crc8c = sht11_crc8(sht11->crc8c, sht11->cmd);
 
 	if (!ack) {
 		/* And if nothing came back this code hangs here */
-		loop_until_bit_is_set(SHT11_PIN, SHT11_DATA);
-		loop_until_bit_is_clear(SHT11_PIN, SHT11_DATA);
+		wait_until_data_is_ready();
 
 		/* inizio la lettura dal MSB del primo byte */
 		byte = read_byte();
 		sht11->result = byte << 8;
-		sht11->crc8c = _crc_ibutton_update(sht11->crc8c, bitswapbyte(byte));
+		sht11->crc8c = sht11_crc8(sht11->crc8c, byte);
 
 		/* Send ack */
 		send_ack();
@@ -207,20 +197,13 @@ void send_cmd(struct sht11_t *sht11)
 		/* inizio la lettura dal MSB del secondo byte */
 		byte = read_byte();
 		sht11->result |= byte;
-		sht11->crc8c = _crc_ibutton_update(sht11->crc8c, bitswapbyte(byte));
+		sht11->crc8c = sht11_crc8(sht11->crc8c, byte);
 
 		send_ack();
 
 		/* inizio la lettura del CRC-8 */
 		sht11->crc8 = read_byte();
-
-		/* do not Send ack */
-		set_data_high();
-		sck_delay();
-		set_sck_high();
-		sck_delay();
-		set_sck_low();
-		set_data_in();
+		terminate_no_ack();
 	}
 }
 
@@ -263,6 +246,17 @@ void sht11_read_humidity(struct sht11_t *sht11)
 		sht11->humidity_compensated = 100;
 	if (sht11->humidity_compensated < 0.1)
 		sht11->humidity_compensated = 0.1;
+}
+
+void sht11_init(struct sht11_t *sht11)
+{
+	sht11_io_init();
+	sht11_read_status_reg(sht11);
+}
+
+void sht11_end(void)
+{
+	sht11_io_end();
 }
 
 void sht11_read_all(struct sht11_t *sht11)
