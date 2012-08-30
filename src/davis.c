@@ -103,12 +103,14 @@ ISR(TIMER1_OVF_vect)
 /*! \brief setup counters and timers.
  * Time ellapsed every cycle is 4.19424 sec.
  * 4Mhz / 256 = 15625 Hz (clock pre-scaled of 256)
+ * or
+ * 1Mhz / 64 = 15625 Hz (clock pre-scaled of 64)
  * 1/15625 Hz = 0.000064 sec (every counter's step)
  * Number of step per cycle is 65535 (16bit)
  * 0.000064 sec * 65535 = 4.19424 sec every cycle.
  *
- * \note this example is based on 4Mhz cpu clock. Adjust to
- * your settings.
+ * \note this example is based on 4Mhz cpu clock. Adjust
+ * the prescaler to your settings.
  */
 void davis_timer_setup(void)
 {
@@ -116,11 +118,19 @@ void davis_timer_setup(void)
 
 	/* ICES1 = 0 trigger edge on negative */
 
-	/*! The counter is prescaler/256 the
+	/*! The counter is:
+	 * prescaler/256 (4Mhz) CS12
+	 * prescaler/64 (1Mhz) CS11 and CS10
 	 * noise canceller is enable and the trigger edge is on
 	 * positive.
 	 */
+#if F_CPU == 1000000UL
+	TCCR1B = _BV(ICNC1) | _BV(CS11) | _BV(CS10);
+#elif F_CPU == 4000000UL
 	TCCR1B = _BV(ICNC1) | _BV(CS12);
+#else
+#error "Unsupported CPU speed in davis.c"
+#endif
 
 	/*! enable interrupt on timer 0 event and overflow.
 	 */
