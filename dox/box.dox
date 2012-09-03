@@ -9,11 +9,17 @@
 \section support Support metal sheet.
 \version 09 Apr. 2010
 
- \image html internal_support.png "Metal support."
+\image html internal_support.png "Metal support schema."
+\image html IMG_20120830_125912.png "Metal support photo."
 
 \section drilling Box drilling.
 \version 24 Feb. 2009
 
- \image html box_drilling.png "Box drilling."
+\image html box_drilling.png "Box drilling."
+\image html IMG_20120830_130143.png "Bottom with holes."
+
+\section box_pic Box photos.
+
+\image html IMG_20120830_130006.png "Whole box."
 
 */
