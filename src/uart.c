@@ -35,39 +35,38 @@
  */
 ISR(USART0_RX_vect)
 {
-	uint8_t tmp;
+	uint8_t rxc;
 
 	/*! First copy the rx char from the device rx buffer.
 	 */
-	tmp = UDR0;
+	rxc = UDR0;
 
-	/*! * if the rx char is an EOL or there is a message
-	 * yet to be processed then flag a new
-	 * message need to be processed by the software and do not
-	 * store the char.
+	/*! if we fill the rx buffer, which should never happens,
+	 * then clear the buffer index, the buffer contents and
+	 * restart.
 	 */
-	if ((tmp == '\r') || uartPtr->rx_flag) {
-		uartPtr->rx_flag = TRUE;
-		uartPtr->rx_buffer[uartPtr->rxIdx] = 0;
-	} else {
-		/*! if we have more space in the preallocated rx buffer */
-		if ((uartPtr->rxIdx + 1) & UART0_RXBUF_MASK) {
-			/*! and is a valid char */
-			if ((tmp > 31) && (tmp < 128)) {
-				/*! * copy the rx char to rx buffer */
-				uartPtr->rx_buffer[uartPtr->rxIdx] = tmp;
+	if (uartPtr->rxIdx == UART0_RXBUF_MASK) {
+		uartPtr->rxIdx = 0;
+		uartPtr->rx_buffer[0] = 0;
+	}
 
-				/*! * increment the pointer to the next
-				 * slot. */
-				uartPtr->rxIdx++;
-			}
-		} else {
-			/*! else something wrong happened, then clear
-			 * the buffer index, the buffer contents and
-			 * restart.
-			 */
-			uartPtr->rxIdx = 0;
-			uartPtr->rx_buffer[0] = 0;
+	if (!uartPtr->rx_flag) {
+		/*! if the rxc is a valid char */
+		if ((rxc > 31) && (rxc < 128)) {
+			/*! * copy the rx char to rx buffer */
+			uartPtr->rx_buffer[uartPtr->rxIdx] = rxc;
+
+			/*! * increment the pointer to the next
+			 * slot. */
+			uartPtr->rxIdx++;
+		}
+
+		/* if rxc is CR and it is NOT the only char
+		 * in the buffer.
+		 */
+		if ((rxc == '\r') && (uartPtr->rxIdx)) {
+			uartPtr->rx_flag = TRUE;
+			uartPtr->rx_buffer[uartPtr->rxIdx] = 0;
 		}
 	}
 }

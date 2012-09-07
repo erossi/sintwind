@@ -68,27 +68,31 @@ uint8_t phone_msg(char *s)
  */
 uint8_t phone_waitfor(const char *s, const uint8_t locked)
 {
-	uint8_t i, err;
+	uint8_t match;
 	char *msg;
+	int i;
 
 	/*! \bug non-multiport ready. works only to port 0.
 	 */
 	msg = malloc(UART0_RXBUF_SIZE);
-	err = TRUE;
+	match = FALSE;
+	i = 5000;
 
 	if (locked)
 		while (!(phone_msg(msg) && (!strcmp(msg, s))))
 			_delay_ms(100);
 	else
-		for (i = 0; i < 50; i++)
+		while (i)
 			if (phone_msg(msg) && (!strcmp(msg, s))) {
-				err = FALSE;
-				i = 50;
-			} else
-				_delay_ms(100);
+				match = TRUE;
+				i = 0;
+			} else {
+				_delay_ms(1);
+				i--;
+			}
 
 	free(msg);
-	return (err);
+	return (match);
 }
 
 /*! \brief initialize the serial port connected to the phone.
@@ -102,24 +106,46 @@ void phone_init(void)
 
 /*! \brief power up the phone.
  * \note turning on the modem will take from 11sec to 16 seconds
+ * \return FALSE if the phone is not detected, or number of
+ * init sentences catched.
+ * \bug modem answers during power on should be exactly what we
+ * expect, not if I got at least once it's ok.
  */
 uint8_t phone_on(void)
 {
-	int i;
+	uint8_t i=0;
 
 	_delay_ms(1000);
 	PHONE_PORT |= _BV(PHONE_ON);
 	_delay_ms(500);
 	PHONE_PORT &= ~(_BV(PHONE_ON));
 	_delay_ms(10000);
+	/*! \bug void the eventually chars left in queue. */
+	/*! \todo the init strings should be defined somewhere. */
 	phone_send("AT&FE0&C0&D0\r");
-	i = phone_waitfor("OK", FALSE);
+
+	/* Echo should be enabled after boot */
+	if (phone_waitfor("AT&FE0&C0&D0", FALSE))
+		i |= _BV(0);
+
+	if (phone_waitfor("OK", FALSE))
+		i |= _BV(1);
+
+	phone_send("AT^SNFS=5\r");
+
+	if (phone_waitfor("OK", FALSE))
+		i |= _BV(2);
+
 #ifdef CELL_FIXED_OPERATOR
 	phone_send(CELL_FIXED_OPERATOR);
-	i = phone_waitfor("OK", FALSE);
+
+	if (phone_waitfor("OK", FALSE))
+		i |= _BV(3);
 #endif
-	phone_send("AT^SNFS=5\r");
-	return (i | phone_waitfor("OK", FALSE));
+
+	/* Bad shortcut, if I've matched at least 1 sentence,
+	 * I suppose the modem is alive. */
+	return(i);
 }
 
 /*! \brief answer the call */

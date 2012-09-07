@@ -118,7 +118,7 @@ void run_with_debug(struct sht11_t *temperature, char *message)
 
 void run_free(struct sht11_t *temperature, char *message)
 {
-	uint8_t chkpoint;
+	uint8_t chkpoint, i;
 
 	/* Read eeprom checkpoint status (last boot) */
 	chkpoint = eeprom_read_byte(&EE_chkpoint);
@@ -133,11 +133,15 @@ void run_free(struct sht11_t *temperature, char *message)
 
 	/* without enought power we may die here */
 	while (chkpoint) {
-		if (phone_on())
-			delay1h();	/* error */
-		else {
+		i = phone_on();
+		led_blink(i);
+
+		if (i) {
 			chkpoint = 0;
 			eeprom_write_byte(&EE_chkpoint, chkpoint);
+			_delay_ms(2000);
+		} else {
+			delay1h();	/* error */
 		}
 	}
 
