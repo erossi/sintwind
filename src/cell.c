@@ -131,6 +131,8 @@ uint8_t phone_on(void)
 	if (phone_waitfor("OK", FALSE))
 		i |= _BV(1);
 
+	/* skip some time to avoid char lost (never tested). */
+	_delay_ms(1000);
 	phone_send("AT^SNFS=5\r");
 
 	if (phone_waitfor("OK", FALSE))
