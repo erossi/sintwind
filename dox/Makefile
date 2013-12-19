@@ -19,7 +19,7 @@ GIT_TAG = "Unknown"
 # Uncomment if git tag is in use
 GIT_TAG = $(shell git describe --tags|sed -e "s/^\(.*\)-.*/\1/")
 PRGNAME = $(PRG_NAME)_$(GIT_TAG)_$(MCU)
-MYWEBSERVER = www.mywebserver.fake:/my/path/to/www/
+MYWEBSERVER = vps.tecnobrain.com:/home/doxygen/osint/
 
 .PHONY: clean indent
 .SILENT: help

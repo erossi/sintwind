@@ -37,7 +37,6 @@
 | 1|LM336Z-2.5 precision temperature TO92|Rs-online|533-5799|€ 0.72|
 | 1|LM336Z-5.0 precision temperature TO92|Rs-online|533-5806|€ 0.82|
 | 1|LMC6062IN op amp dual cmos dip8|Rs-online|534-4052|€ 2.76|
-| 0|ATmega16-16PU dil40|Rs-online|628-0000|€ 0.00|
 | 1|Atmega1280|Rs-online|738-0331|€ 7.90|
 | 1|Zoccolo tornito 40P 15,24|Rs-online|197-2726|€ 12.05|
 | 1|SHT11 sensor humidity & temp V4|Rs-online|667-5265|€ 24.38|
@@ -49,7 +48,7 @@
 | 1|HIN202CPZ|Rs-online|642-4547|€ 8.50|
 | 1|TLP504A FTA TR 2CH 55V ISO2.5KV dip8|Rs-online|625-8031|€ 0.89|
 | 10|Filt. BL02RN2-R62|Rs-online|724-1611|€ 5.75|
-| 1|Led rosso 3mm|Rs-online|228-5922|€ 0.32|
+| 1|Led red 3mm|Rs-online|228-5922|€ 0.32|
 | 1|IRF9540 ch-p 100V 19A 125W 0,2R TO220|Rs-online|541-1225|€ 2.08|
 | 1|BC337-25 npn 500mA 45V 625mW TO92|Rs-online|625-4966|€ 0.19|
 | 1|Rete resistiva 9R-10pin 22Kohm|Rs-online|522-4835|€ 12.75|
@@ -77,10 +76,10 @@
 | 1|Cavo seriale DB9M-DB9F||||
 | 1|Antenna HWPANT573 dual band + 5m cavo connettori FME/F|Elsist|HWPANT573|€ 11.20|
 | 1|Circuito stampato SW3|PCB Project||€ 20.00|
-| 1|Anemometro LaCrosse TX20|MeteoSystem||€ 50.00|
-| 0|Anemometro Davis|MeteoSystem||€ 0.00|
+| 1|Anemometer LaCrosse TX20|MeteoSystem||€ 50.00|
+| 0|Anemometer Davis|MeteoSystem||€ 0.00|
 | 1|Connettore RJ11 spina 6/6||||
-| 1|Connettore RJ spina 4/4||||
+| 1|Connettore RJ11 spina 4/4||||
 | 0.3|Cavo rosso/nero 0,5mm||||
 | 0.2|Cavo 2xawg20-22 + sch||||
 | 0.1|Cavo 6xawg20-22 + sch||||
