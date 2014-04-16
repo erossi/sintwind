@@ -1,0 +1,155 @@
+/*!
+\page advanced Advanced usage and diagnostic.
+\author Enrico Rossi.
+\copyright GNU Public License.
+\version 16 Apr. 2014
+
+\note Copy-pasted note from mails, need to be properly reviewed and
+translated!
+
+\section debug_output Realtime reading data printed meaning.
+
+	Open Sint Project Rel: 3.4
+	 Andrea Marabini <info@marabo.it>
+	 Enrico Rossi <e.rossi@tecnobrain.com>
+	 http://enricorossi.org/sintwind/
+	 GNU GPL v3 - use at your own risk!
+	EEprom wind sensor set to: auto
+	Running sensor set to: Davis.
+	Setting up EEPROM checkpoint
+	Do you want to erase checkpoint EEPROM (yes/NO)? yes
+	EEPROM checkpoint erased.
+	0 rt[ S 0, A 0, vm 255, Vx 0, mX 0, mY 0] vm 255, Vx 0, V 0, A 0
+	1 rt[ S 0, A 0, vm 0, Vx 0, mX 0, mY 0] vm 255, Vx 0, V 0, A 0
+	2 rt[ S 0, A 0, vm 0, Vx 0, mX 0, mY 0] vm 255, Vx 0, V 0, A 0
+	3 rt[ S 0, A 0, vm 0, Vx 0, mX 0, mY 0] vm 255, Vx 0, V 0, A 0
+
+Ti rispondo senza avere la stazione sottomano, quindi potrebbero esserci
+delle inesattezze.
+
+Nell'ordine dovresti leggere:
+
+1) contatore di lettura, si incrementa ogni lettura fino al momento in
+   cui viene fatta la media che poi diventera' il dato letto quando
+   chiami il sint.
+
+Dati in tempo reale RT [ ... ]:
+
+2) velocita' del vento in tempo reale (A)
+3) velocita' minima in tempo reale (vm)
+4) velocita' massima in tempo reale (Vx)
+5) media vettoriale in tempo reale asse X (mX)
+6) media vettoriale in tempo reale asse Y (mY)
+
+Dati medi risultati dal ciclo precendete:
+
+7) velocita' minima (vm)
+8) velocita' massima (Vx)
+9) velocita' (V)
+10) angolo (A)
+
+- ogni lettura dell'anemometro si ottiene (2).
+- se la velocita' < vm (3) allora la velocita' diventa la vm (3).
+- se la velocita' > Vx (4) allora la velocita' diventa la Vx (4).
+- (5) e (6) si calcolano da (2).
+
+alla fine del ciclo la vm (3) diventa la vm (7) (la velocita' minima
+rilevata in tutto il ciclo appena concluso).
+
+la Vx (8) diventa la Vx (4) (la velocita' massima rilevata nel ciclo
+concluso).
+
+la (9) e (10) di calcolano dalla (5), (6) e (1).
+
+Quando chiami il sint i dati che ti vengono letti sono (7), (8), (10) +
+temperatura.
+
+Se poi usi un anemometro lacrosse, si aggiunge un'altra riga con i dati
+digitali trasmessi dal device.
+
+\section temperature How the temperature works.
+
+
+	Open Sint Project Rel: 3.4
+	 Andrea Marabini <info@marabo.it>
+	 Enrico Rossi <e.rossi@tecnobrain.com>
+	 http://enricorossi.org/sintwind/
+	 GNU GPL v3 - use at your own risk!
+	EEprom wind sensor set to: auto
+	Running sensor set to: Davis.
+	Setting up EEPROM checkpoint
+	Do you want to erase checkpoint EEPROM (yes/NO)? yes
+	EEPROM checkpoint erased.
+	0 rt[ S 0, A 0, vm 255, Vx 0, mX 0, mY 0] vm 255, Vx 0, V 0, A 0
+	1 rt[ S 0, A 0, vm 0, Vx 0, mX 0, mY 0] vm 255, Vx 0, V 0, A 0
+	2 rt[ S 0, A 0, vm 0, Vx 0, mX 0, mY 0] vm 255, Vx 0, V 0, A 0
+	3 rt[ S 0, A 0, vm 0, Vx 0, mX 0, mY 0] vm 255, Vx 0, V 0, A 0
+	sht11 Status register: 120
+	  crc8, crc8c: 0 ,233
+	Raw temperature: 0
+	  crc8, crc8c: 0 ,202
+	Raw humidity: 0
+	  crc8, crc8c: 0 ,175
+	Temperature (C): -40.000
+	Linear Humidity (%): -4.000
+	Temp-compensated Humidity (%):  0.100
+	Temperature dewpoint (C): -90.115
+	4 rt[ S 0, A 0, vm 0, Vx 0, mX 0, mY 0] vm 255, Vx 0, V 0, A 0
+	5 rt[ S 0, A 0, vm 0, Vx 0, mX 0, mY 0] vm 255, Vx 0, V 0, A 0
+	6 rt[ S 0, A 0, vm 0, Vx 0, mX 0, mY 0] vm 255, Vx 0, V 0, A 0
+	7 rt[ S 0, A 0, vm 0, Vx 0, mX 0, mY 0] vm 255, Vx 0, V 0, A 0
+
+> Quando chiamo il modem dal cellulare sintetizza -40.
+
+questo e' giusto in quanto se la raw-temperature=0 che e' il
+dato letto dal sensore (o meglio non letto in questo caso) il calcolo
+finale della temperatura genera un -40, che e' giusto e ti permette di
+sapere che il sensore di temperatura non sta' funzioanndo correttamente.
+
+Il calcolo della temperatura avviene attraverso una formula che alla
+fine sottrae 40. Supponendo che sia tutto 0 quello che legge si capisce
+come risulti -40
+
+
+
+\section synth_command The synth command.
+
+> Quando lancio il comando SYNTH la temperatura sintetizza "0".
+
+il comando synth lanciato da PC sintetizza il contenuto della memoria.
+Nel caso della temperatura NON esegue una lettura. Probabilmente (da
+provare) se prima lanci un comando 'temp' e poi il 'synth' il discorso
+cambia.
+
+\section boot_debug Booting with debug.
+
+> Il discorso modem , dopo aver collegato la seriale al pc  e
+> interrogato da terminale poi uno volta spento il sinrtwind, e
+> ricollegata la seriale a modem si deve per forza fare un  erase
+> checkpoint se no il modem non si accende e il sint rimane in blocco.
+
+ti confermo che avviando il sint in modo debug con il pc collegato, si
+attiva il blocco, che si elimina solo rispondendo di cancellarlo al
+boot.
+
+> Se tento il reset tenendo il piedino 8 a massa nel mio caso rimane in
+> blocco. e non sortisce nessun effetto.
+
+Una volta acceso normalmente il modem dovrebbe rimanere spento se e'
+attivo il checkpoint. A questo punto bisogna mettere a massa il PINB7
+(piedino 8) nel momento in cui smette di lampeggiare, o meglio va'
+tenuto a massa fino a che non fa' un singolo blink. A quel punto il
+modem si accende. Confermi?
+
+> Se esco dal debug nel
+> terminale e poi riaccendo con la seriale collegata al modem ill sint
+> va' in blocco e non basta il reset del pin 8 a massa durante i 5
+> lampeggi , devo ritornare in deug e cancellare il checkpoint , poi di
+> nuovo collegare la seriale al modem e così' si ripristina il
+> funzionamento normale.
+
+allora il sint deve essere collegato al modem prima della accensione. In
+caso di blocco presente, puoi usare la procedura pin a terra, nota che
+io ho scassato un micro toccando il pin sbagliato, quindi attenzione.
+
+*/

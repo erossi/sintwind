@@ -133,6 +133,10 @@ uint8_t phone_on(void)
 
 	/* skip some time to avoid char lost (never tested). */
 	_delay_ms(1000);
+	/*
+	 * setup the audio output to analog interface 1, see MC35i
+	 * datasheet.
+	 */
 	phone_send("AT^SNFS=5\r");
 
 	if (phone_waitfor("OK", FALSE))
